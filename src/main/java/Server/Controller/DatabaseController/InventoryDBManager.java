@@ -1,8 +1,8 @@
-package Controller.DatabaseController;
+package Server.Controller.DatabaseController;
 
 import java.sql.*;
 
-import Model.Customer;
+import Server.Model.Customer;
 
 public class InventoryDBManager {
 

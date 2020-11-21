@@ -1,4 +1,4 @@
-package Controller.DatabaseController;
+package Server.Controller.DatabaseController;
 
 public interface JDBCredentials {
 	

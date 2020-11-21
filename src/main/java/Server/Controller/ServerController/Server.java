@@ -1,4 +1,4 @@
-package Controller.ServerController;
+package Server.Controller.ServerController;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,8 +9,8 @@ import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import Controller.DatabaseController.DBController;
-import Controller.ModelController.ServerCustomerController;
+import Server.Controller.DatabaseController.DBController;
+import Server.Controller.ModelController.ServerCustomerController;
 
 public class Server {
 	

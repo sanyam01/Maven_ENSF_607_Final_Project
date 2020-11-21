@@ -1,4 +1,4 @@
-package Controller.ModelController;
+package Server.Controller.ModelController;
 
 
 
@@ -13,8 +13,8 @@ import java.net.Socket;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import Controller.DatabaseController.DBController;
-import Model.Customer;
+import Server.Controller.DatabaseController.DBController;
+import Server.Model.Customer;
 
 
 

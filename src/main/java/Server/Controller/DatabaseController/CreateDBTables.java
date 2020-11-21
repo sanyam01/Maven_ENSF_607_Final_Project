@@ -1,4 +1,4 @@
-package Controller.DatabaseController;
+package Server.Controller.DatabaseController;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
