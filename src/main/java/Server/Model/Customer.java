@@ -16,6 +16,11 @@ public class Customer implements Serializable {
 	private String phoneNumber;
 	private String customerType;
 	
+	
+	public Customer() {
+        super();
+    }
+	
 	public Customer(int customerID, String firstName, String lastName, String address, String postalCode, String phoneNumber, String customerType) {
 		this.customerID = customerID;
 		this.firstName = firstName;

@@ -9,9 +9,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import Server.Controller.DatabaseController.DBController;
 import Server.Model.Customer;
@@ -106,7 +111,7 @@ public class ServerCustomerController implements Runnable {
 //		}
 	}
 	
-	public void run_temp() throws JsonProcessingException {
+	public void run_temp() throws IOException {
 		String response = "";
 		System.out.println("in run_temp");
 		try {
@@ -145,7 +150,8 @@ public class ServerCustomerController implements Runnable {
 		
 	}
 
-	public void switchBoard(int choice) throws ClassNotFoundException, JsonProcessingException {
+	@SuppressWarnings("unchecked")
+	public void switchBoard(int choice) throws ClassNotFoundException, IOException {
 
 		switch (choice) {
 
@@ -158,7 +164,33 @@ public class ServerCustomerController implements Runnable {
 			ObjectMapper objectMapper = new ObjectMapper();
 			String jsonCustomer = objectMapper.writeValueAsString(customer);
 			
+			String temp = "1 " + jsonCustomer;
+			System.out.println("temp: "+temp);
 			System.out.println(jsonCustomer);
+			String[] taskId = temp.split(" ", 2);
+
+			System.out.println(taskId[0]);
+			System.out.println(taskId[1]);
+//			System.out.println(taskId[2]);
+			
+			
+			//1 search based on client-id
+			//2 search based on lastname
+			//3 search based on client type
+			//4 save
+			//5 delete
+			
+		
+	        
+	        
+	        Customer cust = objectMapper.readValue(taskId[1], Customer.class);
+	        System.out.println(cust.getCustomerID());
+			
+			
+			
+			
+
+			
 			int id = 1; //customer.getCustomerID()
 //			customer = dbController.getDbManager().getCustomerPreparedStatementId(id);
 //			System.out.println(customer);
