@@ -42,10 +42,10 @@ public class CustomerViewController  {
 	public void findSearchType() {
 		if (customerView.getSearchCustomerID().isSelected())
 			searchClientID();
-		else if (customerView.getSearchLastName().isSelected())
-			searchLastName();
-		else if (customerView.getSearchCustomerType().isSelected())
-			searchCustomerType();
+//		else if (customerView.getSearchLastName().isSelected())
+//			searchLastName();
+//		else if (customerView.getSearchCustomerType().isSelected())
+//			searchCustomerType();
 		else
 			System.out.println("Could find an option on which valid search is to be made");
 	}
@@ -59,7 +59,7 @@ public class CustomerViewController  {
 	}
 
 	private void printCustListGUI(String response) {
-		
+		customerView.addCustomerList(response);
 		
 	}
 

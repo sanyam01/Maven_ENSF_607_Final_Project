@@ -30,6 +30,7 @@ public class CustomerView extends JFrame {
     private JButton search;
     private JButton clearSearch;
     private JList customerList;// for adding the search results
+
     
     private ButtonGroup group; 
 	
@@ -100,11 +101,16 @@ public class CustomerView extends JFrame {
 		
 		JPanel leftView = new JPanel(new BorderLayout());
 		
-		displayText = new JTextArea(10,10);
-		displayText.setEditable(false);
+//		displayText = new JTextArea(10,10);
+//		displayText.setEditable(false);
 		
-		JScrollPane scroll = new JScrollPane(displayText);
+		
+		//JScrollPane scroll = new JScrollPane(displayText);
+		customerList = new JList();
+		JScrollPane scroll = new JScrollPane(customerList);
+		//JLabel centerResults = new JLabel("Search Results : ");
 		leftView.add("Center", new JLabel("Search Results :"));
+		//leftView.add("Center", centerResults);
 		leftView.add("South", scroll);
 		
 		JPanel leftNorth = new JPanel(new GridLayout(7,1,2,2));
@@ -160,6 +166,13 @@ public class CustomerView extends JFrame {
 	    searchParameter.addActionListener(customerListener);
 	    search.addActionListener(customerListener);
 	    clearSearch.addActionListener(customerListener);
+	}
+	
+	public void addCustomerList(String list) {
+		
+		String[] listArray = list.split("\n");
+		customerList.setListData(listArray);
+		
 	}
 
 	public JButton getSave() {
