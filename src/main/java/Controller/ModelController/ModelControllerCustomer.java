@@ -1,39 +1,98 @@
 package Controller.ModelController;
 
+import java.io.IOException;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import ClientModel.Customer;
+import ClientModel.CustomerList;
 import Controller.ClientController.ClientControllerCustomer;
 
 public class ModelControllerCustomer {
 	
-	//private CustomerViewController customerViewController;
+
 	private Customer customer;
+	private CustomerList customerList;
 	private ClientControllerCustomer clientControllerCustomer;
 	
 	public ModelControllerCustomer() {
 		clientControllerCustomer = new ClientControllerCustomer();
 	}
 
-	// this is called save is pressed for storing customer information
+	// this is called when save is pressed for storing customer information
 	public void setCustomer(int iD, String firstName, String lastName, String address, String postalCode, String phoneNo, String type) {
-//		int iD = Integer.parseInt(this.customerViewController.getCustomerView().getCustomerID().getText());
-//		String firstName = this.customerViewController.getCustomerView().getFirstName().getText();
-//		String lastName = this.customerViewController.getCustomerView().getLastName().getText();
-//		String address = this.customerViewController.getCustomerView().getAddress().getText();
-//		String postalCode = this.customerViewController.getCustomerView().getPostalCode().getText();
-//		String phoneNo = this.customerViewController.getCustomerView().getPhoneNo().getText();
-//		String type = this.customerViewController.getCustomerView().getCustomerID().getText();
+
 		this.customer = new Customer(iD, firstName, lastName, address, postalCode,phoneNo,type);
 		System.out.println(firstName  +  lastName);
+	}
+	
+	public String sendCustomerInfo() {
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		String jsonCustomer;
+		String response = "";
+		try {
+			jsonCustomer = objectMapper.writeValueAsString(customer);
+			String temp = "4 " + jsonCustomer;
+			response = this.clientControllerCustomer.saveCustomer(temp);
+			
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return response;
+		
+		
 	}
 	public Customer getCustomer() {
 		return customer;
 	}
 	
-//	public void setCustomerViewController(CustomerViewController customerViewController) {
-//		this.customerViewController = customerViewController;
-//		
-//	}
-//	
+	public ClientControllerCustomer getClientControllerCustomer() {
+		return clientControllerCustomer;
+	}
+
+	public void setClientControllerCustomer(ClientControllerCustomer clientControllerCustomer) {
+		this.clientControllerCustomer = clientControllerCustomer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	// search based on customerID
+	public String searchClientID(String clientID) {
+		String searchID = "1 " + clientID;
+		String response = clientControllerCustomer.searchClientID(searchID);
+		getCustomerListFromJson(response);
+		String listNameID = getStringCustList();
+		return listNameID;
+	}
+	
+	// concatating the customers into string
+	public String getStringCustList() {
+		
+		String concatCust = "";
+		for (Customer cus: this.customerList.getCustomerList())
+			concatCust = concatCust + cus.getCustomerID() + " " + cus.getFirstName() + " " + cus.getLastName() + " " + cus.getCustomerType() + "\n";
+		return concatCust;
+	}
+
+	// convert json string into customer list
+	private void getCustomerListFromJson(String customerList) {
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		//CustomerList custList = null;
+		try {
+			this.customerList = objectMapper.readValue(customerList, CustomerList.class);
+		} catch (IOException e) {
+			System.out.println("Unable to convert json to customer List");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	
 	
 

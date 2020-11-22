@@ -4,16 +4,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import ClientView.ToolView;
+import Controller.ModelController.ModelControllerTool;
 
 public class ToolViewController {
 	
 	private ToolView toolView;
+	private ModelControllerTool modelControllerTool;
 	
-	public ToolViewController() {
+	public ToolViewController(ModelControllerTool modelControllerTool) {
 		toolView = new ToolView();
 		toolView.setVisible(true);
 		toolView.pack();
 		toolView.addToolListener(new ToolListener());
+		this.modelControllerTool = modelControllerTool;
 	}
 	
 	class ToolListener implements ActionListener{
@@ -34,6 +37,15 @@ public class ToolViewController {
 	public void setToolView(ToolView toolView) {
 		this.toolView = toolView;
 	}
+
+	public ModelControllerTool getModelControllerTool() {
+		return modelControllerTool;
+	}
+
+	public void setModelControllerTool(ModelControllerTool modelControllerTool) {
+		this.modelControllerTool = modelControllerTool;
+	}
+	
 	
 	
 

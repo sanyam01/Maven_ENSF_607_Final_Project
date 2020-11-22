@@ -1,7 +1,8 @@
 package ClientModel;
 
-	
-	/**
+import java.io.Serializable;
+
+/**
 	 * Class Items represents an item in the inventory. It has an item name, ID,
 	 * quantity, price, and the supplier info.
 	 * 
@@ -9,7 +10,7 @@ package ClientModel;
 	 *
 	 */
 
-	public class Items {
+	public class Items implements Serializable {
 
 		/**
 		 * itemID represents the ID of the item. Each item has unique ID
@@ -46,7 +47,6 @@ package ClientModel;
 		 * @param itemQuantity quantity left in the stock
 		 * @param itemPrice    price of an item
 		 * @param supplierID   iD of the supplier that sells that item
-		 * @param sup          object of Supplier corresponding to that item
 		 */
 		public Items(int itemID, String itemName, int itemQuantity, float itemPrice, int supplierID) {
 
