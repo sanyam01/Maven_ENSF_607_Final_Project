@@ -47,13 +47,7 @@ public class ServerCustomerController implements Runnable {
 //					socketOut = new PrintWriter(socket.getOutputStream(), true);
 
 	}
-//
-//	public Customer testCustomerObject() {
-//
-//		customer = new Customer(1, "sanyam", "empty", "st no0", "23123", "152116", "res");
-//		return customer;
-//
-//	}
+
 
 	public String run_temp() throws IOException {
 		String[] responseArr = null;
@@ -78,7 +72,6 @@ public class ServerCustomerController implements Runnable {
 
 	}
 
-	@JsonIgnoreProperties(ignoreUnknown = true)
 	public String switchBoard(String[] responseArr)  {
 
 		// 1 search based on client-id
