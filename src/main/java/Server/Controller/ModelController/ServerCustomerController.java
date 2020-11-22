@@ -1,7 +1,5 @@
 package Server.Controller.ModelController;
 
-
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,6 +9,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -21,192 +20,110 @@ import com.google.gson.JsonObject;
 import Server.Controller.DatabaseController.DBController;
 import Server.Model.Customer;
 
-
-
 public class ServerCustomerController implements Runnable {
 
-	private Socket socket;
-	private PrintWriter socketOut;
-	private BufferedReader socketIn;
-	private int choice;
+//	private Socket socket;
+//	private PrintWriter socketOut;
+//	private BufferedReader socketIn;
+	private int taskId;
 	DBController dbController;
 	Customer customer = null;
-	ObjectInputStream serverInputStream;
-	ObjectOutputStream serverOutputStream;
+//	ObjectInputStream serverInputStream;
+//	ObjectOutputStream serverOutputStream;
+	ObjectMapper objectMapper;
+	private String response;
 
-	public ServerCustomerController(Socket socket, DBController dbC) throws IOException {
+	public ServerCustomerController(String response, DBController dbC, ObjectMapper objectMapper) throws IOException {
 		System.out.println("CustomerController constructor called ");
 
-		this.socket = socket;
+		this.response = response;
 		this.dbController = dbC;
-		
+		this.objectMapper = objectMapper;
+
 		// Socket input Stream
 //		socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-					// Socket output Stream
-					socketOut = new PrintWriter(socket.getOutputStream(), true);
-//		try {
-//			System.out.println("bfore");
-//			serverInputStream = new ObjectInputStream(socket.getInputStream());
-//			System.out.println("after");
+		// Socket output Stream
+//					socketOut = new PrintWriter(socket.getOutputStream(), true);
+
+	}
 //
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-
-//		try {
-//			serverOutputStream = new ObjectOutputStream(socket.getOutputStream());
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-
-	}
-
-	public Customer getCustomerObject() {
-		try {
-			serverInputStream = new ObjectInputStream(socket.getInputStream());
-			customer = (Customer) serverInputStream.readObject();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return customer;
-
-	}
-	
-	public Customer testCustomerObject() {
-		
-		customer = new Customer(1, "sanyam","empty", "st no0", "23123", "152116", "res");
-		return customer;
-		
-	}
-
-
-
-	public void run() {
-		String response = "";
-		System.out.println("CustomerController instantiated here");
-//		try {
-//			response = socketIn.readLine();
-//			System.out.println("Response from client: " + response);
-//			choice = Integer.parseInt(response);
-//		} catch (IOException e) {
+//	public Customer testCustomerObject() {
 //
-//			e.printStackTrace();
-//		}
+//		customer = new Customer(1, "sanyam", "empty", "st no0", "23123", "152116", "res");
+//		return customer;
 //
-//		if (response != null) {
-//			try {
-//				switchBoard(choice);
-//			} catch (ClassNotFoundException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-	}
-	
-	public void run_temp() throws IOException {
-		String response = "";
+//	}
+
+	public String run_temp() throws IOException {
+		String[] responseArr = null;
 		System.out.println("in run_temp");
-		try {
-			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			response = socketIn.readLine();
-			System.out.println("Response from client: " + response);
-			choice = Integer.parseInt(response);
-		} catch (IOException e) {
+		String switchBoardResponse = null;
+		
+//			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//			System.out.println(socketIn.readLine());
+//			response = socketIn.readLine();
 
-			e.printStackTrace();
-		}
+		System.out.println("Response from client: " + response);
 
 		if (response != null) {
-			System.out.println("I am inside response");
-			try {
-				switchBoard(choice);
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			String jsonCustomer = objectMapper.writeValueAsString(response);
+			responseArr = response.split(" ", 2);
+			switchBoardResponse = switchBoard(responseArr);
+
+			
 		}
-		
-		try {
-			socketIn.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			socket.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
+
+		return switchBoardResponse;
+
 	}
 
-	@SuppressWarnings("unchecked")
-	public void switchBoard(int choice) throws ClassNotFoundException, IOException {
+	@JsonIgnoreProperties(ignoreUnknown = true)
+	public String switchBoard(String[] responseArr)  {
+
+		// 1 search based on client-id
+		// 2 search based on lastname
+		// 3 search based on client type
+		// 4 save
+		// 5 delete
+
+		int choice = Integer.parseInt(responseArr[0]);
+		System.out.println("choice is: "+ choice);
+		String jsonCustomer = null ;
 
 		switch (choice) {
 
 		case 1:
 			// get customer based on id
-			customer = testCustomerObject();
-			
+//			customer = testCustomerObject();
+
 			System.out.println("Sending getcustomer search to client");
-			//String jsonCustomer = JSON.stringify(customer);
-			ObjectMapper objectMapper = new ObjectMapper();
-			String jsonCustomer = objectMapper.writeValueAsString(customer);
-			
-			String temp = "1 " + jsonCustomer;
-			System.out.println("temp: "+temp);
-			System.out.println(jsonCustomer);
-			String[] taskId = temp.split(" ", 2);
+			System.out.println(responseArr[1]);
 
-			System.out.println(taskId[0]);
-			System.out.println(taskId[1]);
-//			System.out.println(taskId[2]);
+	        customer = dbController.getCustomerbyId(Integer.parseInt(responseArr[1]));
 			
-			
-			//1 search based on client-id
-			//2 search based on lastname
-			//3 search based on client type
-			//4 save
-			//5 delete
-			
-		
-	        
-	        
-	        Customer cust = objectMapper.readValue(taskId[1], Customer.class);
-	        System.out.println(cust.getCustomerID());
-			
-			
-			
-			
-
-			
-			int id = 1; //customer.getCustomerID()
-//			customer = dbController.getDbManager().getCustomerPreparedStatementId(id);
-//			System.out.println(customer);
 			try {
-				//serverOutputStream = new ObjectOutputStream(socket.getOutputStream());
-				//serverOutputStream.writeObject((Object)customer);
-				socketOut = new PrintWriter(socket.getOutputStream(), true);
-				socketOut.println(jsonCustomer);
-			} catch (IOException e) {
-
+				jsonCustomer = objectMapper.writeValueAsString(customer);
+				System.out.println("Sending to client: "+jsonCustomer);
+				
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+
 
 			break;
 
 		}
+		
+		return jsonCustomer;
+
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
 
 	}
 

@@ -18,6 +18,8 @@ public class InventoryDBManager {
 	private PreparedStatement prepStatment;
 
 	private Driver myDriver;
+	
+	Customer customer = null;
 //	private CreateDBTables createDBTables;
 
 	public InventoryDBManager() {
@@ -80,10 +82,10 @@ public class InventoryDBManager {
 	public Customer getCustomerPreparedStatementId(int customerId) {
 
 		System.out.println("getting customer based on customer id");
-		String temp = "";
+//		String temp = "";
 
-		String query = "Select * from customer where customerId = ?";
-		Customer customer = null;
+		String query = "Select * from customer where customer_id = ?";
+		
 
 		try {
 			prepStatment = myDriver.getMyConn().prepareStatement(query);
@@ -92,12 +94,13 @@ public class InventoryDBManager {
 			// 4. process the result set
 			while (myres.next()) {
 
-				temp = myres.getInt("customer_id") + ", " + myres.getString("fname") + " , " + myres.getString("lname")
-						+ " , " + myres.getString("customer_type");
+//				temp = myres.getInt("customer_id") + ", " + myres.getString("fname") + " , " + myres.getString("lname")
+//						+ " , " + myres.getString("customer_type");
 
 				customer = new Customer(myres.getInt("customer_id"), myres.getString("fname"),
 						myres.getString("lname"), myres.getString("address"), myres.getString("postal_code"), myres.getString("phone_number"),myres.getString("customer_type"));
 
+				System.out.println("search customer result in IDB: "+customer);
 //				return myCustomer;
 			}
 

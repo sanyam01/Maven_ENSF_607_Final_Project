@@ -1,5 +1,7 @@
 package Server.Controller.DatabaseController;
 
+import Server.Model.Customer;
+
 public class DBController {
 	
 	
@@ -20,6 +22,10 @@ public class DBController {
 		this.dbManager = dbManager;
 	}
 	
+	
+	public Customer getCustomerbyId(int customerId) {
+		return dbManager.getCustomerPreparedStatementId( customerId) ;
+	}
 	
 	
 	
