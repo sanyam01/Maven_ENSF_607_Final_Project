@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 public class Customer implements Serializable {
 	
+	public Customer() {
+		super();
+	}
 	private static final long serialVersionUID = 1L;
 	private int customerID;
 	private String firstName;

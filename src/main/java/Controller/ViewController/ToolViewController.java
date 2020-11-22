@@ -37,6 +37,15 @@ public class ToolViewController {
 	public void setToolView(ToolView toolView) {
 		this.toolView = toolView;
 	}
+
+	public ModelControllerTool getModelControllerTool() {
+		return modelControllerTool;
+	}
+
+	public void setModelControllerTool(ModelControllerTool modelControllerTool) {
+		this.modelControllerTool = modelControllerTool;
+	}
+	
 	
 	
 

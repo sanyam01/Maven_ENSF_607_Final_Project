@@ -22,12 +22,14 @@ public class CustomerView extends JFrame {
 	private JTextField phoneNo;
 	private JComboBox typeCustomer;
 	private JTextArea displayText;
+	private JTextField statusText;
 	private JRadioButton searchCustomerID; 
     private JRadioButton searchLastName;
     private JRadioButton searchCustomerType; 
     private JTextField searchParameter;
     private JButton search;
     private JButton clearSearch;
+    private JList customerList;// for adding the search results
     
     private ButtonGroup group; 
 	
@@ -57,7 +59,7 @@ public class CustomerView extends JFrame {
 		rightView.add("South", buttons);// added buttns to the rightView
 		
 		JPanel centerRightView = new JPanel();
-		centerRightView.setLayout(new GridLayout(7,2,2,2));
+		centerRightView.setLayout(new GridLayout(8,2,2,2));
 		
 		centerRightView.add(new JLabel("CustomerID"));//adding CustomerID
 		customerID = new JTextField(20);
@@ -87,6 +89,11 @@ public class CustomerView extends JFrame {
 		centerRightView.add(new JLabel("Customer type"));//adding residential type
 		typeCustomer = new JComboBox(customerType);
 		centerRightView.add(typeCustomer);
+		
+		centerRightView.add(new JLabel("Operation status"));//adding Phone no
+		statusText = new JTextField();
+		centerRightView.add(statusText);
+		
 		
 		rightView.add("Center", centerRightView);
 		contentPanel.add("East", rightView);
@@ -298,6 +305,16 @@ public class CustomerView extends JFrame {
 	public void setGroup(ButtonGroup group) {
 		this.group = group;
 	}
+
+	public JTextField getStatusText() {
+		return statusText;
+	}
+
+	public void setStatusText(JTextField statusText) {
+		this.statusText = statusText;
+	}
+	
+	
 	
 	
 }

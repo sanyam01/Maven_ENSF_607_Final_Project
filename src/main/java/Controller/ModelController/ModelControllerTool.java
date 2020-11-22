@@ -1,16 +1,21 @@
 package Controller.ModelController;
 
-import Controller.ViewController.ToolViewController;
+import Controller.ClientController.ClientControllerTool;
 
 public class ModelControllerTool {
 
-	private ToolViewController toolViewController;
+	private ClientControllerTool clientControllerTool;
 
-	public void setToolViewController(ToolViewController toolViewController) {
-		
-		this.toolViewController = toolViewController;
-		System.out.println("In ModelControllerTool");
+	public ModelControllerTool() {
+		clientControllerTool = new ClientControllerTool();
+	}
 
+	public ClientControllerTool getClientControllerTool() {
+		return clientControllerTool;
+	}
+
+	public void setClientControllerTool(ClientControllerTool clientControllerTool) {
+		this.clientControllerTool = clientControllerTool;
 	}
 
 }
