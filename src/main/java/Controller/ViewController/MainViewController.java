@@ -10,10 +10,9 @@ import java.awt.event.ActionListener;
 public class MainViewController implements ActionListener {
 
 	MainView view;
-	//ModelControllerCustomer modelControllerCustomer;
-	//ModelControllerTool modelControllerTool;
 	CustomerViewController customerViewController;
 	ToolViewController toolViewController;
+	
 
 	public MainViewController(MainView view) {
 		this.view = view;
@@ -26,16 +25,13 @@ public class MainViewController implements ActionListener {
 		if (e.getSource() == view.getCustomerView()) {
 			System.out.println("CustomerView");
 			customerViewController = new CustomerViewController(new ModelControllerCustomer());
-			//modelControllerCustomer = new ModelControllerCustomer();
-			//modelControllerCustomer.setCustomerViewController(new CustomerViewController());
 
 		}
 
 		else if (e.getSource() == view.getToolView()) {
 			System.out.println("ToolView");
+			toolViewController = new ToolViewController(new ModelControllerTool());
 			
-			//modelControllerTool = new ModelControllerTool();
-			//modelControllerTool.setToolViewController(new ToolViewController());
 		}
 
 		

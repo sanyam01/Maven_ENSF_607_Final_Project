@@ -13,12 +13,11 @@ public class CustomerViewController  {
 
 	public CustomerViewController(ModelControllerCustomer modelControllerCustomer){
 		
-//		this.modelControllerCustomer = modelControllerCustomer;
 		customerView = new CustomerView();
 		customerView.setVisible(true);
 		customerView.pack();
 		customerView.addCustomerListener(new CustomerListener());
-		this.modelControllerCustomer = new ModelControllerCustomer();
+		this.modelControllerCustomer = modelControllerCustomer;
 	}
 	
 
