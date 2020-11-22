@@ -138,7 +138,7 @@ public class Server {
 		try {
 			response = socketIn.readLine();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		System.out.println("Response from client: " + response);
@@ -155,6 +155,7 @@ public class Server {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("Response to client: " + message);
 		socketOut.println(message);
 		socketOut.flush();
 	}
