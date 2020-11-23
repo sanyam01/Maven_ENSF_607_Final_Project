@@ -22,7 +22,7 @@ import Server.Controller.DatabaseController.DBController;
 import Server.Model.Customer;
 import Server.Model.CustomerList;
 
-public class ServerCustomerController  {
+public class ServerCustomerController {
 
 //	private Socket socket;
 //	private PrintWriter socketOut;
@@ -51,12 +51,11 @@ public class ServerCustomerController  {
 
 	}
 
-
-	public String readClientMessage()  {
+	public String readClientMessage() {
 		String[] responseArr = null;
 		System.out.println("in run_temp");
 		String switchBoardResponse = null;
-		
+
 //			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 //			System.out.println(socketIn.readLine());
 //			response = socketIn.readLine();
@@ -68,14 +67,13 @@ public class ServerCustomerController  {
 			responseArr = message.split(" ", 2);
 			switchBoardResponse = switchBoard(responseArr);
 
-			
 		}
 
 		return switchBoardResponse;
 
 	}
 
-	public String switchBoard(String[] responseArr)  {
+	public String switchBoard(String[] responseArr) {
 
 		// 1 search based on client-id
 		// 2 search based on lastname
@@ -84,9 +82,10 @@ public class ServerCustomerController  {
 		// 5 delete
 
 		int choice = Integer.parseInt(responseArr[0]);
-		System.out.println("choice is: "+ choice);
-		String jsonCustomerList = null ;
+		System.out.println("choice is: " + choice);
+		String jsonCustomerList = null;
 		ArrayList<Customer> cust;
+		boolean flag;
 
 		switch (choice) {
 
@@ -94,75 +93,195 @@ public class ServerCustomerController  {
 			// get customer based on id
 
 //			System.out.println("Sending getcustomer search to client");
+			System.out.println("Operation: get customer by id");
 			System.out.println(responseArr[1]);
 
 			cust = dbController.getCustomerbyId(Integer.parseInt(responseArr[1]));
-			customerList = new CustomerList(cust);
-			
-			try {
-				jsonCustomerList = objectMapper.writeValueAsString(customerList);
-				System.out.println("Sending to client: "+jsonCustomerList);
-				
-			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+			if (!cust.isEmpty()) {
+				customerList = new CustomerList(cust);
 
+				try {
+					jsonCustomerList = objectMapper.writeValueAsString(customerList);
+					System.out.println("Sending to client: " + jsonCustomerList);
+
+				} catch (JsonProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				jsonCustomerList = "Customer not found!!";
+				System.out.println("Customer not found!!");
+
+			}
 
 			break;
-			
+
 		case 2:
 			// get customer based on lastname
 
-			System.out.println("get customer based on lastname");
+			System.out.println("Operation: get customer by lastname");
 			System.out.println(responseArr[1]);
 
 			cust = dbController.getCustomerbyLname(responseArr[1]);
-			customerList = new CustomerList(cust);
-			
-			try {
-				jsonCustomerList = objectMapper.writeValueAsString(customerList);
-				System.out.println("Sending to client: "+jsonCustomerList);
-				
-			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
 
+			if (!cust.isEmpty()) {
+				customerList = new CustomerList(cust);
+
+				try {
+					jsonCustomerList = objectMapper.writeValueAsString(customerList);
+					System.out.println("Sending to client: " + jsonCustomerList);
+
+				} catch (JsonProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			} else {
+				jsonCustomerList = "Customer not found!!";
+				System.out.println("Customer not found!!");
+
+			}
 
 			break;
-			
+
 		case 3:
 			// get customer based on lastname
 
-			System.out.println("get customer based on lastname");
+			System.out.println("Operation: get customer by type");
 			System.out.println(responseArr[1]);
 
 			cust = dbController.getCustomerbyType(responseArr[1]);
-			customerList = new CustomerList(cust);
-			
+			if (!cust.isEmpty()) {
+				customerList = new CustomerList(cust);
+
+				try {
+					jsonCustomerList = objectMapper.writeValueAsString(customerList);
+					System.out.println("Sending to client: " + jsonCustomerList);
+
+				} catch (JsonProcessingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			} else {
+				jsonCustomerList = "Customer not found!!";
+				System.out.println("Customer not found!!");
+
+			}
+
+			break;
+
+		case 4:
+			// save customer
+
+			System.out.println("Operation: save");
+
+			System.out.println("printing responseArr[1]");
+			System.out.println(responseArr[1]);
+
 			try {
-				jsonCustomerList = objectMapper.writeValueAsString(customerList);
-				System.out.println("Sending to client: "+jsonCustomerList);
-				
-			} catch (JsonProcessingException e) {
+				this.customer = objectMapper.readValue(responseArr[1], Customer.class);
+			} catch (JsonParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 
+
+			// check if customer is new or already present
+
+			cust = dbController.getCustomerbyId(customer.getCustomerID());
+			customerList = new CustomerList(cust);
+			if (!cust.isEmpty()) {
+				System.out.println("customer is present, updating");
+
+				// update
+				flag = dbController.updateCustomer(customer.getFirstName(), customer.getLastName(),
+						customer.getAddress(), customer.getPostalCode(), customer.getPhoneNumber(),
+						customer.getCustomerType(), customer.getCustomerID());
+				if (flag) {
+
+//					jsonCustomerList = "4 " + flag + " update";
+					jsonCustomerList = "Customer updated successfully";
+
+				} else {
+					jsonCustomerList = "Customer update failed";
+				}
+			} else {
+				System.out.println("customer not present, inserting");
+				// insert
+				flag = dbController.insertCustomer(customer.getFirstName(), customer.getLastName(),
+						customer.getAddress(), customer.getPostalCode(), customer.getPhoneNumber(),
+						customer.getCustomerType(), customer.getCustomerID());
+				if (flag) {
+
+					jsonCustomerList = "Customer inserted successfully";
+
+				} else {
+					jsonCustomerList = "Customer insert failed";
+				}
+
+			}
 
 			break;
+
+		case 5:
+			// delete customer
+
+			System.out.println("delete customer");
+
+			System.out.println("printing responseArr[1]");
+			System.out.println(responseArr[1]);
+
+			try {
+				this.customer = objectMapper.readValue(responseArr[1], Customer.class);
+			} catch (JsonParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// check if customer is new or already present
+
+			cust = dbController.getCustomerbyId(customer.getCustomerID());
+			customerList = new CustomerList(cust);
+			if (!cust.isEmpty()) {
+				System.out.println("customer is present, deleting");
+				// delete
+				flag = dbController.deleteCustomer(customer.getCustomerID());
+				if (flag) {
+
+					jsonCustomerList = "Customer deleted successfully";
+
+				} else {
+					jsonCustomerList = "Customer delete failed";
+				}
+
+			} else {
+				System.out.println("customer is not present to delete");
+				// customer does not exist
+				jsonCustomerList = "Delete Failed!! Customer does not exist.";
+			}
+
+			break;
+
 		default:
 			System.out.println("Invalid choice!");
 
 		}
-		
+
 		return jsonCustomerList;
 
 	}
-
 
 }
