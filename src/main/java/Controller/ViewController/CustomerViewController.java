@@ -38,6 +38,8 @@ public class CustomerViewController  {
 				deleteCustomer();
 			if (e.getSource() == customerView.getClear())
 				clearCustomer();
+			if (e.getSource() == customerView.getClearSearch())
+				clearSearch();
 					
 		}
 
@@ -45,8 +47,9 @@ public class CustomerViewController  {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			// TODO Auto-generated method stub
-			int index = e.getFirstIndex();
-			System.out.println("First index is" + e.getFirstIndex());
+			//int index = e.getFirstIndex();
+			int index = customerView.getCustomerList().getSelectedIndex();
+			System.out.println("First index is" + index);
 			getSelectedCustInfo(index);
 		}
 		
@@ -60,15 +63,19 @@ public class CustomerViewController  {
 		clearDeleteGUI();
 	}
 	
+	// clears the search
+	public void clearSearch() {
+		customerView.getGroup().clearSelection();
+		customerView.getSearchParameter().setText("");
+		//customerView.getCustomerList().removeAll();
+		customerView.clearCustomerList();
+		
+	}
+
+	// method is called when clear is called
 	private void clearCustomer() {
 		System.out.println("Clear has been called");
-		customerView.getCustomerID().setText("");
-		customerView.getFirstName().setText("");
-		customerView.getLastName().setText("");
-		customerView.getAddress().setText("");
-		customerView.getPostalCode().setText("");
-		customerView.getPhoneNo().setText("");
-		customerView.getTypeClient().setSelectedItem("");
+		clearCustomerFields();
 		customerView.getStatusText().setText("Customer Info is cleared");
 	}
 
@@ -76,7 +83,8 @@ public class CustomerViewController  {
 	private void getSelectedCustInfo(int index) {
 		
 		String values = this.modelControllerCustomer.getIndexCustomer(index);
-		String[] data = values.split(" ");
+		System.out.println("Values recieved to display on GUI are" + values);
+		String[] data = values.split("!!!");
 		setValuesCustGUI(data[0], data[1], data[2], data[3], data[4], data[5], data[6]);
 		
 	}
@@ -90,7 +98,11 @@ public class CustomerViewController  {
 		customerView.getAddress().setText(address);
 		customerView.getPostalCode().setText(postalCode);
 		customerView.getPhoneNo().setText(phoneNumber);
-		customerView.getTypeClient().setSelectedItem(type);
+		System.out.println("The value of ttpe is " + type);
+		if (type.contentEquals("R"))
+			customerView.getTypeCustomer().setSelectedIndex(1);
+		else
+			customerView.getTypeCustomer().setSelectedIndex(2);;
 		
 	}
 
@@ -165,25 +177,29 @@ public class CustomerViewController  {
 		String address = this.getCustomerView().getAddress().getText();
 		String postalCode = this.getCustomerView().getPostalCode().getText();
 		String phoneNo = this.getCustomerView().getPhoneNo().getText();
-		String type = (String)this.getCustomerView().getTypeClient().getSelectedItem();
+		String type = (String)this.getCustomerView().getTypeCustomer().getSelectedItem();
 		System.out.println("Selecte item is " + type);
 		this.modelControllerCustomer.setCustomer(iD, firstName, lastName, address, postalCode, phoneNo, type);
 		
 	}
 	
 	public void clearDeleteGUI() {
+		clearCustomerFields();
+		int selectedIndex = customerView.getCustomerList().getSelectedIndex();
+		if (selectedIndex > -1)
+			customerView.getCustomerList().remove(selectedIndex);
+        
+		
+	}
+	
+	public void clearCustomerFields() {
 		customerView.getCustomerID().setText("");
 		customerView.getFirstName().setText("");
 		customerView.getLastName().setText("");
 		customerView.getAddress().setText("");
 		customerView.getPostalCode().setText("");
 		customerView.getPhoneNo().setText("");
-		customerView.getTypeClient().setSelectedItem("");
-		int selectedIndex = customerView.getCustomerList().getSelectedIndex();
-		if (selectedIndex > -1)
-			customerView.getCustomerList().remove(selectedIndex);
-        
-		
+		customerView.getTypeCustomer().setSelectedItem("");
 	}
 
 

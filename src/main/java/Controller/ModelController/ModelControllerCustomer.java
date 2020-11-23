@@ -43,9 +43,9 @@ public class ModelControllerCustomer {
 		return response;
 
 	}
-	
+
 	public String sendCustomerInfoDelete() {
-		
+
 		ObjectMapper objectMapper = new ObjectMapper();
 		String jsonCustomer;
 		String response = "";
@@ -89,9 +89,9 @@ public class ModelControllerCustomer {
 	public String getIndexCustomer(int index) {
 
 		atIndexCustomer = getCustomerList().getCustomerList().get(index);
-		String values = atIndexCustomer.getCustomerID() + " " + atIndexCustomer.getFirstName() + " "
-				+ atIndexCustomer.getLastName() + " " + atIndexCustomer.getAddress() + " "
-				+ atIndexCustomer.getPostalCode() + " " + atIndexCustomer.getPhoneNumber() + " "
+		String values = atIndexCustomer.getCustomerID() + "!!!" + atIndexCustomer.getFirstName() + "!!!"
+				+ atIndexCustomer.getLastName() + "!!!" + atIndexCustomer.getAddress() + "!!!"
+				+ atIndexCustomer.getPostalCode() + "!!!" + atIndexCustomer.getPhoneNumber() + "!!!"
 				+ atIndexCustomer.getCustomerType();
 		return values;
 
@@ -139,6 +139,7 @@ public class ModelControllerCustomer {
 		String concatCust = "";
 		for (Customer cus : this.customerList.getCustomerList())
 			concatCust = concatCust + cus.getCustomerID() + " " + cus.getFirstName() + " " + cus.getLastName() + " "
+					+ cus.getAddress() + " " + cus.getPostalCode() + " " + cus.getPhoneNumber() + " "
 					+ cus.getCustomerType() + "\n";
 		return concatCust;
 	}

@@ -35,9 +35,10 @@ public class ClientControllerCustomer {
 		try {
 			response = response + socketIn.readLine();
 		} catch (IOException e) {
-			System.out.println("In ClieneControllerCustomer, unable to read from server after sending the customer information to save");
+			System.out.println("In ClientControllerCustomer, unable to read from server after sending the customer information to save");
 			e.printStackTrace();
 		}
+		System.out.println("Gotten response");
 		return response;
 	}
 

@@ -85,7 +85,7 @@ public class CustomerView extends JFrame {
 		phoneNo = new JTextField();
 		centerRightView.add(phoneNo);
 
-		String[] customerType = { "R", "C" };// type of residents
+		String[] customerType = {"", "R", "C"};// type of residents
 		centerRightView.add(new JLabel("Customer type"));// adding residential type
 		typeCustomer = new JComboBox(customerType);
 		centerRightView.add(typeCustomer);
@@ -167,6 +167,13 @@ public class CustomerView extends JFrame {
 		String[] listArray = list.split("\n");
 		customerList.setListData(listArray);
 
+	}
+	
+	public void clearCustomerList() {
+		customerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		customerList.setLayoutOrientation(JList.VERTICAL_WRAP);
+		String[] listArray = {};
+		customerList.setListData(listArray);
 	}
 
 	// method for adding action listeners to the list
@@ -255,7 +262,7 @@ public class CustomerView extends JFrame {
 		this.phoneNo = phoneNo;
 	}
 
-	public JComboBox getTypeClient() {
+	public JComboBox getTypeCustomer() {
 		return typeCustomer;
 	}
 
