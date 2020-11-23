@@ -85,7 +85,7 @@ public class CustomerView extends JFrame {
 		phoneNo = new JTextField();
 		centerRightView.add(phoneNo);
 
-		String[] customerType = { "Residential", "Commercial" };// type of residents
+		String[] customerType = { "R", "C" };// type of residents
 		centerRightView.add(new JLabel("Customer type"));// adding residential type
 		typeCustomer = new JComboBox(customerType);
 		centerRightView.add(typeCustomer);
@@ -99,19 +99,11 @@ public class CustomerView extends JFrame {
 
 		JPanel leftView = new JPanel(new BorderLayout());
 
-//		displayText = new JTextArea(10,10);
-//		displayText.setEditable(false);
-
-		// JScrollPane scroll = new JScrollPane(displayText);
-		// DefaultListModel custName = new DefaultListModel();
 		customerList = new JList();
 		JScrollPane scroll = new JScrollPane(customerList);
-		// JLabel centerResults = new JLabel("Search Results : ");
-		leftView.add("Center", new JLabel("Search Results :"));
-		// leftView.add("Center", centerResults);
 		leftView.add("South", scroll);
 
-		JPanel leftNorth = new JPanel(new GridLayout(7, 1, 2, 2));
+		JPanel leftNorth = new JPanel(new GridLayout(8, 1, 2, 2));
 		leftNorth.add(new JLabel("Search Customers"));
 		leftNorth.add(new JLabel("Select type of search to be performed"));
 
@@ -137,7 +129,8 @@ public class CustomerView extends JFrame {
 		leftViewButtons.add(searchParameter);
 		leftViewButtons.add(search);
 		leftViewButtons.add(clearSearch);
-		leftView.add(leftViewButtons);
+		leftNorth.add(leftViewButtons);
+		leftNorth.add(new JLabel("Search Results :"));
 		leftView.add("North", leftNorth);
 
 		contentPanel.add("West", leftView);

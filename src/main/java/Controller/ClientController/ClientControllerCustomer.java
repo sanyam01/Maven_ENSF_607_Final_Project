@@ -27,7 +27,7 @@ public class ClientControllerCustomer {
 		}
 	}
 	
-	public String saveCustomer(String customerInfo) {
+	public String saveDeleteCustomer(String customerInfo) {
 		
 		getSockets();
 		socketOut.println(customerInfo);
@@ -67,7 +67,7 @@ public class ClientControllerCustomer {
 
 	// search based on client ID
 
-	public String searchClientID(String searchID) {
+	public String searchClient(String searchID) {
 		socketOut.println(searchID);
 		String response = "";
 		try {

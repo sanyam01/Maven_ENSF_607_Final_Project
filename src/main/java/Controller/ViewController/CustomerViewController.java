@@ -30,17 +30,18 @@ public class CustomerViewController  {
 
 		public void actionPerformed(ActionEvent e) {
 			
-			if (e.getSource() == customerView.getSearch()) {
-				System.out.println("got search button");
+			if (e.getSource() == customerView.getSearch())
 				findSearchType();
-				
-			}
 			if (e.getSource() == customerView.getSave()) 
 				saveCustomer();
-				
-			
+			if (e.getSource() == customerView.getDelete())
+				deleteCustomer();
+			if (e.getSource() == customerView.getClear())
+				clearCustomer();
+					
 		}
 
+		
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			// TODO Auto-generated method stub
@@ -51,6 +52,26 @@ public class CustomerViewController  {
 		
 	}
 	
+	private void deleteCustomer() {
+		System.out.println("Delete has been called");
+		fetchCustomerInformation();
+		String response = modelControllerCustomer.sendCustomerInfoDelete();
+		customerView.getStatusText().setText(response);
+		clearDeleteGUI();
+	}
+	
+	private void clearCustomer() {
+		System.out.println("Clear has been called");
+		customerView.getCustomerID().setText("");
+		customerView.getFirstName().setText("");
+		customerView.getLastName().setText("");
+		customerView.getAddress().setText("");
+		customerView.getPostalCode().setText("");
+		customerView.getPhoneNo().setText("");
+		customerView.getTypeClient().setSelectedItem("");
+		customerView.getStatusText().setText("Customer Info is cleared");
+	}
+
 	// displaying the info of the selected customer
 	private void getSelectedCustInfo(int index) {
 		
@@ -69,7 +90,7 @@ public class CustomerViewController  {
 		customerView.getAddress().setText(address);
 		customerView.getPostalCode().setText(postalCode);
 		customerView.getPhoneNo().setText(phoneNumber);
-		customerView.getTypeClient().setSelectedItem(type);;
+		customerView.getTypeClient().setSelectedItem(type);
 		
 	}
 
@@ -145,7 +166,23 @@ public class CustomerViewController  {
 		String postalCode = this.getCustomerView().getPostalCode().getText();
 		String phoneNo = this.getCustomerView().getPhoneNo().getText();
 		String type = (String)this.getCustomerView().getTypeClient().getSelectedItem();
+		System.out.println("Selecte item is " + type);
 		this.modelControllerCustomer.setCustomer(iD, firstName, lastName, address, postalCode, phoneNo, type);
+		
+	}
+	
+	public void clearDeleteGUI() {
+		customerView.getCustomerID().setText("");
+		customerView.getFirstName().setText("");
+		customerView.getLastName().setText("");
+		customerView.getAddress().setText("");
+		customerView.getPostalCode().setText("");
+		customerView.getPhoneNo().setText("");
+		customerView.getTypeClient().setSelectedItem("");
+		int selectedIndex = customerView.getCustomerList().getSelectedIndex();
+		if (selectedIndex > -1)
+			customerView.getCustomerList().remove(selectedIndex);
+        
 		
 	}
 
