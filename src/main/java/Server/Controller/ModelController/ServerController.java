@@ -22,6 +22,7 @@ public class ServerController implements Runnable {
 
 		objectMapper = new ObjectMapper();
 		this.dbController = dbController;
+		this.socket = socket;
 	}
 
 	@Override

@@ -55,11 +55,12 @@ public class Server {
 
 		while (true) {
 
-			System.out.println("Server is running");
+			//System.out.println("Server is running");
 
 			ServerController serverController = new ServerController(socket, dbController);
-
-//				pool.execute(serverController);
+			
+			serverController.run();
+				//pool.execute(serverController);
 //				
 		}
 
