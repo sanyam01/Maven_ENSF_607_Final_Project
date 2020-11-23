@@ -29,7 +29,7 @@ public class InventoryDBManager {
 	public InventoryDBManager(Driver myDriver) {
 
 		this.myDriver = myDriver;
-		
+
 //		createCustomerTable();
 
 	}
@@ -90,26 +90,23 @@ public class InventoryDBManager {
 			prepStatment = myDriver.getMyConn().prepareStatement(query);
 			prepStatment.setInt(1, customerId);
 			myres = prepStatment.executeQuery();
-			
+
 			ArrayList<Customer> customerArrayList = new ArrayList<>();
-			
-			
+
 			while (myres.next()) {
 
 //				customer = new Customer(myres.getInt("customer_id"), myres.getString("fname"), myres.getString("lname"),
 //						myres.getString("address"), myres.getString("postal_code"), myres.getString("phone_number"),
 //						myres.getString("customer_type"));
 
-				
-				
-				customerArrayList.add(new Customer(myres.getInt("customer_id"), myres.getString("fname"), myres.getString("lname"),
-						myres.getString("address"), myres.getString("postal_code"), myres.getString("phone_number"),
-						myres.getString("customer_type")));
-				
+				customerArrayList.add(new Customer(myres.getInt("customer_id"), myres.getString("fname"),
+						myres.getString("lname"), myres.getString("address"), myres.getString("postal_code"),
+						myres.getString("phone_number"), myres.getString("customer_type")));
+
 //				System.out.println("search customer result in IDB: " + customerArrayList);
 
 			}
-			
+
 			return customerArrayList;
 
 		} catch (SQLException e) {
@@ -119,9 +116,8 @@ public class InventoryDBManager {
 		return null;
 
 	}
-	
-	
-	public ArrayList<Customer> getCustomerPreparedStatementType(String customerType){
+
+	public ArrayList<Customer> getCustomerPreparedStatementType(String customerType) {
 		System.out.println("getting customer based on customer type");
 
 		String query = "Select * from customer where customer_type = ?";
@@ -130,20 +126,19 @@ public class InventoryDBManager {
 			prepStatment = myDriver.getMyConn().prepareStatement(query);
 			prepStatment.setString(1, customerType);
 			myres = prepStatment.executeQuery();
-			
+
 			ArrayList<Customer> customerArrayList = new ArrayList<>();
-			
-			
+
 			while (myres.next()) {
-				
-				customerArrayList.add(new Customer(myres.getInt("customer_id"), myres.getString("fname"), myres.getString("lname"),
-						myres.getString("address"), myres.getString("postal_code"), myres.getString("phone_number"),
-						myres.getString("customer_type")));
-				
+
+				customerArrayList.add(new Customer(myres.getInt("customer_id"), myres.getString("fname"),
+						myres.getString("lname"), myres.getString("address"), myres.getString("postal_code"),
+						myres.getString("phone_number"), myres.getString("customer_type")));
+
 //				System.out.println("search customer result in IDB: " + customerArrayList);
 
 			}
-			
+
 			return customerArrayList;
 
 		} catch (SQLException e) {
@@ -151,9 +146,9 @@ public class InventoryDBManager {
 			e.printStackTrace();
 		}
 		return null;
-    }
-	
-	public ArrayList<Customer> getCustomerPreparedStatementLname(String lname){
+	}
+
+	public ArrayList<Customer> getCustomerPreparedStatementLname(String lname) {
 		System.out.println("getting customer based on lastname ");
 
 		String query = "Select * from customer where lname = ?";
@@ -162,20 +157,19 @@ public class InventoryDBManager {
 			prepStatment = myDriver.getMyConn().prepareStatement(query);
 			prepStatment.setString(1, lname);
 			myres = prepStatment.executeQuery();
-			
+
 			ArrayList<Customer> customerArrayList = new ArrayList<>();
-			
-			
+
 			while (myres.next()) {
-				
-				customerArrayList.add(new Customer(myres.getInt("customer_id"), myres.getString("fname"), myres.getString("lname"),
-						myres.getString("address"), myres.getString("postal_code"), myres.getString("phone_number"),
-						myres.getString("customer_type")));
-				
+
+				customerArrayList.add(new Customer(myres.getInt("customer_id"), myres.getString("fname"),
+						myres.getString("lname"), myres.getString("address"), myres.getString("postal_code"),
+						myres.getString("phone_number"), myres.getString("customer_type")));
+
 //				System.out.println("search customer result in IDB: " + customerArrayList);
 
 			}
-			
+
 			return customerArrayList;
 
 		} catch (SQLException e) {
@@ -183,6 +177,52 @@ public class InventoryDBManager {
 			e.printStackTrace();
 		}
 		return null;
-    }
+	}
+
+	public int updateCustomer(String firstName, String lastName, String address, String postalCode, String phoneNumber,
+			String type, int id) {
+		String updateClient = "UPDATE customer SET  fname=?,lname=?,address=?,postal_code=?,phone_number=?,customer_type=?"
+				+ " WHERE customer_id=?";
+		int rowCount = 0;
+
+		try {
+			PreparedStatement pStat = myDriver.getMyConn().prepareStatement(updateClient);
+			pStat.setString(1, firstName);
+			pStat.setString(2, lastName);
+			pStat.setString(3, address);
+			pStat.setString(4, postalCode);
+			pStat.setString(5, phoneNumber);
+			pStat.setString(6, type);
+			pStat.setInt(7, id);
+			;
+			rowCount = pStat.executeUpdate();
+			System.out.println("row Count = " + rowCount);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return rowCount;
+
+	}
+
+	/**
+	 * Delete client.
+	 *
+	 * @param id the id
+	 */
+	public int deleteCustomer(int id) {
+		String deleteClient = "DELETE FROM customer WHERE customer_id=?";
+		int rowCount = 0;
+		try {
+			PreparedStatement pStat = myDriver.getMyConn().prepareStatement(deleteClient);
+			pStat.setInt(1, id);
+			rowCount = pStat.executeUpdate();
+			System.out.println("row Count = " + rowCount);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return rowCount;
+	}
 
 }

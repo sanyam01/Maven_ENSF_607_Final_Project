@@ -247,9 +247,10 @@ public class CreateDBTables {
 		System.out.println("Created international_supplier table in given database...");
 	}
 
-	public void insertCustomerPreparedStatment(int id, String fName, String lName, String address, String postal_code,
+	public int insertCustomerPreparedStatment(int id, String fName, String lName, String address, String postal_code,
 			String phone_number, String customer_type) {
-		// TODO Auto-generated method stub
+
+		int rowCount = 0;
 		try {
 			String query = "INSERT INTO customer ( customer_id,  fName,  lName,  address,  postal_code,  phone_number, customer_type) values (?,?,?,?,?,?,?)";
 			PreparedStatement pStat = myDriver.getMyConn().prepareStatement(query);
@@ -260,13 +261,15 @@ public class CreateDBTables {
 			pStat.setString(5, postal_code);
 			pStat.setString(6, phone_number);
 			pStat.setString(7, customer_type);
-			int rowCount = pStat.executeUpdate();
+			rowCount = pStat.executeUpdate();
 			System.out.println("row Count = " + rowCount);
 			System.out.println("Added data in customer table");
 			pStat.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		return  rowCount;
 
 	}
 
