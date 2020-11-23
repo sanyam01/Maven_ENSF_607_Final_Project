@@ -85,10 +85,4 @@ public class ClientController {
 		this.aSocket = aSocket;
 	}
 	
-	
-		
-		
-//public static void main(String[] args) throws ClassNotFoundException {
-//	ClientController cc = new ClientController("localhost", 9090);
-//}
 }

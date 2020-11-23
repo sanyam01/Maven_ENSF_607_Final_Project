@@ -20,10 +20,9 @@ public class ClientControllerCustomer {
 	public void getSockets() {
 		try {
 			this.customerSocket = clientController.getaSocket();
-			//this.socketIn = new BufferedReader(new InputStreamReader(customerSocket.getInputStream()));
+			this.socketIn = new BufferedReader(new InputStreamReader(customerSocket.getInputStream()));
 			this.socketOut = new PrintWriter(customerSocket.getOutputStream(), true);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -32,7 +31,14 @@ public class ClientControllerCustomer {
 		
 		getSockets();
 		socketOut.println(customerInfo);
-		return("Customer has been saved");
+		String response = "";
+		try {
+			response = response + socketIn.readLine();
+		} catch (IOException e) {
+			System.out.println("In ClieneControllerCustomer, unable to read from server after sending the customer information to save");
+			e.printStackTrace();
+		}
+		return response;
 	}
 
 	public Socket getCustomerSocket() {
@@ -55,40 +61,18 @@ public class ClientControllerCustomer {
 		return socketOut;
 	}
 
-	public void setSocketOut() {
-		try {
-			this.socketOut = new PrintWriter(customerSocket.getOutputStream(), true);
-		} catch (IOException e) {
-			System.err.println("Unable to create SocketOut");
-			e.printStackTrace();
-		}
-	}
-
 	public BufferedReader getSocketIn() {
 		return socketIn;
 	}
 
-	
-//	public void setSocketIn() {
-//		try {
-//			this.socketIn = new BufferedReader(new InputStreamReader(customerSocket.getInputStream()));
-//		} catch (IOException e) {
-//			
-//			System.err.println("Unable to create SocketIn");
-//			e.printStackTrace();
-//		};
-//	}
+	// search based on client ID
 
 	public String searchClientID(String searchID) {
 		socketOut.println(searchID);
 		String response = "";
 		try {
-			System.out.println("I am waiting for the input");
 			this.socketIn = new BufferedReader(new InputStreamReader(customerSocket.getInputStream()));
-			
 			response = response + socketIn.readLine();
-			
-			System.out.println("I have recived the input");
 			System.out.println("The input is " + response);
 		} catch (IOException e) {
 			System.out.println("In client controller couldnt get anything in return to the query for searching customer based on the customer ID");
