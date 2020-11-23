@@ -6,124 +6,171 @@ import java.awt.Container;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.ListSelectionListener;
 
 public class ToolView extends JFrame {
-	
+
 	private JButton checkQuantity;
 	private JButton decrease;
 	private JButton clear;
 	private JTextField toolID;
 	private JTextField toolName;
-	private JTextField toolType;
+	private JComboBox toolType;
 	private JTextField toolQuantity;
 	private JTextField toolPrice;
 	private JTextField supplierID;
 	private JTextArea displayText;
-	private JRadioButton searchToolID; 
-    private JRadioButton searchToolName;
-    private JTextField searchParameter;
-    private JButton search;
-    private JButton clearSearch;
-    
-    private ButtonGroup group; 
-	
+	private JRadioButton searchToolID;
+	private JRadioButton searchToolName;
+	private JTextField searchParameter;
+	private JButton search;
+	private JButton clearSearch;
+	private JList toolList;
+	private JButton listAllTools;
+
+	private ButtonGroup group;
+
 	public ToolView() {
-		
-		
-		//high-level container
+
+		// high-level container
 		Container contentPanel = getContentPane();
 		contentPanel.setLayout(new BorderLayout());
-		
+
 		contentPanel.add("North", new JLabel("Tool Management Screen"));
-		
-		JPanel rightView = new JPanel(new  BorderLayout());// JPanel for adding right side of Client GUI
+
+		JPanel rightView = new JPanel(new BorderLayout());// JPanel for adding right side of Client GUI
 		rightView.add("North", new JLabel("Tool Information"));
-		
+
 		JPanel buttons = new JPanel();// JPanel for adding for adding buttons Save, delete, and clear
-		
+
 		checkQuantity = new JButton("Check Quantity");
 		decrease = new JButton("Decrease");
 		clear = new JButton("Clear");
-		
+
 		// adding buttons to JPanel
 		buttons.add(checkQuantity);
 		buttons.add(decrease);
 		buttons.add(clear);
-		
+
 		rightView.add("South", buttons);// added buttns to the rightView
-		
+
 		JPanel centerRightView = new JPanel();
-		centerRightView.setLayout(new GridLayout(6,2,2,2));
-		
-		centerRightView.add(new JLabel("ToolID"));//adding toolID
+		centerRightView.setLayout(new GridLayout(7, 2, 2, 2));
+
+		centerRightView.add(new JLabel("ToolID"));// adding toolID
 		toolID = new JTextField(20);
 		centerRightView.add(toolID);
-		
-		centerRightView.add(new JLabel("Name"));//adding Name
+
+		centerRightView.add(new JLabel("Name"));// adding Name
 		toolName = new JTextField();
 		centerRightView.add(toolName);
-		
-		centerRightView.add(new JLabel("ToolType"));//adding Name
-		toolType = new JTextField();
+
+		String[] toolTypeString = { "", "Electrical", "Non-Electrical" };// type of residents
+		centerRightView.add(new JLabel("Tool type"));// adding residential type
+		toolType = new JComboBox(toolTypeString);
 		centerRightView.add(toolType);
-		
-		centerRightView.add(new JLabel("Tool Quantity"));//adding Tool Quantity
+
+//		centerRightView.add(new JLabel("ToolType"));//adding Name
+//		toolType = new JTextField();
+//		centerRightView.add(toolType);
+
+		centerRightView.add(new JLabel("Tool Quantity"));// adding Tool Quantity
 		toolQuantity = new JTextField();
 		centerRightView.add(toolQuantity);
-		
-		centerRightView.add(new JLabel("Tool Price"));//adding tool price
+
+		centerRightView.add(new JLabel("Tool Price"));// adding tool price
 		toolPrice = new JTextField();
 		centerRightView.add(toolPrice);
-		
-		centerRightView.add(new JLabel("Supplier ID"));//adding Phone no
+
+		centerRightView.add(new JLabel("Supplier ID"));// adding Phone no
 		supplierID = new JTextField();
 		centerRightView.add(supplierID);
-		
+
+		centerRightView.add(new JLabel("Operation status"));
+
 		rightView.add("Center", centerRightView);
 		contentPanel.add("East", rightView);
-		
+
 		JPanel leftView = new JPanel(new BorderLayout());
-		
-		displayText = new JTextArea(10,10);
-		displayText.setEditable(false);
-		
-		JScrollPane scroll = new JScrollPane(displayText);
-		leftView.add("Center", new JLabel("Search Results :"));
+
+		toolList = new JList();
+
+		JScrollPane scroll = new JScrollPane(toolList);
+		// leftView.add("Center", new JLabel("Search Results :"));
 		leftView.add("South", scroll);
-		
-		JPanel leftNorth = new JPanel(new GridLayout(7,1,2,2));
+
+		JPanel leftNorth = new JPanel(new GridLayout(8, 1, 2, 2));
 		leftNorth.add(new JLabel("Search Tools"));
 		leftNorth.add(new JLabel("Select type of search to be performed"));
-		
+
 		searchToolID = new JRadioButton("Tool ID");
 		searchToolName = new JRadioButton("Name");
-	    
-	    group = new  ButtonGroup();
-	    group.add(searchToolID);
-	    group.add(searchToolName);
-	    
-	    leftNorth.add(searchToolID);
-	    leftNorth.add(searchToolName);
-	    leftNorth.add(new JLabel("Enter the search parameter below"));
-	    
-	    JPanel leftViewButtons = new JPanel();// for adding text field, search and clear search
-	    searchParameter = new JTextField(20);// for inputting the search text
-	    search = new JButton("Search");
-	    clearSearch = new JButton("Clear Search");
-	    
-	    leftViewButtons.add(searchParameter);
-	    leftViewButtons.add(search);
-	    leftViewButtons.add(clearSearch);
-	    leftView.add(leftViewButtons);
+
+		group = new ButtonGroup();
+		group.add(searchToolID);
+		group.add(searchToolName);
+
+		leftNorth.add(searchToolID);
+		leftNorth.add(searchToolName);
+		leftNorth.add(new JLabel("Enter the search parameter below"));
+
+		JPanel leftViewButtons = new JPanel();// for adding text field, search and clear search
+		searchParameter = new JTextField(20);// for inputting the search text
+		search = new JButton("Search");
+		clearSearch = new JButton("Clear Search");
+		listAllTools = new JButton("List Tools");
+
+		leftViewButtons.add(searchParameter);
+		leftViewButtons.add(search);
+		leftViewButtons.add(clearSearch);
+		leftViewButtons.add(listAllTools);
+		leftView.add(leftViewButtons);
 		leftView.add("North", leftNorth);
-		
+		leftNorth.add(new JLabel("Search Results :"));
+
 		contentPanel.add("West", leftView);
-			
+
 	}
 	
 	public void addToolListener(ActionListener toolListener) {
-		// TODO Auto-generated method stub
+		
+		checkQuantity.addActionListener(toolListener);
+		decrease.addActionListener(toolListener);
+		clear.addActionListener(toolListener);
+		toolID.addActionListener(toolListener);
+		toolName.addActionListener(toolListener);
+		toolType.addActionListener(toolListener);
+		toolQuantity.addActionListener(toolListener);;
+		toolPrice.addActionListener(toolListener);
+		supplierID.addActionListener(toolListener);
+		searchToolID.addActionListener(toolListener);
+		searchToolName.addActionListener(toolListener);
+		searchParameter.addActionListener(toolListener);
 		search.addActionListener(toolListener);
+		clearSearch.addActionListener(toolListener);
+		listAllTools.addActionListener(toolListener);
+		
+	}
+	
+	public JComboBox getToolType() {
+		return toolType;
+	}
+
+		// adding tool list to the GUI
+		public void addToolList(String list) {
+
+			toolList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			toolList.setLayoutOrientation(JList.VERTICAL_WRAP);
+			String[] listArray = list.split("\n");
+			toolList.setListData(listArray);
+
+		}
+
+	
+	// method for adding action listeners to the list
+	public void addListenerList(ListSelectionListener toolListener) {
+		ListSelectionModel listSelectionModel = toolList.getSelectionModel();
+		listSelectionModel.addListSelectionListener(toolListener);
 	}
 
 	public JButton getCheckQuantity() {
@@ -166,11 +213,23 @@ public class ToolView extends JFrame {
 		this.toolName = toolName;
 	}
 
-	public JTextField getToolType() {
-		return toolType;
+	public JList getToolList() {
+		return toolList;
 	}
 
-	public void setToolType(JTextField toolType) {
+	public void setToolList(JList toolList) {
+		this.toolList = toolList;
+	}
+
+	public JButton getListAllTools() {
+		return listAllTools;
+	}
+
+	public void setListAllTools(JButton listAllTools) {
+		this.listAllTools = listAllTools;
+	}
+
+	public void setToolType(JComboBox toolType) {
 		this.toolType = toolType;
 	}
 
@@ -253,7 +312,13 @@ public class ToolView extends JFrame {
 	public void setGroup(ButtonGroup group) {
 		this.group = group;
 	}
-	
-	
-}
 
+	public void clearToolList() {
+		toolList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		toolList.setLayoutOrientation(JList.VERTICAL_WRAP);
+		String[] listArray = {};
+		toolList.setListData(listArray);
+		
+	}
+
+}

@@ -102,7 +102,7 @@ public class CustomerViewController  {
 		if (type.contentEquals("R"))
 			customerView.getTypeCustomer().setSelectedIndex(1);
 		else
-			customerView.getTypeCustomer().setSelectedIndex(2);;
+			customerView.getTypeCustomer().setSelectedIndex(2);
 		
 	}
 

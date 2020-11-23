@@ -85,12 +85,12 @@ public class CustomerView extends JFrame {
 		phoneNo = new JTextField();
 		centerRightView.add(phoneNo);
 
-		String[] customerType = {"", "R", "C"};// type of residents
+		String[] customerTypeString = {"", "R", "C"};// type of residents
 		centerRightView.add(new JLabel("Customer type"));// adding residential type
-		typeCustomer = new JComboBox(customerType);
+		typeCustomer = new JComboBox(customerTypeString);
 		centerRightView.add(typeCustomer);
 
-		centerRightView.add(new JLabel("Operation status"));// adding Phone no
+		centerRightView.add(new JLabel("Operation status"));
 		statusText = new JTextField();
 		centerRightView.add(statusText);
 

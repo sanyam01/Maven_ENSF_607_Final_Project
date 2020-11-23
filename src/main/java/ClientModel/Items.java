@@ -17,6 +17,13 @@ import java.io.Serializable;
 		 */
 		private int itemID;
 
+		
+		/**
+		 * itemType represents the type of the item i.e. Electrical and
+		 * non-electrical
+		 */
+		private String itemType;
+		
 		/**
 		 * itemName represents the name of the item
 		 */
@@ -36,6 +43,8 @@ import java.io.Serializable;
 		 * supplierID represents the ID of the supplier
 		 */
 		private int supplierID;
+		
+		
 
 
 		/**
@@ -112,6 +121,15 @@ import java.io.Serializable;
 			this.supplierID = supplierID;
 		}
 
+		public String getItemType() {
+			return itemType;
+		}
+
+		public void setItemType(String itemType) {
+			this.itemType = itemType;
+		}
+
+		
 
 	}
 

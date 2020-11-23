@@ -74,4 +74,18 @@ public class ClientControllerTool {
 		}
 		
 	}
+
+	public String searchTool(String toolID) {
+		socketOut.println(toolID);
+		String response = "";
+		try {
+			this.socketIn = new BufferedReader(new InputStreamReader(toolSocket.getInputStream()));
+			response = response + socketIn.readLine();
+			System.out.println("The input is " + response);
+		} catch (IOException e) {
+			System.out.println("In client controller couldnt get anything in return to the query for searching customer based on the tool ID");
+			e.printStackTrace();
+		}
+		return response;
+	}
 }
