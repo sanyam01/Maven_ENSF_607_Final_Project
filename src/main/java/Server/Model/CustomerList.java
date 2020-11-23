@@ -3,16 +3,28 @@ package Server.Model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CustomerList {
+
+public class CustomerList implements Serializable{
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * list of customers
 	 */
 	private ArrayList<Customer> customerList;
 	
-	public CustomerList(ArrayList<Customer> list) {
-		this.setCustomerList(list);
+//	public CustomerList() {
+//		super();
+//	}
+	
+	
+	public CustomerList(ArrayList<Customer> cust) {
+		this.customerList = cust;
+
+		
 	}
 
 	public ArrayList<Customer> getCustomerList() {
@@ -24,15 +36,10 @@ public class CustomerList {
 	}
 	
 	
-	/**
-	 * addSupplier(Suppliers supplier) adds the supplier to the list of suppliers
-	 * 
-	 * @param supplier represents the supplier
-	 */
 	public void addCustomers(Customer customer) {
 		customerList.add(customer);
 
 	}
 	
-
+	
 }

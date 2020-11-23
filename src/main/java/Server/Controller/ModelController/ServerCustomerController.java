@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -19,24 +20,26 @@ import com.google.gson.JsonObject;
 
 import Server.Controller.DatabaseController.DBController;
 import Server.Model.Customer;
+import Server.Model.CustomerList;
 
-public class ServerCustomerController implements Runnable {
+public class ServerCustomerController  {
 
 //	private Socket socket;
 //	private PrintWriter socketOut;
 //	private BufferedReader socketIn;
 	private int taskId;
 	DBController dbController;
-	Customer customer = null;
+	private Customer customer = null;
+	private CustomerList customerList;
 //	ObjectInputStream serverInputStream;
 //	ObjectOutputStream serverOutputStream;
 	ObjectMapper objectMapper;
-	private String response;
+	private String message;
 
 	public ServerCustomerController(String response, DBController dbC, ObjectMapper objectMapper) throws IOException {
 		System.out.println("CustomerController constructor called ");
 
-		this.response = response;
+		this.message = response;
 		this.dbController = dbC;
 		this.objectMapper = objectMapper;
 
@@ -49,7 +52,7 @@ public class ServerCustomerController implements Runnable {
 	}
 
 
-	public String run_temp() throws IOException {
+	public String readClientMessage()  {
 		String[] responseArr = null;
 		System.out.println("in run_temp");
 		String switchBoardResponse = null;
@@ -58,11 +61,11 @@ public class ServerCustomerController implements Runnable {
 //			System.out.println(socketIn.readLine());
 //			response = socketIn.readLine();
 
-		System.out.println("Response from client: " + response);
+		System.out.println("Request from client: " + message);
 
-		if (response != null) {
+		if (message != null) {
 //			String jsonCustomer = objectMapper.writeValueAsString(response);
-			responseArr = response.split(" ", 2);
+			responseArr = message.split(" ", 2);
 			switchBoardResponse = switchBoard(responseArr);
 
 			
@@ -82,22 +85,23 @@ public class ServerCustomerController implements Runnable {
 
 		int choice = Integer.parseInt(responseArr[0]);
 		System.out.println("choice is: "+ choice);
-		String jsonCustomer = null ;
+		String jsonCustomerList = null ;
+		ArrayList<Customer> cust;
 
 		switch (choice) {
 
 		case 1:
 			// get customer based on id
-//			customer = testCustomerObject();
 
-			System.out.println("Sending getcustomer search to client");
+//			System.out.println("Sending getcustomer search to client");
 			System.out.println(responseArr[1]);
 
-	        customer = dbController.getCustomerbyId(Integer.parseInt(responseArr[1]));
+			cust = dbController.getCustomerbyId(Integer.parseInt(responseArr[1]));
+			customerList = new CustomerList(cust);
 			
 			try {
-				jsonCustomer = objectMapper.writeValueAsString(customer);
-				System.out.println("Sending to client: "+jsonCustomer);
+				jsonCustomerList = objectMapper.writeValueAsString(customerList);
+				System.out.println("Sending to client: "+jsonCustomerList);
 				
 			} catch (JsonProcessingException e) {
 				// TODO Auto-generated catch block
@@ -107,17 +111,58 @@ public class ServerCustomerController implements Runnable {
 
 
 			break;
+			
+		case 2:
+			// get customer based on lastname
+
+			System.out.println("get customer based on lastname");
+			System.out.println(responseArr[1]);
+
+			cust = dbController.getCustomerbyLname(responseArr[1]);
+			customerList = new CustomerList(cust);
+			
+			try {
+				jsonCustomerList = objectMapper.writeValueAsString(customerList);
+				System.out.println("Sending to client: "+jsonCustomerList);
+				
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+
+			break;
+			
+		case 3:
+			// get customer based on lastname
+
+			System.out.println("get customer based on lastname");
+			System.out.println(responseArr[1]);
+
+			cust = dbController.getCustomerbyType(responseArr[1]);
+			customerList = new CustomerList(cust);
+			
+			try {
+				jsonCustomerList = objectMapper.writeValueAsString(customerList);
+				System.out.println("Sending to client: "+jsonCustomerList);
+				
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+
+			break;
+		default:
+			System.out.println("Invalid choice!");
 
 		}
 		
-		return jsonCustomer;
+		return jsonCustomerList;
 
 	}
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-
-	}
 
 }

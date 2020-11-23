@@ -1,8 +1,12 @@
 package Server.Controller.DatabaseController;
 
+import java.io.FileReader;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 import Server.Model.Customer;
+import Server.Model.CustomerList;
 
 public class InventoryDBManager {
 
@@ -18,21 +22,20 @@ public class InventoryDBManager {
 	private PreparedStatement prepStatment;
 
 	private Driver myDriver;
-	
+
 	Customer customer = null;
-//	private CreateDBTables createDBTables;
+//	CustomerList customerList;
 
-	public InventoryDBManager() {
+	public InventoryDBManager(Driver myDriver) {
 
-		myDriver = new Driver();
-		CreateDBTables createDBTables = new CreateDBTables( myDriver);
-//		createCustomerTable();
+		this.myDriver = myDriver;
 		
+//		createCustomerTable();
 
 	}
 
 	// Query to create Customer table in db.
-	
+
 	public void closeSqlConn() {
 
 		try {
@@ -46,8 +49,6 @@ public class InventoryDBManager {
 			e.printStackTrace();
 		}
 	}
-
-	
 
 	public String getItemPreparedStatement(int itemId) {
 
@@ -79,56 +80,109 @@ public class InventoryDBManager {
 
 	}
 
-	public Customer getCustomerPreparedStatementId(int customerId) {
+	public ArrayList<Customer> getCustomerPreparedStatementId(int customerId) {
 
 		System.out.println("getting customer based on customer id");
-//		String temp = "";
 
 		String query = "Select * from customer where customer_id = ?";
-		
 
 		try {
 			prepStatment = myDriver.getMyConn().prepareStatement(query);
 			prepStatment.setInt(1, customerId);
 			myres = prepStatment.executeQuery();
-			// 4. process the result set
+			
+			ArrayList<Customer> customerArrayList = new ArrayList<>();
+			
+			
 			while (myres.next()) {
 
-//				temp = myres.getInt("customer_id") + ", " + myres.getString("fname") + " , " + myres.getString("lname")
-//						+ " , " + myres.getString("customer_type");
+//				customer = new Customer(myres.getInt("customer_id"), myres.getString("fname"), myres.getString("lname"),
+//						myres.getString("address"), myres.getString("postal_code"), myres.getString("phone_number"),
+//						myres.getString("customer_type"));
 
-				customer = new Customer(myres.getInt("customer_id"), myres.getString("fname"),
-						myres.getString("lname"), myres.getString("address"), myres.getString("postal_code"), myres.getString("phone_number"),myres.getString("customer_type"));
+				
+				
+				customerArrayList.add(new Customer(myres.getInt("customer_id"), myres.getString("fname"), myres.getString("lname"),
+						myres.getString("address"), myres.getString("postal_code"), myres.getString("phone_number"),
+						myres.getString("customer_type")));
+				
+//				System.out.println("search customer result in IDB: " + customerArrayList);
 
-				System.out.println("search customer result in IDB: "+customer);
-//				return myCustomer;
 			}
+			
+			return customerArrayList;
 
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
-		return customer;
+		return null;
 
 	}
+	
+	
+	public ArrayList<Customer> getCustomerPreparedStatementType(String customerType){
+		System.out.println("getting customer based on customer type");
 
-	/*
-	 * public static void main(String[] args) throws SQLException { Statement mystm
-	 * = null;
-	 * 
-	 * try { //1. get a connection Connection myConn =
-	 * DriverManager.getConnection("jdbc:mysql://localhost:3306/inventory", "root",
-	 * "password");
-	 * 
-	 * //2. craete a statement mystm = myConn.createStatement();
-	 * 
-	 * //3. execute sql query ResultSet myres =
-	 * mystm.executeQuery("select item_id,item_name from item");
-	 * 
-	 * //4. process the result set while(myres.next()) {
-	 * System.out.println(myres.getString("item_id") + ", " +
-	 * myres.getString("item_name")); } } catch(Exception e) { e.printStackTrace();
-	 * } finally { if(mystm != null) { mystm.close(); } } }
-	 */
+		String query = "Select * from customer where customer_type = ?";
+
+		try {
+			prepStatment = myDriver.getMyConn().prepareStatement(query);
+			prepStatment.setString(1, customerType);
+			myres = prepStatment.executeQuery();
+			
+			ArrayList<Customer> customerArrayList = new ArrayList<>();
+			
+			
+			while (myres.next()) {
+				
+				customerArrayList.add(new Customer(myres.getInt("customer_id"), myres.getString("fname"), myres.getString("lname"),
+						myres.getString("address"), myres.getString("postal_code"), myres.getString("phone_number"),
+						myres.getString("customer_type")));
+				
+//				System.out.println("search customer result in IDB: " + customerArrayList);
+
+			}
+			
+			return customerArrayList;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return null;
+    }
+	
+	public ArrayList<Customer> getCustomerPreparedStatementLname(String lname){
+		System.out.println("getting customer based on lastname ");
+
+		String query = "Select * from customer where lname = ?";
+
+		try {
+			prepStatment = myDriver.getMyConn().prepareStatement(query);
+			prepStatment.setString(1, lname);
+			myres = prepStatment.executeQuery();
+			
+			ArrayList<Customer> customerArrayList = new ArrayList<>();
+			
+			
+			while (myres.next()) {
+				
+				customerArrayList.add(new Customer(myres.getInt("customer_id"), myres.getString("fname"), myres.getString("lname"),
+						myres.getString("address"), myres.getString("postal_code"), myres.getString("phone_number"),
+						myres.getString("customer_type")));
+				
+//				System.out.println("search customer result in IDB: " + customerArrayList);
+
+			}
+			
+			return customerArrayList;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return null;
+    }
 
 }
