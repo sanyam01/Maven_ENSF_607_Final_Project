@@ -6,11 +6,12 @@ import java.awt.Container;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.ListSelectionListener;
 
 //import Client.Controller.ViewController.CustomerViewController.CustomerListener;
 
 public class CustomerView extends JFrame {
-	
+
 	private JButton save;
 	private JButton delete;
 	private JButton clear;
@@ -23,127 +24,124 @@ public class CustomerView extends JFrame {
 	private JComboBox typeCustomer;
 	private JTextArea displayText;
 	private JTextField statusText;
-	private JRadioButton searchCustomerID; 
-    private JRadioButton searchLastName;
-    private JRadioButton searchCustomerType; 
-    private JTextField searchParameter;
-    private JButton search;
-    private JButton clearSearch;
-    private JList customerList;// for adding the search results
+	private JRadioButton searchCustomerID;
+	private JRadioButton searchLastName;
+	private JRadioButton searchCustomerType;
+	private JTextField searchParameter;
+	private JButton search;
+	private JButton clearSearch;
+	private JList customerList;// for adding the search results
 
-    
-    private ButtonGroup group; 
-	
+	private ButtonGroup group;
+
 	public CustomerView() {
-		
-		
-		//high-level container
+
+		// high-level container
 		Container contentPanel = getContentPane();
 		contentPanel.setLayout(new BorderLayout());
-		
+
 		contentPanel.add("North", new JLabel("Customer Management Screen"));
-		
-		JPanel rightView = new JPanel(new  BorderLayout());// JPanel for adding right side of Customer GUI
+
+		JPanel rightView = new JPanel(new BorderLayout());// JPanel for adding right side of Customer GUI
 		rightView.add("North", new JLabel("Customer Information"));
-		
+
 		JPanel buttons = new JPanel();// JPanel for adding for adding buttons Save, delete, and clear
-		
+
 		save = new JButton("Save");
 		delete = new JButton("Delete");
 		clear = new JButton("Clear");
-		
+
 		// adding buttons to JPanel
 		buttons.add(save);
 		buttons.add(delete);
 		buttons.add(clear);
-		
+
 		rightView.add("South", buttons);// added buttns to the rightView
-		
+
 		JPanel centerRightView = new JPanel();
-		centerRightView.setLayout(new GridLayout(8,2,2,2));
-		
-		centerRightView.add(new JLabel("CustomerID"));//adding CustomerID
+		centerRightView.setLayout(new GridLayout(8, 2, 2, 2));
+
+		centerRightView.add(new JLabel("CustomerID"));// adding CustomerID
 		customerID = new JTextField(20);
 		centerRightView.add(customerID);
-		
-		centerRightView.add(new JLabel("First Name"));//adding firstName
+
+		centerRightView.add(new JLabel("First Name"));// adding firstName
 		firstName = new JTextField();
 		centerRightView.add(firstName);
-		
-		centerRightView.add(new JLabel("Last Name "));//adding lastName
+
+		centerRightView.add(new JLabel("Last Name "));// adding lastName
 		lastName = new JTextField();
 		centerRightView.add(lastName);
-		
-		centerRightView.add(new JLabel("Address"));//adding Address
+
+		centerRightView.add(new JLabel("Address"));// adding Address
 		address = new JTextField();
 		centerRightView.add(address);
-		
-		centerRightView.add(new JLabel("Postal Code"));//adding Postal Code
+
+		centerRightView.add(new JLabel("Postal Code"));// adding Postal Code
 		postalCode = new JTextField();
 		centerRightView.add(postalCode);
-		
-		centerRightView.add(new JLabel("Phone no"));//adding Phone no
+
+		centerRightView.add(new JLabel("Phone no"));// adding Phone no
 		phoneNo = new JTextField();
 		centerRightView.add(phoneNo);
-			
-		String[] customerType = { "Residential", "Commercial"};// type of residents
-		centerRightView.add(new JLabel("Customer type"));//adding residential type
+
+		String[] customerType = { "Residential", "Commercial" };// type of residents
+		centerRightView.add(new JLabel("Customer type"));// adding residential type
 		typeCustomer = new JComboBox(customerType);
 		centerRightView.add(typeCustomer);
-		
-		centerRightView.add(new JLabel("Operation status"));//adding Phone no
+
+		centerRightView.add(new JLabel("Operation status"));// adding Phone no
 		statusText = new JTextField();
 		centerRightView.add(statusText);
-		
-		
+
 		rightView.add("Center", centerRightView);
 		contentPanel.add("East", rightView);
-		
+
 		JPanel leftView = new JPanel(new BorderLayout());
-		
+
 //		displayText = new JTextArea(10,10);
 //		displayText.setEditable(false);
-		
-		
-		//JScrollPane scroll = new JScrollPane(displayText);
+
+		// JScrollPane scroll = new JScrollPane(displayText);
+		// DefaultListModel custName = new DefaultListModel();
 		customerList = new JList();
 		JScrollPane scroll = new JScrollPane(customerList);
-		//JLabel centerResults = new JLabel("Search Results : ");
+		// JLabel centerResults = new JLabel("Search Results : ");
 		leftView.add("Center", new JLabel("Search Results :"));
-		//leftView.add("Center", centerResults);
+		// leftView.add("Center", centerResults);
 		leftView.add("South", scroll);
-		
-		JPanel leftNorth = new JPanel(new GridLayout(7,1,2,2));
+
+		JPanel leftNorth = new JPanel(new GridLayout(7, 1, 2, 2));
 		leftNorth.add(new JLabel("Search Customers"));
 		leftNorth.add(new JLabel("Select type of search to be performed"));
-		
+
 		searchCustomerID = new JRadioButton("Customer ID");
 		searchLastName = new JRadioButton("Last Name");
-	    searchCustomerType = new JRadioButton("Cient Type");
-	    
-	    group = new  ButtonGroup();
-	    group.add(searchCustomerID);
-	    group.add(searchLastName);
-	    group.add(searchCustomerType);
-	    
-	    leftNorth.add(searchCustomerID);
-	    leftNorth.add(searchLastName);
-	    leftNorth.add(searchCustomerType);
-	    leftNorth.add(new JLabel("Enter the search parameter below"));
-	    
-	    JPanel leftViewButtons = new JPanel();// for adding text field, search and clear search
-	    searchParameter = new JTextField(20);// for inputting the search text
-	    search = new JButton("Search");
-	    clearSearch = new JButton("Clear Search");
-	    
-	    leftViewButtons.add(searchParameter);
-	    leftViewButtons.add(search);
-	    leftViewButtons.add(clearSearch);
-	    leftView.add(leftViewButtons);
+		searchCustomerType = new JRadioButton("Cient Type");
+
+		group = new ButtonGroup();
+		group.add(searchCustomerID);
+		group.add(searchLastName);
+		group.add(searchCustomerType);
+
+		leftNorth.add(searchCustomerID);
+		leftNorth.add(searchLastName);
+		leftNorth.add(searchCustomerType);
+		leftNorth.add(new JLabel("Enter the search parameter below"));
+
+		JPanel leftViewButtons = new JPanel();// for adding text field, search and clear search
+		searchParameter = new JTextField(20);// for inputting the search text
+		search = new JButton("Search");
+		clearSearch = new JButton("Clear Search");
+
+		leftViewButtons.add(searchParameter);
+		leftViewButtons.add(search);
+		leftViewButtons.add(clearSearch);
+		leftView.add(leftViewButtons);
 		leftView.add("North", leftNorth);
-		
+
 		contentPanel.add("West", leftView);
-			
+
 	}
 
 	public void addCustomerListener(ActionListener customerListener) {
@@ -159,20 +157,37 @@ public class CustomerView extends JFrame {
 		postalCode.addActionListener(customerListener);
 		phoneNo.addActionListener(customerListener);
 		typeCustomer.addActionListener(customerListener);
-		//displayText.addActionListener(customerListener);
-		searchCustomerID.addActionListener(customerListener); 
-	    searchLastName.addActionListener(customerListener);
-	    searchCustomerType.addActionListener(customerListener); 
-	    searchParameter.addActionListener(customerListener);
-	    search.addActionListener(customerListener);
-	    clearSearch.addActionListener(customerListener);
+		// displayText.addActionListener(customerListener);
+		searchCustomerID.addActionListener(customerListener);
+		searchLastName.addActionListener(customerListener);
+		searchCustomerType.addActionListener(customerListener);
+		searchParameter.addActionListener(customerListener);
+		search.addActionListener(customerListener);
+		clearSearch.addActionListener(customerListener);
 	}
-	
+
+	// adding customer list to the GUI
 	public void addCustomerList(String list) {
-		
+
+		customerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		customerList.setLayoutOrientation(JList.VERTICAL_WRAP);
 		String[] listArray = list.split("\n");
 		customerList.setListData(listArray);
-		
+
+	}
+
+	// method for adding action listeners to the list
+	public void addListenerList(ListSelectionListener customerListener) {
+		ListSelectionModel listSelectionModel = customerList.getSelectionModel();
+		listSelectionModel.addListSelectionListener(customerListener);
+	}
+
+	public JList getCustomerList() {
+		return customerList;
+	}
+
+	public void setCustomerList(JList customerList) {
+		this.customerList = customerList;
 	}
 
 	public JButton getSave() {
@@ -326,8 +341,5 @@ public class CustomerView extends JFrame {
 	public void setStatusText(JTextField statusText) {
 		this.statusText = statusText;
 	}
-	
-	
-	
-	
+
 }

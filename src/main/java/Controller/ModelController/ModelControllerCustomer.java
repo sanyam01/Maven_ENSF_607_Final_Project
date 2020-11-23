@@ -12,7 +12,7 @@ import Controller.ClientController.ClientControllerCustomer;
 public class ModelControllerCustomer {
 	
 
-	private Customer customer;
+	private Customer customer, atIndexCustomer;
 	private CustomerList customerList;
 	private ClientControllerCustomer clientControllerCustomer;
 	
@@ -27,6 +27,7 @@ public class ModelControllerCustomer {
 		System.out.println(firstName  +  lastName);
 	}
 	
+	
 	public String sendCustomerInfo() {
 		
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -38,7 +39,6 @@ public class ModelControllerCustomer {
 			response = this.clientControllerCustomer.saveCustomer(temp);
 			
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return response;
@@ -60,19 +60,43 @@ public class ModelControllerCustomer {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
+	
+	
 
+	public CustomerList getCustomerList() {
+		return customerList;
+	}
+
+	public void setCustomerList(CustomerList customerList) {
+		this.customerList = customerList;
+	}
+
+	// get customer at a particular index
+	public String getIndexCustomer(int index) {
+		
+		atIndexCustomer = getCustomerList().getCustomerList().get(index);
+ 		String values = atIndexCustomer.getCustomerID() + " " + atIndexCustomer.getFirstName() + " " + atIndexCustomer.getLastName() + " " + atIndexCustomer.getAddress() + " " + atIndexCustomer.getPostalCode() + " " + atIndexCustomer.getPhoneNumber() + " "+ atIndexCustomer.getCustomerType();
+		return values;
+		
+	}
 	// search based on customerID
 	public String searchClientID(String clientID) {
 		String searchID = "1 " + clientID;
 		String response = clientControllerCustomer.searchClientID(searchID);
-		//String listNameID = getCustomerFromJson(response);
-		//String listNameID = getStringCustList();
-		return response;
+	    getCustomerListFromJson(response);
+		String displayCustomer = getStringCustList();
+		return displayCustomer;
 	}
 	
+	// getting representational form of customer to displa on GUI
+	private String getDisplayStringFromCust() {
+		
+		String disp = customer.getCustomerID() + " " + customer.getFirstName() + " " + customer.getLastName() + " " + customer.getCustomerType();
+		return disp;
+	}
+
 	// get string from customer
-	
-	// concatating the customers into string
+	// concatinating the customers into string
 	public String getStringCustList() {
 		
 		String concatCust = "";
@@ -84,12 +108,10 @@ public class ModelControllerCustomer {
 	// convert Json to customer
 	private void getCustomerFromJson(String customer) {
 		ObjectMapper objectMapper = new ObjectMapper();
-		//CustomerList custList = null;
 		try {
 			this.customer = objectMapper.readValue(customer, Customer.class);
 		} catch (IOException e) {
 			System.out.println("Unable to convert json to customer List");
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -98,7 +120,6 @@ public class ModelControllerCustomer {
 	private void getCustomerListFromJson(String customerList) {
 		
 		ObjectMapper objectMapper = new ObjectMapper();
-		//CustomerList custList = null;
 		try {
 			this.customerList = objectMapper.readValue(customerList, CustomerList.class);
 		} catch (IOException e) {
