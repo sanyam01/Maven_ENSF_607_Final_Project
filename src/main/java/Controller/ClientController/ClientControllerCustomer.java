@@ -85,9 +85,8 @@ public class ClientControllerCustomer {
 		try {
 			System.out.println("I am waiting for the input");
 			this.socketIn = new BufferedReader(new InputStreamReader(customerSocket.getInputStream()));
-			String line;
-			while((line = socketIn.readLine()) != null)
-				response = response + socketIn.readLine();
+			
+			response = response + socketIn.readLine();
 			
 			System.out.println("I have recived the input");
 			System.out.println("The input is " + response);

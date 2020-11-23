@@ -65,10 +65,12 @@ public class ModelControllerCustomer {
 	public String searchClientID(String clientID) {
 		String searchID = "1 " + clientID;
 		String response = clientControllerCustomer.searchClientID(searchID);
-		getCustomerListFromJson(response);
-		String listNameID = getStringCustList();
-		return listNameID;
+		//String listNameID = getCustomerFromJson(response);
+		//String listNameID = getStringCustList();
+		return response;
 	}
+	
+	// get string from customer
 	
 	// concatating the customers into string
 	public String getStringCustList() {
@@ -77,6 +79,19 @@ public class ModelControllerCustomer {
 		for (Customer cus: this.customerList.getCustomerList())
 			concatCust = concatCust + cus.getCustomerID() + " " + cus.getFirstName() + " " + cus.getLastName() + " " + cus.getCustomerType() + "\n";
 		return concatCust;
+	}
+	
+	// convert Json to customer
+	private void getCustomerFromJson(String customer) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		//CustomerList custList = null;
+		try {
+			this.customer = objectMapper.readValue(customer, Customer.class);
+		} catch (IOException e) {
+			System.out.println("Unable to convert json to customer List");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	// convert json string into customer list
