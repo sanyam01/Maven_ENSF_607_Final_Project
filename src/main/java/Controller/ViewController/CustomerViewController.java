@@ -77,10 +77,10 @@ public class CustomerViewController  {
 	public void findSearchType() {
 		if (customerView.getSearchCustomerID().isSelected())
 			searchClientID();
-//		else if (customerView.getSearchLastName().isSelected())
-//			searchLastName();
-//		else if (customerView.getSearchCustomerType().isSelected())
-//			searchCustomerType();
+		else if (customerView.getSearchLastName().isSelected())
+			searchLastName();
+		else if (customerView.getSearchCustomerType().isSelected())
+			searchType();
 		else
 			System.out.println("Could find an option on which valid search is to be made");
 	}
@@ -94,10 +94,26 @@ public class CustomerViewController  {
 		
 	}
 	
+	private void searchLastName() {
+		String lastName = customerView.getSearchParameter().getText();
+		String response = modelControllerCustomer.searchLastName(lastName);
+		printCustListGUI(response);
+		addListenerList();
+		
+	}
+	
+	private void searchType() {
+		String type = customerView.getSearchParameter().getText();
+		String response = modelControllerCustomer.searchCustomerType(type);
+		printCustListGUI(response);
+		addListenerList();
+		
+	}
+	
+	
+	
 	// method for adding action listeners to the list 
 		public void addListenerList() {
-			//ListSelectionModel listSelectionModel = customerView..getSelectionModel();
-		    //listSelectionModel.addListSelectionListener(new CustomerListener());
 			customerView.addListenerList(new CustomerListener());
 		}
 

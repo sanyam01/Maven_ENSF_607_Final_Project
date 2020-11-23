@@ -88,6 +88,26 @@ public class ModelControllerCustomer {
 		return displayCustomer;
 	}
 	
+	// search based on lastName
+		public String searchLastName(String lastName) {
+			String searchID = "2 " + lastName;
+			String response = clientControllerCustomer.searchClientID(searchID);
+		    getCustomerListFromJson(response);
+			String displayCustomer = getStringCustList();
+			return displayCustomer;
+		}
+		
+		// search based on customer type
+		public String searchCustomerType(String type) {
+			String searchID = "3 " + type;
+			String response = clientControllerCustomer.searchClientID(searchID);
+			getCustomerListFromJson(response);
+					String displayCustomer = getStringCustList();
+					return displayCustomer;
+				}
+		
+		
+	
 	// getting representational form of customer to displa on GUI
 	private String getDisplayStringFromCust() {
 		
