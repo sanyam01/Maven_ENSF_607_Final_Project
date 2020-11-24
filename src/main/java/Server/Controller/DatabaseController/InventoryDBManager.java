@@ -460,10 +460,10 @@ public class InventoryDBManager {
 
 			while (myres.next()) {
 
-			if(myres.getString("power_type") != null) {
+			
 				itemArrayList.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
 						myres.getString("item_type"), myres.getInt("supplier_id")));
-			}
+			
 //			if(myres.getString("power_type") == null) {
 //				itemArrayList.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
 //						myres.getString("item_type"), myres.getInt("supplier_id")));

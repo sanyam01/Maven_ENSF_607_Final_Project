@@ -2,12 +2,15 @@ package Controller.ModelController;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ClientModel.ElectricalItem;
 import ClientModel.Items;
 import ClientModel.ItemsList;
+import ClientModel.NonElectricalItem;
 import Controller.ClientController.ClientControllerTool;
 import ClientModel.Order;
 import ClientModel.OrderLines;
@@ -19,6 +22,9 @@ public class ModelControllerTool {
 	private ItemsList itemsList;
 	private Order order;
 	private OrderLines orderLines;
+	private ElectricalItem electricalItem;
+	private NonElectricalItem nonElectricalItem;
+	
 	
 	public ModelControllerTool() {
 		clientControllerTool = new ClientControllerTool();
@@ -77,16 +83,35 @@ public class ModelControllerTool {
 		String searchID = "6 ";
 		//String response = clientControllerTool.searchTool(searchID);
 		String response = clientControllerTool.sendQuery(searchID);
-		String[] tempArr = response.split("!!");
+		//String[] tempArr = response.split("!!");
+		getTestData(response);
 		
-		sysout
-		//tempArr[1] elec
-		//tempArr[2] nonelec
+		//getToolListFromJson(response);
 		
-		
-		getToolListFromJson(response);
 		String displayTool = getStringQuantityList();
 		return displayTool;
+	}
+	
+	public void getTestData(String response) {
+		System.out.println("The response is " + response);
+		String[] tempArr = response.split("!!");
+		System.out.println("First value " + tempArr[0]);
+		System.out.println("Second value " + tempArr[1]);
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			this.electricalItem = objectMapper.readValue(tempArr[0],ElectricalItem.class);
+			this.nonElectricalItem = objectMapper.readValue(tempArr[1],NonElectricalItem.class);
+			System.out.println(electricalItem.getItemID());
+			ItemsList list = new ItemsList(electricalItem);
+			
+		} catch (IOException e) {
+			System.out.println("Unable to convert json to items List");
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	public String printOrder() {

@@ -110,9 +110,11 @@ public class ServerInventoryController {
 			try {
 				String temp1 = objectMapper.writeValueAsString(elecItems);
 				String temp2 = objectMapper.writeValueAsString(nonElecItems);
-				System.out.println("Sending to client: " + jsonItemList);
 				
-				jsonItemList = temp1 + "!!"+temp2;
+				
+				jsonItemList = temp1 + " !! "+temp2;
+				
+				System.out.println("Sending to client: " + jsonItemList);
 
 			} catch (JsonProcessingException e) {
 				// TODO Auto-generated catch block
