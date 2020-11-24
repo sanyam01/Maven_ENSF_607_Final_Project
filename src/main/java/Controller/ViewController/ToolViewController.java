@@ -96,6 +96,7 @@ public class ToolViewController {
 		toolView.getToolPrice().setText("");
 		toolView.getToolQuantity().setText("");
 		toolView.getSupplierID().setText("");
+		toolView.getPowerType().setText("");
 	}
 
 	private void fetchItemInformation() {
@@ -106,6 +107,7 @@ public class ToolViewController {
 		int quantity = Integer.parseInt(this.getToolView().getToolQuantity().getText());
 		int price =  Integer.parseInt(this.getToolView().getToolPrice().getText());
 		int supplierID = Integer.parseInt(this.getToolView().getSupplierID().getText());
+		String itemType = this.toolView.getPowerType().getText();
 		System.out.println("Selecte item is " + type);
 		this.modelControllerTool.setItem(iD, name, type, quantity, price, supplierID);
 

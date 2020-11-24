@@ -19,6 +19,7 @@ public class ToolView extends JFrame {
 	private JTextField toolQuantity;
 	private JTextField toolPrice;
 	private JTextField supplierID;
+	private JTextField powerType;
 	private JTextField statusText;
 	private JTextArea displayText;
 	private JRadioButton searchToolID;
@@ -57,7 +58,7 @@ public class ToolView extends JFrame {
 		rightView.add("South", buttons);// added buttons to the rightView
 
 		JPanel centerRightView = new JPanel();
-		centerRightView.setLayout(new GridLayout(7, 2, 2, 2));
+		centerRightView.setLayout(new GridLayout(8, 2, 2, 2));
 
 		centerRightView.add(new JLabel("ToolID"));// adding toolID
 		toolID = new JTextField(20);
@@ -83,6 +84,10 @@ public class ToolView extends JFrame {
 		centerRightView.add(new JLabel("Supplier ID"));// adding Phone no
 		supplierID = new JTextField();
 		centerRightView.add(supplierID);
+
+		centerRightView.add(new JLabel("Power Type"));// adding power type
+		powerType = new JTextField();
+		centerRightView.add(powerType);
 
 		centerRightView.add(new JLabel("Operation status"));
 		statusText = new JTextField();
@@ -154,6 +159,7 @@ public class ToolView extends JFrame {
 		clearSearch.addActionListener(toolListener);
 		listAllTools.addActionListener(toolListener);
 		printOrder.addActionListener(toolListener);
+		powerType.addActionListener(toolListener);
 
 	}
 
@@ -331,6 +337,15 @@ public class ToolView extends JFrame {
 
 	public void setGroup(ButtonGroup group) {
 		this.group = group;
+	}
+
+	
+	public JTextField getPowerType() {
+		return powerType;
+	}
+
+	public void setPowerType(JTextField powerType) {
+		this.powerType = powerType;
 	}
 
 	public void clearToolList() {
