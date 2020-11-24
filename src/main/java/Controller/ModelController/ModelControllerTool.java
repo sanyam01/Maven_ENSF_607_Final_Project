@@ -74,9 +74,16 @@ public class ModelControllerTool {
 	}
 	
 	public String getAllTools() {
-		String searchID = "1 ";
+		String searchID = "6 ";
 		//String response = clientControllerTool.searchTool(searchID);
 		String response = clientControllerTool.sendQuery(searchID);
+		String[] tempArr = response.split("!!");
+		
+		sysout
+		//tempArr[1] elec
+		//tempArr[2] nonelec
+		
+		
 		getToolListFromJson(response);
 		String displayTool = getStringQuantityList();
 		return displayTool;
@@ -163,7 +170,7 @@ public class ModelControllerTool {
 		public void setItem(int iD, String name, String type, int price,
 				int quantity, int supplierID) {
 
-			this.items = new Items(iD, name, type, price, quantity, supplierID);
+			this.items = new Items(iD, name, quantity, price, type, supplierID);
 		}
 
 

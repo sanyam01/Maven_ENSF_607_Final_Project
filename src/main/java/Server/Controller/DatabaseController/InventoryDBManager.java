@@ -7,6 +7,11 @@ import java.util.Scanner;
 
 import Server.Model.Customer;
 import Server.Model.CustomerList;
+import Server.Model.ElectricalItem;
+import Server.Model.InternationalSupplier;
+import Server.Model.Items;
+import Server.Model.NonElectricalItem;
+import Server.Model.Suppliers;
 
 public class InventoryDBManager {
 
@@ -23,7 +28,8 @@ public class InventoryDBManager {
 
 	private Driver myDriver;
 
-	Customer customer = null;
+//	private Items items ;
+//	private Suppliers supplier ;
 //	CustomerList customerList;
 
 	public InventoryDBManager(Driver myDriver) {
@@ -34,7 +40,6 @@ public class InventoryDBManager {
 
 	}
 
-	// Query to create Customer table in db.
 
 	public void closeSqlConn() {
 
@@ -50,33 +55,208 @@ public class InventoryDBManager {
 		}
 	}
 
-	public String getItemPreparedStatement(int itemId) {
+	public ArrayList<Items> getItemByIdPreparedStatement(int itemId) {
 
-		System.out.println("getting item based on item id");
-		String temp = "";
-		String query = "select item_id,item_name from item where item_id = ?";
+		String query = "SELECT  item.item_id,  item_name,  item_quantity,  item_price,  item_type,  supplier_id , electrical_item.power_type\r\n" + 
+				"          FROM item \r\n" + 
+				"          LEFT  JOIN electrical_item  ON item.item_id=electrical_item.item_id \r\n" + 
+				"          where item.item_id = ?";
 
 		try {
-//			mystm = myConn.createStatement();
-
 			prepStatment = myDriver.getMyConn().prepareStatement(query);
 			prepStatment.setInt(1, itemId);
-
 			myres = prepStatment.executeQuery();
-//			System.out.println(myres);
+			
 
-			// 4. process the result set
+			ArrayList<Items> itemArrayList = new ArrayList<>();
+
 			while (myres.next()) {
 
-				temp = myres.getInt("item_id") + ", " + myres.getString("item_name");
+				
+
+				itemArrayList.add(new Items(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
+						myres.getString("item_type"), myres.getInt("supplier_id")));
+
+
 			}
-//			
+
+			return itemArrayList;
 
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 		}
-		return temp;
+		return null;
+
+	}
+	
+	public ArrayList<Items> getItemByNamePreparedStatement(String itemName) {
+
+		String query = "Select * from item where item_name=?";
+
+		try {
+			prepStatment = myDriver.getMyConn().prepareStatement(query);
+			prepStatment.setString(1, itemName);
+			myres = prepStatment.executeQuery();
+			
+
+			ArrayList<Items> itemArrayList = new ArrayList<>();
+
+			while (myres.next()) {
+
+				
+
+				itemArrayList.add(new Items(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
+						myres.getString("item_type"), myres.getInt("supplier_id")));
+
+
+			}
+
+			return itemArrayList;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+	
+	public ArrayList<Items> getItemQtyPreparedStatement(String itemName) {
+
+		String query = "Select item_id, item_name,item_quantity from item where item_name=?";
+
+		try {
+			prepStatment = myDriver.getMyConn().prepareStatement(query);
+			prepStatment.setString(1, itemName);
+			myres = prepStatment.executeQuery();
+			
+
+			ArrayList<Items> itemArrayList = new ArrayList<>();
+
+			while (myres.next()) {
+
+				
+
+				itemArrayList.add(new Items(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
+						myres.getString("item_type"), myres.getInt("supplier_id")));
+
+
+			}
+
+			return itemArrayList;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+	
+	public ArrayList<Items> getItemQtyPreparedStatement(int itemId) {
+
+		String query = "Select item_id, item_name,item_quantity from item where item_id=?";
+
+		try {
+			prepStatment = myDriver.getMyConn().prepareStatement(query);
+			prepStatment.setInt(1, itemId);
+			myres = prepStatment.executeQuery();
+			
+
+			ArrayList<Items> itemArrayList = new ArrayList<>();
+
+			while (myres.next()) {
+
+				
+
+				itemArrayList.add(new Items(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
+						myres.getString("item_type"), myres.getInt("supplier_id")));
+
+
+			}
+
+			return itemArrayList;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+	
+	public ArrayList<Items> getItemListPreparedStatemen() {
+
+
+		String query = "SELECT  item.item_id,  item_name,  item_quantity,  item_price,  item_type,  supplier_id , electrical_item.power_type\r\n" + 
+				"          FROM item \r\n" + 
+				"          LEFT  JOIN electrical_item  ON item.item_id=electrical_item.item_id  ";
+
+		try {
+			prepStatment = myDriver.getMyConn().prepareStatement(query);
+//			prepStatment.setInt(1, customerId);
+			myres = prepStatment.executeQuery();
+
+			ArrayList<Items> itemArrayList = new ArrayList<>();
+
+			while (myres.next()) {
+
+			if(myres.getString("power_type") != null) {
+				itemArrayList.add(new ElectricalItem(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
+						myres.getString("item_type"), myres.getInt("supplier_id"), myres.getString("power_type")));
+			}
+			if(myres.getString("power_type") == null) {
+				itemArrayList.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
+						myres.getString("item_type"), myres.getInt("supplier_id")));
+			}
+				
+
+//				System.out.println("search customer result in IDB: " + customerArrayList);
+
+			}
+
+			return itemArrayList;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+	
+	
+	public ArrayList<InternationalSupplier> getSuppListPreparedStatemen() {
+
+		
+
+		String query = "Select * from supplier  s, international_supplier i where s.supplier_id = i.supplier_id";
+
+		try {
+			prepStatment = myDriver.getMyConn().prepareStatement(query);
+//			prepStatment.setInt(1, customerId);
+			myres = prepStatment.executeQuery();
+
+			ArrayList<InternationalSupplier> supplierList = new ArrayList<>();
+
+			while (myres.next()) {
+
+
+				supplierList.add(new InternationalSupplier(myres.getInt("supplier_id"), myres.getString("supplier_name"), myres.getString("address"), myres.getString("sales_contact"), 
+						myres.getString("company_name"), myres.getString("supplier_type"), myres.getInt("import_tax")));
+
+//				System.out.println("search customer result in IDB: " + customerArrayList);
+
+			}
+
+			return supplierList;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return null;
 
 	}
 
@@ -223,6 +403,85 @@ public class InventoryDBManager {
 		}
 		
 		return rowCount;
+	}
+	
+	
+	
+	public ArrayList<ElectricalItem> getElectricalItemListPrepStat() {
+
+
+		String query = "select * from item i, electrical_item e where i.item_id = e.item_id";
+
+		try {
+			prepStatment = myDriver.getMyConn().prepareStatement(query);
+//			prepStatment.setInt(1, customerId);
+			myres = prepStatment.executeQuery();
+
+			ArrayList<ElectricalItem> itemArrayList = new ArrayList<>();
+
+			while (myres.next()) {
+
+			if(myres.getString("power_type") != null) {
+				itemArrayList.add(new ElectricalItem(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
+						myres.getString("item_type"), myres.getInt("supplier_id"), myres.getString("power_type")));
+			}
+//			if(myres.getString("power_type") == null) {
+//				itemArrayList.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
+//						myres.getString("item_type"), myres.getInt("supplier_id")));
+//			}
+				
+
+//				System.out.println("search customer result in IDB: " + customerArrayList);
+
+			}
+
+			return itemArrayList;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	
+	public ArrayList<NonElectricalItem> getNonElectricalItemListPrepStat() {
+
+
+		String query = "select * from item where item_type ='Non-Electrical'";
+
+		try {
+			prepStatment = myDriver.getMyConn().prepareStatement(query);
+//			prepStatment.setInt(1, customerId);
+			myres = prepStatment.executeQuery();
+
+			ArrayList<NonElectricalItem> itemArrayList = new ArrayList<>();
+
+			while (myres.next()) {
+
+			if(myres.getString("power_type") != null) {
+				itemArrayList.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
+						myres.getString("item_type"), myres.getInt("supplier_id")));
+			}
+//			if(myres.getString("power_type") == null) {
+//				itemArrayList.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
+//						myres.getString("item_type"), myres.getInt("supplier_id")));
+//			}
+				
+
+//				System.out.println("search customer result in IDB: " + customerArrayList);
+
+			}
+
+			return itemArrayList;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+		return null;
+
 	}
 
 }

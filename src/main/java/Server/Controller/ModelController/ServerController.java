@@ -9,6 +9,8 @@ import java.net.Socket;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Server.Controller.DatabaseController.DBController;
+import Server.Model.Customer;
+import Server.Model.Items;
 
 public class ServerController implements Runnable {
 
@@ -17,6 +19,7 @@ public class ServerController implements Runnable {
 	private Socket socket;
 	private PrintWriter socketOut;
 	private BufferedReader socketIn;
+
 
 	public ServerController(Socket socket, DBController dbController) {
 
@@ -42,15 +45,30 @@ public class ServerController implements Runnable {
 
 				// sending message to client
 				setClientMessage(messageToClient);
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		} else if (taskId >= 6 && taskId < 12) {
-
-//			ServerCustomerController customerController = new ServerCustomerController(socket, dbController);
 			System.out.println("ServerToolController instantiated");
+
+			try {
+				ServerInventoryController serverToolController = new ServerInventoryController(message, dbController,
+						objectMapper);
+				
+				String messageToClient = serverToolController.readClientMessage();
+
+				// sending message to client
+				setClientMessage(messageToClient);
+				
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 
 		}
 

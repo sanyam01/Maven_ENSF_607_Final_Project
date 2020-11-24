@@ -1,18 +1,11 @@
-package ClientModel;
+package Server.Model;
 
 import java.io.Serializable;
 
+public  class Items implements Serializable {
 
+	
 
-/**
- * Class Items represents an item in the inventory. It has an item name, ID,
- * quantity, price, and the supplier info.
- * 
- * @author Sanyam
- *
- */
-
-public class Items implements Serializable {
 	/**
 	 * itemID represents the ID of the item. Each item has unique ID
 	 */
@@ -48,9 +41,7 @@ public class Items implements Serializable {
 	private Suppliers sup;
 	
 	
-	public Items() {
-		super();
-	}
+	
 	
 
 
@@ -138,7 +129,36 @@ public class Items implements Serializable {
 	}
 	
 	
-	
+	public String decreaseQuantity(Order order) {
+
+		OrderLines ol = null;
+		String s = "\nNo new OrderLine generated. Printing order: \n";
+		s = s + "....................................................................\n\n";
+		if (this.getItemQuantity() > 0)
+			this.setItemQuantity(this.getItemQuantity() - 1);
+		if (this.getItemQuantity() < 40) {
+			int initiallyItem = this.getItemQuantity();
+			ol = new OrderLines(this, 50 - initiallyItem);
+			order.addOrderLine(ol);
+			this.setItemQuantity(50);
+			s = "\nNew order line generated. Updated Order for the day is:\n\n";
+			s = s + "....................................................................\n";
+			s = s + "Order Id : " + order.getOrderId() + "\n" + "Order date : " + order.getDate() + "\n\n";
+
+		}
+
+		else {
+			s = s + "Order Id : " + order.getOrderId() + "\n" + "Order date : " + order.getDate() + "\n\n";
+		}
+		for (OrderLines k : order.getOrderLines()) {
+			s = s + "ItemName: " + k.getItem().getItemName() + ", Quantity ordered: " + k.getAmount()
+					+ ", Supplier name: " + k.getItem().getSup().getSupplierName() + "\n";
+		}
+
+		s = s + "\n....................................................................\n\n";
+		return s;
+
+	}
 
 	public Suppliers getSup() {
 		return sup;
@@ -149,13 +169,15 @@ public class Items implements Serializable {
 	}
 	
 	
-//	public void addSupplier(SupplierList list) {
-//		for (Suppliers s : list.getList()) {
-//			if (s.getSupplierID() == this.getSupplierID())
-//				this.sup = s;
-//
-//		}
-//	}
+	public void addSupplier(SupplierList list) {
+		for (Suppliers s : list.getList()) {
+			if (s.getSupplierID() == this.getSupplierID())
+				this.sup = s;
+
+		}
+	}
+
+	
 
 	
 

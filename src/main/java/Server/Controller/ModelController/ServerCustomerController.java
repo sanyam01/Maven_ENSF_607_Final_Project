@@ -24,15 +24,11 @@ import Server.Model.CustomerList;
 
 public class ServerCustomerController {
 
-//	private Socket socket;
-//	private PrintWriter socketOut;
-//	private BufferedReader socketIn;
 	private int taskId;
 	DBController dbController;
 	private Customer customer = null;
 	private CustomerList customerList;
-//	ObjectInputStream serverInputStream;
-//	ObjectOutputStream serverOutputStream;
+
 	ObjectMapper objectMapper;
 	private String message;
 
@@ -43,27 +39,15 @@ public class ServerCustomerController {
 		this.dbController = dbC;
 		this.objectMapper = objectMapper;
 
-		// Socket input Stream
-//		socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-		// Socket output Stream
-//					socketOut = new PrintWriter(socket.getOutputStream(), true);
-
 	}
 
 	public String readClientMessage() {
 		String[] responseArr = null;
-		System.out.println("in run_temp");
 		String switchBoardResponse = null;
-
-//			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//			System.out.println(socketIn.readLine());
-//			response = socketIn.readLine();
 
 		System.out.println("Request from client: " + message);
 
 		if (message != null) {
-//			String jsonCustomer = objectMapper.writeValueAsString(response);
 			responseArr = message.split(" ", 2);
 			switchBoardResponse = switchBoard(responseArr);
 
@@ -145,7 +129,7 @@ public class ServerCustomerController {
 			break;
 
 		case 3:
-			// get customer based on lastname
+			// get customer based on type
 
 			System.out.println("Operation: get customer by type");
 			System.out.println(responseArr[1]);
@@ -191,7 +175,6 @@ public class ServerCustomerController {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 
 			// check if customer is new or already present
 
