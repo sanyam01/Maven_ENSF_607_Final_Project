@@ -14,14 +14,20 @@ public class ItemsList implements Serializable{
 	 * list of customers
 	 */
 	private ArrayList<Items> itemsList;
+	private ArrayList<ElectricalItem> elecItemList;
+	private ArrayList<NonElectricalItem> nonElecItemList;
 	
-	public ItemsList() {
-		super();
+	public ItemsList(ArrayList<ElectricalItem> elecItemList, ArrayList<NonElectricalItem> nonElecItemList) {
+		
+		this.setElecItemList(elecItemList);
+		this.nonElecItemList = nonElecItemList;
+
+
 	}
 	
-	public ItemsList(ArrayList<Items> list) {
-		this.setItemsList(list);
-	}
+//	public ItemsList(ArrayList<Items> list) {
+//		this.setItemsList(list);
+//	}
 
 	public ArrayList<Items> getItemsList() {
 		return itemsList;
@@ -35,6 +41,24 @@ public class ItemsList implements Serializable{
 	public void addItems(Items item) {
 		itemsList.add(item);
 
+	}
+
+	
+
+	public ArrayList<NonElectricalItem> getNonElecItemList() {
+		return nonElecItemList;
+	}
+
+	public void setNonElecItemList(ArrayList<NonElectricalItem> nonElecItemList) {
+		this.nonElecItemList = nonElecItemList;
+	}
+
+	public ArrayList<ElectricalItem> getElecItemList() {
+		return elecItemList;
+	}
+
+	public void setElecItemList(ArrayList<ElectricalItem> elecItemList) {
+		this.elecItemList = elecItemList;
 	}
 	
 	

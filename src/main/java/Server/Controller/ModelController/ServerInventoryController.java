@@ -107,12 +107,14 @@ public class ServerInventoryController {
 			elecItems = dbController.getElectricalItems();
 			nonElecItems = dbController.getNonElectricalItems();
 			
+			itemList = new ItemsList(elecItems, nonElecItems);
+			
 			try {
-				String temp1 = objectMapper.writeValueAsString(elecItems);
-				String temp2 = objectMapper.writeValueAsString(nonElecItems);
+				String temp1 = objectMapper.writeValueAsString(itemList);
+//				String temp2 = objectMapper.writeValueAsString(nonElecItems);
 				
 				
-				jsonItemList = temp1 + " !! "+temp2;
+				jsonItemList = temp1 ;
 				
 				System.out.println("Sending to client: " + jsonItemList);
 
