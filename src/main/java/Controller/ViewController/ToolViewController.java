@@ -69,7 +69,6 @@ public class ToolViewController {
 	private void clearSearch() {
 		toolView.getGroup().clearSelection();
 		toolView.getSearchParameter().setText("");
-		// customerView.getCustomerList().removeAll();
 		toolView.clearToolList();
 
 	}

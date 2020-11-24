@@ -16,7 +16,7 @@ public class ClientControllerCustomer {
 	public ClientControllerCustomer() {
 
 	}
-	
+
 	public void getSockets() {
 		try {
 			this.customerSocket = clientController.getaSocket();
@@ -26,19 +26,48 @@ public class ClientControllerCustomer {
 			e.printStackTrace();
 		}
 	}
-	
-	public String saveDeleteCustomer(String customerInfo) {
-		
+
+//	public String saveDeleteCustomer(String customerInfo) {
+//		
+//		getSockets();
+//		socketOut.println(customerInfo);
+//		String response = "";
+//		try {
+//			response = response + socketIn.readLine();
+//		} catch (IOException e) {
+//			System.out.println("In ClientControllerCustomer, unable to read from server after sending the customer information to save");
+//			e.printStackTrace();
+//		}
+//		System.out.println("Got response");
+//		return response;
+//	}
+//
+//	public String searchClient(String searchID) {
+//		socketOut.println(searchID);
+//		String response = "";
+//		try {
+//			this.socketIn = new BufferedReader(new InputStreamReader(customerSocket.getInputStream()));
+//			response = response + socketIn.readLine();
+//			System.out.println("The input is " + response);
+//		} catch (IOException e) {
+//			System.out.println("In client controller couldnt get anything in return to the query for searching customer based on the customer ID");
+//			e.printStackTrace();
+//		}
+//		return response;
+//	}
+
+	public String sendQuery(String query) {
 		getSockets();
-		socketOut.println(customerInfo);
+		socketOut.println(query);
 		String response = "";
 		try {
+			this.socketIn = new BufferedReader(new InputStreamReader(customerSocket.getInputStream()));
 			response = response + socketIn.readLine();
+			System.out.println("The input is " + response);
 		} catch (IOException e) {
-			System.out.println("In ClientControllerCustomer, unable to read from server after sending the customer information to save");
+			System.out.println("Didn't get any response from server");
 			e.printStackTrace();
 		}
-		System.out.println("Got response");
 		return response;
 	}
 
@@ -65,23 +94,5 @@ public class ClientControllerCustomer {
 	public BufferedReader getSocketIn() {
 		return socketIn;
 	}
-
-	// search based on client ID
-
-	public String searchClient(String searchID) {
-		socketOut.println(searchID);
-		String response = "";
-		try {
-			this.socketIn = new BufferedReader(new InputStreamReader(customerSocket.getInputStream()));
-			response = response + socketIn.readLine();
-			System.out.println("The input is " + response);
-		} catch (IOException e) {
-			System.out.println("In client controller couldnt get anything in return to the query for searching customer based on the customer ID");
-			e.printStackTrace();
-		}
-		return response;
-	}
-	
-	
 
 }

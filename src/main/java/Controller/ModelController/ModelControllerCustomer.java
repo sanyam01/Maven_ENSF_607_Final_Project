@@ -35,7 +35,8 @@ public class ModelControllerCustomer {
 		try {
 			jsonCustomer = objectMapper.writeValueAsString(customer);
 			String temp = "4 " + jsonCustomer;
-			response = this.clientControllerCustomer.saveDeleteCustomer(temp);
+			//response = this.clientControllerCustomer.saveDeleteCustomer(temp);
+			response = clientControllerCustomer.sendQuery(temp);
 
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
@@ -52,7 +53,8 @@ public class ModelControllerCustomer {
 		try {
 			jsonCustomer = objectMapper.writeValueAsString(customer);
 			String temp = "5 " + jsonCustomer;
-			response = this.clientControllerCustomer.saveDeleteCustomer(temp);
+			//response = this.clientControllerCustomer.saveDeleteCustomer(temp);
+			response = clientControllerCustomer.sendQuery(temp);
 
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
@@ -100,7 +102,8 @@ public class ModelControllerCustomer {
 	// search based on customerID
 	public String searchClientID(String clientID) {
 		String searchID = "1 " + clientID;
-		String response = clientControllerCustomer.searchClient(searchID);
+		//String response = clientControllerCustomer.searchClient(searchID);
+		String response = clientControllerCustomer.sendQuery(searchID);
 		getCustomerListFromJson(response);
 		String displayCustomer = getStringCustList();
 		return displayCustomer;
@@ -109,7 +112,8 @@ public class ModelControllerCustomer {
 	// search based on lastName
 	public String searchLastName(String lastName) {
 		String searchID = "2 " + lastName;
-		String response = clientControllerCustomer.searchClient(searchID);
+		//String response = clientControllerCustomer.searchClient(searchID);
+		String response = clientControllerCustomer.sendQuery(searchID);
 		getCustomerListFromJson(response);
 		String displayCustomer = getStringCustList();
 		return displayCustomer;
@@ -118,7 +122,8 @@ public class ModelControllerCustomer {
 	// search based on customer type
 	public String searchCustomerType(String type) {
 		String searchID = "3 " + type;
-		String response = clientControllerCustomer.searchClient(searchID);
+		//String response = clientControllerCustomer.searchClient(searchID);
+		String response = clientControllerCustomer.sendQuery(searchID);
 		getCustomerListFromJson(response);
 		String displayCustomer = getStringCustList();
 		return displayCustomer;

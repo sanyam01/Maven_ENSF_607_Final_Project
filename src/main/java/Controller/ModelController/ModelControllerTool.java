@@ -1,5 +1,6 @@
 package Controller.ModelController;
 
+import java.io.FileWriter;
 import java.io.IOException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -33,7 +34,8 @@ public class ModelControllerTool {
 
 	public String searchToolID(String toolID) {
 		String searchID = "3 " + toolID;
-		String response = clientControllerTool.searchTool(searchID);
+		//String response = clientControllerTool.searchTool(searchID);
+		String response = clientControllerTool.sendQuery(searchID);
 		getToolListFromJson(response);
 		String displayTool = getStringToolList();
 		return displayTool;
@@ -43,7 +45,8 @@ public class ModelControllerTool {
 	
 	public String checkToolID(String toolID) {
 		String searchID = "4 " + toolID;
-		String response = clientControllerTool.searchTool(searchID);
+		//String response = clientControllerTool.searchTool(searchID);
+		String response = clientControllerTool.sendQuery(searchID);
 		getToolListFromJson(response);
 		String displayQuantity = getStringToolList();
 		return displayQuantity;
@@ -51,7 +54,8 @@ public class ModelControllerTool {
 	
 	public String checkToolName(String name) {
 		String searchID = "6 " + name;
-		String response = clientControllerTool.searchTool(searchID);
+		//String response = clientControllerTool.searchTool(searchID);
+		String response = clientControllerTool.sendQuery(searchID);
 		getToolListFromJson(response);
 		String displayQuantity = getStringToolList();
 		return displayQuantity;
@@ -62,7 +66,8 @@ public class ModelControllerTool {
 	
 	public String searchToolName(String toolName) {
 		String searchID = "2 " + toolName;
-		String response = clientControllerTool.searchTool(searchID);
+		//String response = clientControllerTool.searchTool(searchID);
+		String response = clientControllerTool.sendQuery(searchID);
 		getToolListFromJson(response);
 		String displayTool = getStringToolList();
 		return displayTool;
@@ -70,7 +75,8 @@ public class ModelControllerTool {
 	
 	public String getAllTools() {
 		String searchID = "1 ";
-		String response = clientControllerTool.searchTool(searchID);
+		//String response = clientControllerTool.searchTool(searchID);
+		String response = clientControllerTool.sendQuery(searchID);
 		getToolListFromJson(response);
 		String displayTool = getStringQuantityList();
 		return displayTool;
@@ -79,10 +85,24 @@ public class ModelControllerTool {
 	public String printOrder() {
 		
 		String orderID = "7";
-		String response = clientControllerTool.printOrder(orderID);
+		//String response = clientControllerTool.printOrder(orderID);
+		String response = clientControllerTool.sendQuery(orderID);
 		getOrderFromJson(response);
 		String displayOrder = getStringOrder();
+		writeToFile(displayOrder);
 		return displayOrder;
+	}
+	
+	private void writeToFile(String text) {
+		try {
+		      FileWriter myWriter = new FileWriter("orders.txt");
+		      myWriter.write(text);
+		      myWriter.close();
+		      System.out.println("Successfully wrote to the file.");
+		    } catch (IOException e) {
+		      System.out.println("An error occurred.");
+		      e.printStackTrace();
+		    }
 	}
 
 	private void getOrderFromJson(String value) {
@@ -178,7 +198,9 @@ public class ModelControllerTool {
 		try {
 			jsonItem = objectMapper.writeValueAsString(items);
 			String temp = "5 " + jsonItem;
-			response = this.clientControllerTool.saveDeleteTool(temp);
+			//response = this.clientControllerTool.saveDeleteTool(temp);
+			response = clientControllerTool.sendQuery(temp);
+			
 
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
