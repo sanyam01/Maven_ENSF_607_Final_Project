@@ -125,117 +125,117 @@ public class ServerInventoryController {
 			
 			break;
 			
-		case 2:
-			//Search for tool by toolId
-			System.out.println("Operation: Search for tool by toolId");
-			System.out.println(responseArr[1]);
-			
-			items = dbController.getItemById(Integer.parseInt(responseArr[1]));
-			
-			if (!items.isEmpty()) {
-				
-				itemList = new ItemsList(items);
-
-				try {
-					jsonItemList = objectMapper.writeValueAsString(itemList);
-					System.out.println("Sending to client: " + jsonItemList);
-
-				} catch (JsonProcessingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			} else {
-				jsonItemList = "Item Id not found!!";
-				System.out.println("Item Id not found!!");
-
-			}
-			break;
-			
-			
-		case 3:
-			//Search for tool by toolName
-			System.out.println("Operation: Search for tool by toolName");
-			System.out.println(responseArr[1]);
-			
-			items = dbController.getItemByName(responseArr[1]);
-			
-			if (!items.isEmpty()) {
-				
-				itemList = new ItemsList(items);
-
-				try {
-					jsonItemList = objectMapper.writeValueAsString(itemList);
-					System.out.println("Sending to client: " + jsonItemList);
-
-				} catch (JsonProcessingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			} else {
-				jsonItemList = "Item name not found!!";
-				System.out.println("Item name not found!!");
-
-			}
-			break;
-			
-		case 4:
-			//Search for tool by toolName
-			System.out.println("Operation: Check item quantity");
-			System.out.println(responseArr[1]);
-			
-			if(responseArr[1] instanceof String) {
-				
-				items = dbController.getItemQty(responseArr[1]);
-			}
-			else {
-				items = dbController.getItemQty(Integer.parseInt(responseArr[1]));
-			}
+//		case 2:
+//			//Search for tool by toolId
+//			System.out.println("Operation: Search for tool by toolId");
+//			System.out.println(responseArr[1]);
+//			
+//			items = dbController.getItemById(Integer.parseInt(responseArr[1]));
+//			
+//			if (!items.isEmpty()) {
+//				
+//				itemList = new ItemsList(items);
+//
+//				try {
+//					jsonItemList = objectMapper.writeValueAsString(itemList);
+//					System.out.println("Sending to client: " + jsonItemList);
+//
+//				} catch (JsonProcessingException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//
+//			} else {
+//				jsonItemList = "Item Id not found!!";
+//				System.out.println("Item Id not found!!");
+//
+//			}
+//			break;
 			
 			
+//		case 3:
+//			//Search for tool by toolName
+//			System.out.println("Operation: Search for tool by toolName");
+//			System.out.println(responseArr[1]);
+//			
+//			items = dbController.getItemByName(responseArr[1]);
+//			
+//			if (!items.isEmpty()) {
+//				
+//				itemList = new ItemsList(items);
+//
+//				try {
+//					jsonItemList = objectMapper.writeValueAsString(itemList);
+//					System.out.println("Sending to client: " + jsonItemList);
+//
+//				} catch (JsonProcessingException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//
+//			} else {
+//				jsonItemList = "Item name not found!!";
+//				System.out.println("Item name not found!!");
+//
+//			}
+//			break;
 			
-			if (!items.isEmpty()) {
-				
-				itemList = new ItemsList(items);
-
-				try {
-					jsonItemList = objectMapper.writeValueAsString(itemList);
-					System.out.println("Sending to client: " + jsonItemList);
-
-				} catch (JsonProcessingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			} else {
-				jsonItemList = "Item not found!!";
-				System.out.println("Item not found!!");
-
-			}
-			break;
+//		case 4:
+//			//Search for tool by toolName
+//			System.out.println("Operation: Check item quantity");
+//			System.out.println(responseArr[1]);
+//			
+//			if(responseArr[1] instanceof String) {
+//				
+//				items = dbController.getItemQty(responseArr[1]);
+//			}
+//			else {
+//				items = dbController.getItemQty(Integer.parseInt(responseArr[1]));
+//			}
+//			
+//			
+//			
+//			if (!items.isEmpty()) {
+//				
+//				itemList = new ItemsList(items);
+//
+//				try {
+//					jsonItemList = objectMapper.writeValueAsString(itemList);
+//					System.out.println("Sending to client: " + jsonItemList);
+//
+//				} catch (JsonProcessingException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//
+//			} else {
+//				jsonItemList = "Item not found!!";
+//				System.out.println("Item not found!!");
+//
+//			}
+//			break;
 			
-		case 5:
-		
-		System.out.println("Operation: Decrease item quantity");
-		System.out.println(responseArr[1]); //will get id here
-		
-		if(responseArr[1] instanceof String) {
-			
-			
-			
-//			shop.decreaseQuantity(responseArr[1]);
-			
-
-		}
-		else {
-
-		}
-		
-		
-		break;
-		
-		
+//		case 5:
+//		
+//		System.out.println("Operation: Decrease item quantity");
+//		System.out.println(responseArr[1]); //will get id here
+//		
+//		if(responseArr[1] instanceof String) {
+//			
+//			
+//			
+////			shop.decreaseQuantity(responseArr[1]);
+//			
+//
+//		}
+//		else {
+//
+//		}
+//		
+//		
+//		break;
+//		
+//		
 		
 		
 		
