@@ -188,8 +188,6 @@ public class CustomerViewController  {
 		int selectedIndex = customerView.getCustomerList().getSelectedIndex();
 		if (selectedIndex > -1)
 			customerView.getCustomerList().remove(selectedIndex);
-        
-		
 	}
 	
 	public void clearCustomerFields() {

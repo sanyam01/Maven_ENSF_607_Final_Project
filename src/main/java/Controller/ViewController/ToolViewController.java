@@ -31,40 +31,96 @@ public class ToolViewController {
 				findSearchType();
 			if (e.getSource() == toolView.getListAllTools())
 				getAllTools();
-			if(e.getSource() == toolView.getClearSearch())
+			if (e.getSource() == toolView.getClearSearch())
 				clearSearch();
+			if (e.getSource() == toolView.getDecrease())
+				decreaseItem();
+			if(e.getSource() == toolView.getClear())
+				clearItem();
+			if(e.getSource() == toolView.getCheckQuantity())
+				findCheckQuantity();
+			if(e.getSource() == toolView.getPrintOrder())
+				printOrder();
 		}
-
-
-
-		private void clearSearch() {
-			toolView.getGroup().clearSelection();
-			toolView.getSearchParameter().setText("");
-			//customerView.getCustomerList().removeAll();
-			toolView.clearToolList();
-			
-		}
-
-
 
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			
+
 			int index = toolView.getToolList().getSelectedIndex();
 			System.out.println("First index is" + index);
 			getSelectedToolInfo(index);
 		}
 
 	}
+	
+	public void printOrder() {
+		
+		String value = this.getModelControllerTool().printOrder();
+		printToolListGUI(value);
+	}
+	
+	private void clearItem() {
+		
+		System.out.println("Clear has been called");
+		clearToolFields();
+		toolView.getStatusText().setText("Item Info is cleared");
+	}
+
+	private void clearSearch() {
+		toolView.getGroup().clearSelection();
+		toolView.getSearchParameter().setText("");
+		// customerView.getCustomerList().removeAll();
+		toolView.clearToolList();
+
+	}
+
+	private void decreaseItem() {
+		System.out.println("Decrease has been called");
+		fetchItemInformation();
+		String response = modelControllerTool.sendItemInfoDelete();
+		toolView.getStatusText().setText(response);
+		clearDecreaseGUI();
+
+	}
+	
+	private void clearDecreaseGUI() {
+		clearToolFields();
+		
+	}
+	
+	
+	private void clearToolFields() {
+		
+		toolView.getToolID().setText("");
+		toolView.getToolName().setText("");
+		toolView.getToolType().setSelectedItem("");
+		toolView.getToolPrice().setText("");
+		toolView.getToolQuantity().setText("");
+		toolView.getSupplierID().setText("");
+	}
+
+	private void fetchItemInformation() {
+
+		int iD = Integer.parseInt(this.getToolView().getToolID().getText());
+		String name = this.getToolView().getToolName().getText();
+		String type = (String)this.getToolView().getToolType().getSelectedItem();
+		int quantity = Integer.parseInt(this.getToolView().getToolQuantity().getText());
+		int price =  Integer.parseInt(this.getToolView().getToolPrice().getText());
+		int supplierID = Integer.parseInt(this.getToolView().getSupplierID().getText());
+		System.out.println("Selecte item is " + type);
+		this.modelControllerTool.setItem(iD, name, type, quantity, price, supplierID);
+
+	}
 
 	// getting all the tools
 	private void getAllTools() {
-	
+
 		String response = modelControllerTool.getAllTools();
 		printToolListGUI(response);
 		addListenerList();
-		
+
 	}
+
 	private void getSelectedToolInfo(int index) {
 
 		String values = this.modelControllerTool.getIndexTool(index);
@@ -74,9 +130,9 @@ public class ToolViewController {
 
 	}
 
-	private void setValuesToolGUI(String itemID, String itemType, String itemName, String itemPrice, String itemQuantity,
-			String supplierID) {
-		
+	private void setValuesToolGUI(String itemID, String itemType, String itemName, String itemPrice,
+			String itemQuantity,String supplierID) {
+
 		toolView.getToolID().setText(itemID);
 		toolView.getToolName().setText(itemName);
 		toolView.getToolPrice().setText(itemPrice);
@@ -86,8 +142,8 @@ public class ToolViewController {
 		if (itemType.contentEquals("Electrical"))
 			toolView.getToolType().setSelectedIndex(1);
 		else
-			toolView.getToolType().setSelectedIndex(2);;
-		
+			toolView.getToolType().setSelectedIndex(2);
+
 	}
 
 	private void findSearchType() {
@@ -99,13 +155,24 @@ public class ToolViewController {
 			System.out.println("Could find an option on which valid search is to be made");
 
 	}
+	
+	private void findCheckQuantity() {
+		if (toolView.getSearchToolID().isSelected())
+			checkClientID();
+		else if (toolView.getSearchToolName().isSelected())
+			checkName();
+		else
+			System.out.println("Could find an option on which checkQuantity can be done");
+
+		
+	}
 
 	private void searchName() {
 		String toolName = toolView.getSearchParameter().getText();
 		String response = modelControllerTool.searchToolName(toolName);
 		printToolListGUI(response);
 		addListenerList();
-		
+
 	}
 
 	private void searchClientID() {
@@ -114,6 +181,22 @@ public class ToolViewController {
 		printToolListGUI(response);
 		addListenerList();
 
+	}
+	
+	private void checkClientID() {
+		
+		String toolID = toolView.getSearchParameter().getText();
+		String response = modelControllerTool.checkToolID(toolID);
+		printToolListGUI(response);
+		addListenerList();
+		
+	}
+	
+	private void checkName() {
+		String name = toolView.getSearchParameter().getText();
+		String response = modelControllerTool.checkToolName(name);
+		printToolListGUI(response);
+		addListenerList();
 	}
 
 	// method for adding action listeners to the list

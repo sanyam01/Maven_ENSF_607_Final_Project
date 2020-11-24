@@ -19,6 +19,7 @@ public class ToolView extends JFrame {
 	private JTextField toolQuantity;
 	private JTextField toolPrice;
 	private JTextField supplierID;
+	private JTextField statusText;
 	private JTextArea displayText;
 	private JRadioButton searchToolID;
 	private JRadioButton searchToolName;
@@ -27,6 +28,7 @@ public class ToolView extends JFrame {
 	private JButton clearSearch;
 	private JList toolList;
 	private JButton listAllTools;
+	private JButton printOrder;
 
 	private ButtonGroup group;
 
@@ -48,11 +50,11 @@ public class ToolView extends JFrame {
 		clear = new JButton("Clear");
 
 		// adding buttons to JPanel
-		buttons.add(checkQuantity);
+		// buttons.add(checkQuantity);
 		buttons.add(decrease);
 		buttons.add(clear);
 
-		rightView.add("South", buttons);// added buttns to the rightView
+		rightView.add("South", buttons);// added buttons to the rightView
 
 		JPanel centerRightView = new JPanel();
 		centerRightView.setLayout(new GridLayout(7, 2, 2, 2));
@@ -70,10 +72,6 @@ public class ToolView extends JFrame {
 		toolType = new JComboBox(toolTypeString);
 		centerRightView.add(toolType);
 
-//		centerRightView.add(new JLabel("ToolType"));//adding Name
-//		toolType = new JTextField();
-//		centerRightView.add(toolType);
-
 		centerRightView.add(new JLabel("Tool Quantity"));// adding Tool Quantity
 		toolQuantity = new JTextField();
 		centerRightView.add(toolQuantity);
@@ -87,6 +85,8 @@ public class ToolView extends JFrame {
 		centerRightView.add(supplierID);
 
 		centerRightView.add(new JLabel("Operation status"));
+		statusText = new JTextField();
+		centerRightView.add(statusText);
 
 		rightView.add("Center", centerRightView);
 		contentPanel.add("East", rightView);
@@ -119,28 +119,32 @@ public class ToolView extends JFrame {
 		search = new JButton("Search");
 		clearSearch = new JButton("Clear Search");
 		listAllTools = new JButton("List Tools");
+		printOrder = new JButton("Print Order");
 
 		leftViewButtons.add(searchParameter);
+		leftViewButtons.add(checkQuantity);
 		leftViewButtons.add(search);
 		leftViewButtons.add(clearSearch);
 		leftViewButtons.add(listAllTools);
-		leftView.add(leftViewButtons);
-		leftView.add("North", leftNorth);
+		leftViewButtons.add(printOrder);
+		leftNorth.add(leftViewButtons);
 		leftNorth.add(new JLabel("Search Results :"));
+		leftView.add("North", leftNorth);
 
 		contentPanel.add("West", leftView);
 
 	}
-	
+
 	public void addToolListener(ActionListener toolListener) {
-		
+
 		checkQuantity.addActionListener(toolListener);
 		decrease.addActionListener(toolListener);
 		clear.addActionListener(toolListener);
 		toolID.addActionListener(toolListener);
 		toolName.addActionListener(toolListener);
 		toolType.addActionListener(toolListener);
-		toolQuantity.addActionListener(toolListener);;
+		toolQuantity.addActionListener(toolListener);
+		;
 		toolPrice.addActionListener(toolListener);
 		supplierID.addActionListener(toolListener);
 		searchToolID.addActionListener(toolListener);
@@ -149,24 +153,24 @@ public class ToolView extends JFrame {
 		search.addActionListener(toolListener);
 		clearSearch.addActionListener(toolListener);
 		listAllTools.addActionListener(toolListener);
-		
+		printOrder.addActionListener(toolListener);
+
 	}
-	
+
 	public JComboBox getToolType() {
 		return toolType;
 	}
 
-		// adding tool list to the GUI
-		public void addToolList(String list) {
+	// adding tool list to the GUI
+	public void addToolList(String list) {
 
-			toolList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			toolList.setLayoutOrientation(JList.VERTICAL_WRAP);
-			String[] listArray = list.split("\n");
-			toolList.setListData(listArray);
+		toolList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		toolList.setLayoutOrientation(JList.VERTICAL_WRAP);
+		String[] listArray = list.split("\n");
+		toolList.setListData(listArray);
 
-		}
+	}
 
-	
 	// method for adding action listeners to the list
 	public void addListenerList(ListSelectionListener toolListener) {
 		ListSelectionModel listSelectionModel = toolList.getSelectionModel();
@@ -187,6 +191,22 @@ public class ToolView extends JFrame {
 
 	public void setDecrease(JButton decrease) {
 		this.decrease = decrease;
+	}
+
+	public JTextField getStatusText() {
+		return statusText;
+	}
+
+	public void setStatusText(JTextField statusText) {
+		this.statusText = statusText;
+	}
+
+	public JButton getPrintOrder() {
+		return printOrder;
+	}
+
+	public void setPrintOrder(JButton printOrder) {
+		this.printOrder = printOrder;
 	}
 
 	public JButton getClear() {
@@ -318,7 +338,7 @@ public class ToolView extends JFrame {
 		toolList.setLayoutOrientation(JList.VERTICAL_WRAP);
 		String[] listArray = {};
 		toolList.setListData(listArray);
-		
+
 	}
 
 }

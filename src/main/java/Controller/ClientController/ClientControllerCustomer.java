@@ -38,7 +38,7 @@ public class ClientControllerCustomer {
 			System.out.println("In ClientControllerCustomer, unable to read from server after sending the customer information to save");
 			e.printStackTrace();
 		}
-		System.out.println("Gotten response");
+		System.out.println("Got response");
 		return response;
 	}
 
