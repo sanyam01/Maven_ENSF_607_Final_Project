@@ -2,6 +2,8 @@ package Server.Model;
 
 import java.util.ArrayList;
 
+import Server.Controller.DatabaseController.DBController;
+
 public class Inventory {
 
 	/**
@@ -13,6 +15,7 @@ public class Inventory {
 	 * Order theOrder represents the order of the items
 	 */
 	private Order theOrder;
+	private DBController dbController;
 
 	/**
 	 * Constructs an object of the class Inventory.
@@ -52,10 +55,12 @@ public class Inventory {
 	 */
 	public String decreaseQuantity(String name) {
 		String s = "Item not found";
-		for (Items i : listItems) {
-			if (i.getItemName().equalsIgnoreCase(name))
-				s = i.decreaseQuantity(this.getTheOrder());
-		}
+//		for (Items i : listItems) {
+//			if (i.getItemName().equalsIgnoreCase(name))
+//				s = i.decreaseQuantity(this.getTheOrder());
+//		}
+		
+		
 		return s;
 
 	}
