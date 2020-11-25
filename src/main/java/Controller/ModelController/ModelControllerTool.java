@@ -17,8 +17,6 @@ import Controller.ClientController.ClientControllerTool;
 import ClientModel.Order;
 import ClientModel.OrderLines;
 
-
-
 public class ModelControllerTool {
 
 	private ClientControllerTool clientControllerTool;
@@ -55,7 +53,7 @@ public class ModelControllerTool {
 		// String response = clientControllerTool.searchTool(searchID);
 		String response = clientControllerTool.sendQuery(searchID);
 		getToolListFromJson(response);
-		String displayQuantity = getStringToolList();
+		String displayQuantity = getStringQuantityList();
 		return displayQuantity;
 	}
 
@@ -64,7 +62,7 @@ public class ModelControllerTool {
 		// String response = clientControllerTool.searchTool(searchID);
 		String response = clientControllerTool.sendQuery(searchID);
 		getToolListFromJson(response);
-		String displayQuantity = getStringToolList();
+		String displayQuantity = getStringQuantityList();
 		return displayQuantity;
 	}
 
@@ -88,47 +86,42 @@ public class ModelControllerTool {
 //		
 //		return displayTool;
 //	}
-	
+
 	public String getAllTools() {
-	
-	String searchID = "6 ";
-	// String response = clientControllerTool.searchTool(searchID);
-	String response = clientControllerTool.sendQuery(searchID);
-	getToolListFromJson(response);
-	String displayTool = getStringToolList();
-	
-	return displayTool;
-}
+
+		String searchID = "6 ";
+		// String response = clientControllerTool.searchTool(searchID);
+		String response = clientControllerTool.sendQuery(searchID);
+		getToolListFromJson(response);
+		String displayTool = getStringToolList();
+
+		return displayTool;
+	}
 
 	// trying that link
 	public String getStringToolList() {
-		
+
 		String concat = "";
-		//ItemsList deserializedFleet = objectMapper.readValue(response, ItemsList.class);
-//		System.out.println("deserializedFleet: "+ deserializedFleet);
-//		System.out.println(deserializedFleet.getItemsList().get(0));
-//		System.out.println(deserializedFleet.getItemsList().get(1));
-		
-		for(Items i: itemsList.getItemsList()) {
-			
-			if(i instanceof ElectricalItem) {
-				
-				//System.out.println("electrical item");
+
+		for (Items i : itemsList.getItemsList()) {
+
+			if (i instanceof ElectricalItem) {
+
+				// System.out.println("electrical item");
 				concat = concat + i.getItemID() + " " + i.getItemName() + " " + i.getItemType() + " " + i.getItemPrice()
-				+ " " + i.getItemQuantity() + " " + i.getSupplierID() + " " + ((ElectricalItem)i).getPowerType() + "\n";
-				//System.out.println(((ElectricalItem) i).getPowerType() + i.getItemName());
-				
-			}
-			else {
+						+ " " + i.getItemQuantity() + " " + i.getSupplierID() + " "
+						+ ((ElectricalItem) i).getPowerType() + "\n";
+				// System.out.println(((ElectricalItem) i).getPowerType() + i.getItemName());
+
+			} else {
 				concat = concat + i.getItemID() + " " + i.getItemName() + " " + i.getItemType() + " " + i.getItemPrice()
-				+ " " + i.getItemQuantity() + " " + i.getSupplierID() + "\n";
+						+ " " + i.getItemQuantity() + " " + i.getSupplierID() + "\n";
 			}
-		
-		
-	}
+
+		}
 		return concat;
 	}
-	
+
 //	public void getAllData(String response) {
 //
 //		ObjectMapper objectMapper = new ObjectMapper();
@@ -146,19 +139,19 @@ public class ModelControllerTool {
 //
 //	}
 
-	public String getAllList() {
-		
-		String concat = "";
-		for (ElectricalItem i : this.itemsList.getElecItemList())
-			concat = concat + i.getItemID() + " " + i.getItemName() + " " + i.getItemType() + " " + i.getItemPrice()
-					+ " " + i.getItemQuantity() + " " + i.getSupplierID() + " " + i.getPowerType() + "\n";
-		for (NonElectricalItem i : this.itemsList.getNonElecItemList())
-			concat = concat + i.getItemID() + " " + i.getItemName() + " " + i.getItemType() + " " + i.getItemPrice()
-					+ " " + i.getItemQuantity() + " " + i.getSupplierID() + "\n";
-		
-		return concat;
-
-	}
+//	public String getAllList() {
+//		
+//		String concat = "";
+//		for (ElectricalItem i : this.itemsList.getElecItemList())
+//			concat = concat + i.getItemID() + " " + i.getItemName() + " " + i.getItemType() + " " + i.getItemPrice()
+//					+ " " + i.getItemQuantity() + " " + i.getSupplierID() + " " + i.getPowerType() + "\n";
+//		for (NonElectricalItem i : this.itemsList.getNonElecItemList())
+//			concat = concat + i.getItemID() + " " + i.getItemName() + " " + i.getItemType() + " " + i.getItemPrice()
+//					+ " " + i.getItemQuantity() + " " + i.getSupplierID() + "\n";
+//		
+//		return concat;
+//
+//	}
 
 	public String printOrder() {
 
@@ -207,7 +200,7 @@ public class ModelControllerTool {
 	private String getStringQuantityList() {
 		String concatTool = "";
 		for (Items item : this.itemsList.getItemsList())
-			concatTool = concatTool + item.getItemID() + " " + item.getItemName() + " " + " " + item.getItemType()
+			concatTool = concatTool + item.getItemID() + " " + item.getItemName() + " "
 					+ item.getItemQuantity() + " " + "\n";
 		return concatTool;
 	}
@@ -241,8 +234,7 @@ public class ModelControllerTool {
 //		this.items = new Items(iD, name, quantity, price, type, supplierID);
 //	}
 
-	
-	//when electrical and non -electrical were diff
+	// when electrical and non -electrical were diff
 //	public String getIndexTool(int index) {
 //
 //		int lenElectrical = itemsList.getElecItemList().size();
@@ -256,22 +248,21 @@ public class ModelControllerTool {
 //				+ atIndexItem.getSupplierID();
 //		return values;
 //	}
-	
+
 	public String getIndexTool(int index) {
 
 		atIndexItem = getItemsList().getItemsList().get(index);
-		String values ="";
-		
-		if(atIndexItem instanceof ElectricalItem) {
-			
-		values = atIndexItem.getItemID() + "!!!" + atIndexItem.getItemName() + "!!!" + atIndexItem.getItemType()
-				+ "!!!" + atIndexItem.getItemPrice() + "!!!" + atIndexItem.getItemQuantity() + "!!!"
-				+ atIndexItem.getSupplierID() + "!!!" +  ((ElectricalItem)atIndexItem).getPowerType();
-		}
-		else {
+		String values = "";
+
+		if (atIndexItem instanceof ElectricalItem) {
+
 			values = atIndexItem.getItemID() + "!!!" + atIndexItem.getItemName() + "!!!" + atIndexItem.getItemType()
-			+ "!!!" + atIndexItem.getItemPrice() + "!!!" + atIndexItem.getItemQuantity() + "!!!"
-			+ atIndexItem.getSupplierID();
+					+ "!!!" + atIndexItem.getItemPrice() + "!!!" + atIndexItem.getItemQuantity() + "!!!"
+					+ atIndexItem.getSupplierID() + "!!!" + ((ElectricalItem) atIndexItem).getPowerType();
+		} else {
+			values = atIndexItem.getItemID() + "!!!" + atIndexItem.getItemName() + "!!!" + atIndexItem.getItemType()
+					+ "!!!" + atIndexItem.getItemPrice() + "!!!" + atIndexItem.getItemQuantity() + "!!!"
+					+ atIndexItem.getSupplierID();
 		}
 		return values;
 	}
