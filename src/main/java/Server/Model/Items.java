@@ -145,30 +145,44 @@ public  abstract class Items implements Serializable {
 	}
 	
 	
-	public String decreaseQuantity(Order order) {
+	public String decreaseQuantity(Order order, int itemQty) {
 
 		OrderLines ol = null;
 		String s = "\nNo new OrderLine generated. Printing order: \n";
 		s = s + "....................................................................\n\n";
-		if (this.getItemQuantity() > 0)
-			this.setItemQuantity(this.getItemQuantity() - 1);
-		if (this.getItemQuantity() < 40) {
-			int initiallyItem = this.getItemQuantity();
+		if (itemQty > 0)
+			this.setItemQuantity(itemQty - 1);
+		//update statement to update qty in item
+		
+		if (itemQty < 40) {
+			int initiallyItem = itemQty;
 			ol = new OrderLines(this, 50 - initiallyItem);
+			//orderline table create 
+			
 			order.addOrderLine(ol);
 			this.setItemQuantity(50);
+			//update statement to update qty in item
+			
 			s = "\nNew order line generated. Updated Order for the day is:\n\n";
 			s = s + "....................................................................\n";
 			s = s + "Order Id : " + order.getOrderId() + "\n" + "Order date : " + order.getDate() + "\n\n";
+			
+			
+			
 
 		}
 
 		else {
 			s = s + "Order Id : " + order.getOrderId() + "\n" + "Order date : " + order.getDate() + "\n\n";
+			
 		}
 		for (OrderLines k : order.getOrderLines()) {
 			s = s + "ItemName: " + k.getItem().getItemName() + ", Quantity ordered: " + k.getAmount()
 					+ ", Supplier name: " + k.getItem().getSup().getSupplierName() + "\n";
+			
+			
+			//orderline table insert
+			
 		}
 
 		s = s + "\n....................................................................\n\n";

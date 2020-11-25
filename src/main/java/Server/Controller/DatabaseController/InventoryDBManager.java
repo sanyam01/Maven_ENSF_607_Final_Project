@@ -113,8 +113,7 @@ public class InventoryDBManager {
 //		return null;
 //
 //	}
-	
-	
+
 	public ArrayList<Items> getItemByIdPreparedStatement(int itemId) {
 
 		String query = "SELECT  item.item_id,  item_name,  item_quantity,  item_price,  item_type,  supplier_id , electrical_item.power_type\r\n"
@@ -129,38 +128,30 @@ public class InventoryDBManager {
 
 			ArrayList<Items> items = new ArrayList<>();
 
-			
-
 			while (myres.next()) {
 
 //				itemArrayList.add(new Items(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
 //						myres.getString("item_type"), myres.getInt("supplier_id")));
 
 				if (myres.getString("power_type") != null) {
-					
-					
-					
+
 					items.add(new ElectricalItem(myres.getInt("item_id"), myres.getString("item_name"),
 							myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
 							myres.getInt("supplier_id"), myres.getString("power_type")));
-					
+
 //					itemArrayList.setElecItemList(elecArrList);
-					
+
 				}
 				if (myres.getString("power_type") == null) {
-					
-					
-							
+
 					items.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"),
 							myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
 							myres.getInt("supplier_id")));
-					
+
 //					
 				}
 
 			}
-			
-			
 
 			return items;
 
@@ -226,7 +217,7 @@ public class InventoryDBManager {
 //		return null;
 //
 //	}
-	
+
 	public ArrayList<Items> getItemByNamePreparedStatement(String itemName) {
 		String query = "SELECT  item.item_id,  item_name,  item_quantity,  item_price,  item_type,  supplier_id , electrical_item.power_type\r\n"
 				+ "          FROM item \r\n"
@@ -239,36 +230,26 @@ public class InventoryDBManager {
 			myres = prepStatment.executeQuery();
 
 			ArrayList<Items> items = new ArrayList<>();
-			
 
 			while (myres.next()) {
 
-
-
 				if (myres.getString("power_type") != null) {
-					
-					
-					
+
 					items.add(new ElectricalItem(myres.getInt("item_id"), myres.getString("item_name"),
 							myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
 							myres.getInt("supplier_id"), myres.getString("power_type")));
-					
-					
+
 				}
 				if (myres.getString("power_type") == null) {
-					
-					
-							
+
 					items.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"),
 							myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
 							myres.getInt("supplier_id")));
-					
+
 //					
 				}
 
 			}
-			
-			
 
 			return items;
 
@@ -311,7 +292,9 @@ public class InventoryDBManager {
 
 	public ArrayList<Items> getItemQtyPreparedStatement(int itemId) {
 
-		String query = "Select item_id, item_name,item_quantity from item where item_id=?";
+		String query = "SELECT  item.item_id,  item_name,  item_quantity,  item_price,  item_type,  supplier_id , electrical_item.power_type\r\n"
+				+ "          FROM item \r\n"
+				+ "          LEFT  JOIN electrical_item  ON item.item_id=electrical_item.item_id  ";
 
 		try {
 			prepStatment = myDriver.getMyConn().prepareStatement(query);
@@ -523,7 +506,7 @@ public class InventoryDBManager {
 			pStat.setString(5, phoneNumber);
 			pStat.setString(6, type);
 			pStat.setInt(7, id);
-			;
+
 			rowCount = pStat.executeUpdate();
 			System.out.println("row Count = " + rowCount);
 		} catch (SQLException e) {
@@ -608,8 +591,6 @@ public class InventoryDBManager {
 						myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
 						myres.getInt("supplier_id")));
 
-
-
 			}
 
 			return itemArrayList;
@@ -621,42 +602,25 @@ public class InventoryDBManager {
 		return null;
 
 	}
-	
-	public void updateItemQtyPrepStatement() {
 
-		String query = "select * from item i, electrical_item e where i.item_id = e.item_id";
+	public int updateItemQtyPrepStatement(int itemId, int itemqty) {
+
+		String query = "update item set item_quantity = ? where item_name = ?";
+
+		int rowCount = 0;
 
 		try {
-			prepStatment = myDriver.getMyConn().prepareStatement(query);
-//			prepStatment.setInt(1, customerId);
-			myres = prepStatment.executeQuery();
+			PreparedStatement pStat = myDriver.getMyConn().prepareStatement(query);
+			pStat.setInt(1, itemqty);
+			pStat.setInt(1, itemId);
 
-			ArrayList<ElectricalItem> itemArrayList = new ArrayList<>();
-
-			while (myres.next()) {
-
-				if (myres.getString("power_type") != null) {
-					itemArrayList.add(new ElectricalItem(myres.getInt("item_id"), myres.getString("item_name"),
-							myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
-							myres.getInt("supplier_id"), myres.getString("power_type")));
-				}
-//			if(myres.getString("power_type") == null) {
-//				itemArrayList.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
-//						myres.getString("item_type"), myres.getInt("supplier_id")));
-//			}
-
-//				System.out.println("search customer result in IDB: " + customerArrayList);
-
-			}
-
-//			return itemArrayList;
-
+			rowCount = pStat.executeUpdate();
+			System.out.println("row Count = " + rowCount);
 		} catch (SQLException e) {
-
 			e.printStackTrace();
 		}
-//		return null;
+
+		return rowCount;
 
 	}
-
 }

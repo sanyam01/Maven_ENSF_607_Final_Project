@@ -27,6 +27,10 @@ public class Inventory {
 	public Inventory(ArrayList<Items> listItems) {
 		this.setListItems(listItems);
 		theOrder = new Order();
+		
+		//create order table
+		//data loads here
+		
 
 	}
 
@@ -54,16 +58,33 @@ public class Inventory {
 	 * @return the order for the day
 	 */
 	public String decreaseQuantity(String name) {
+		
 		String s = "Item not found";
-//		for (Items i : listItems) {
-//			if (i.getItemName().equalsIgnoreCase(name))
+		for (Items i : listItems) {
+			if (i.getItemName().equalsIgnoreCase(name))
+				System.out.println();
 //				s = i.decreaseQuantity(this.getTheOrder());
-//		}
+		}
 		
 		
 		return s;
 
 	}
+	
+	public void decreaseQuantity(int id) {
+		listItems = dbController.getItemById(id);
+		if(!listItems.isEmpty()) {
+			for (Items i : listItems) {
+				i.decreaseQuantity(this.getTheOrder(), i.getItemQuantity());
+			}
+			
+		}
+
+		
+		
+
+	}
+	
 
 //	/**
 //	 * Iterates through all the items and passes the supplier list to the items for
