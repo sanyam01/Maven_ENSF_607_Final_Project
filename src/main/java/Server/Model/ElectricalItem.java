@@ -11,6 +11,10 @@ public class ElectricalItem extends Items{
 //		super.setPowerType(powerType);
 
 	}
+	
+	public ElectricalItem() {
+		
+	}
 
 	public String getPowerType() {
 		return powerType;

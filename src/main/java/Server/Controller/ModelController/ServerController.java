@@ -24,6 +24,9 @@ public class ServerController implements Runnable {
 	public ServerController(Socket socket, DBController dbController) {
 
 		objectMapper = new ObjectMapper();
+		objectMapper.enableDefaultTyping();
+//		objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping , JsonTypeInfo.As includeAs);
+
 		this.dbController = dbController;
 		this.socket = socket;
 	}
@@ -37,43 +40,82 @@ public class ServerController implements Runnable {
 
 		if (taskId > 0 && taskId < 6) {
 			System.out.println("customerController instantiated");
+			
+			//call runCustomerController
+			runCustomerController(message);
 
-			try {
-				ServerCustomerController serverCustomerController = new ServerCustomerController(message, dbController,
-						objectMapper);
-				String messageToClient = serverCustomerController.readClientMessage();
-
-				// sending message to client
-				setClientMessage(messageToClient);
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				ServerCustomerController serverCustomerController = new ServerCustomerController(message, dbController,
+//						objectMapper);
+//				String messageToClient = serverCustomerController.readClientMessage();
+//
+//				// sending message to client
+//				setClientMessage(messageToClient);
+//				
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 
 		} else if (taskId >= 6 && taskId < 12) {
 			System.out.println("ServerToolController instantiated");
 
-			try {
-				ServerInventoryController serverToolController = new ServerInventoryController(message, dbController,
-						objectMapper);
-				
-				String messageToClient = serverToolController.readClientMessage();
-
-				// sending message to client
-				setClientMessage(messageToClient);
-				
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				ServerInventoryController serverToolController = new ServerInventoryController(message, dbController,
+//						objectMapper);
+//				
+//				String messageToClient = serverToolController.readClientMessage();
+//
+//				// sending message to client
+//				setClientMessage(messageToClient);
+//				
+//				
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			runInventoryController(message);
 			
 
 		}
 
 	}
 
+	public void runCustomerController(String message) {
+		
+		try {
+			ServerCustomerController serverCustomerController = new ServerCustomerController(message, dbController,
+					objectMapper);
+			String messageToClient = serverCustomerController.readClientMessage();
+
+			// sending message to client
+			setClientMessage(messageToClient);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+	}
+	
+	public void runInventoryController(String message) {
+		try {
+			ServerInventoryController serverToolController = new ServerInventoryController(message, dbController,
+					objectMapper);
+			
+			String messageToClient = serverToolController.readClientMessage();
+
+			// sending message to client
+			setClientMessage(messageToClient);
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	public String getClientMessage() {
 
 		System.out.println("getting taskid");

@@ -12,7 +12,7 @@ import java.io.Serializable;
  *
  */
 
-public class Items implements Serializable {
+public abstract class Items implements Serializable {
 	/**
 	 * itemID represents the ID of the item. Each item has unique ID
 	 */

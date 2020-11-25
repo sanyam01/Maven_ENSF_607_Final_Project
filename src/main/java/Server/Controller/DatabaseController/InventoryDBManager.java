@@ -10,6 +10,7 @@ import Server.Model.CustomerList;
 import Server.Model.ElectricalItem;
 import Server.Model.InternationalSupplier;
 import Server.Model.Items;
+import Server.Model.ItemsList;
 import Server.Model.NonElectricalItem;
 import Server.Model.Suppliers;
 
@@ -40,7 +41,6 @@ public class InventoryDBManager {
 
 	}
 
-
 	public void closeSqlConn() {
 
 		try {
@@ -55,32 +55,56 @@ public class InventoryDBManager {
 		}
 	}
 
-	public ArrayList<Items> getItemByIdPreparedStatement(int itemId) {
+	public ItemsList getItemByIdPreparedStatement(int itemId) {
 
-		String query = "SELECT  item.item_id,  item_name,  item_quantity,  item_price,  item_type,  supplier_id , electrical_item.power_type\r\n" + 
-				"          FROM item \r\n" + 
-				"          LEFT  JOIN electrical_item  ON item.item_id=electrical_item.item_id \r\n" + 
-				"          where item.item_id = ?";
+		String query = "SELECT  item.item_id,  item_name,  item_quantity,  item_price,  item_type,  supplier_id , electrical_item.power_type\r\n"
+				+ "          FROM item \r\n"
+				+ "          LEFT  JOIN electrical_item  ON item.item_id=electrical_item.item_id \r\n"
+				+ "          where item.item_id = ?";
 
 		try {
 			prepStatment = myDriver.getMyConn().prepareStatement(query);
 			prepStatment.setInt(1, itemId);
 			myres = prepStatment.executeQuery();
-			
 
-			ArrayList<Items> itemArrayList = new ArrayList<>();
+//			ItemsList itemArrayList = new  ItemsList();
+			ArrayList<ElectricalItem> elecArrList = new ArrayList<>();
+			ArrayList<NonElectricalItem> nonElecArrList = new ArrayList<>();
+			
 
 			while (myres.next()) {
 
-				
+//				itemArrayList.add(new Items(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
+//						myres.getString("item_type"), myres.getInt("supplier_id")));
 
-				itemArrayList.add(new Items(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
-						myres.getString("item_type"), myres.getInt("supplier_id")));
-
+				if (myres.getString("power_type") != null) {
+					
+					
+					
+					elecArrList.add(new ElectricalItem(myres.getInt("item_id"), myres.getString("item_name"),
+							myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
+							myres.getInt("supplier_id"), myres.getString("power_type")));
+					
+//					itemArrayList.setElecItemList(elecArrList);
+					
+				}
+				if (myres.getString("power_type") == null) {
+					
+					
+							
+					nonElecArrList.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"),
+							myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
+							myres.getInt("supplier_id")));
+					
+//					
+				}
 
 			}
+			
+			ItemsList itemsList = new ItemsList(elecArrList, nonElecArrList);
+			
 
-			return itemArrayList;
+			return itemsList;
 
 		} catch (SQLException e) {
 
@@ -89,30 +113,56 @@ public class InventoryDBManager {
 		return null;
 
 	}
-	
-	public ArrayList<Items> getItemByNamePreparedStatement(String itemName) {
 
-		String query = "Select * from item where item_name=?";
+	public ItemsList getItemByNamePreparedStatement(String itemName) {
+		String query = "SELECT  item.item_id,  item_name,  item_quantity,  item_price,  item_type,  supplier_id , electrical_item.power_type\r\n"
+				+ "          FROM item \r\n"
+				+ "          LEFT  JOIN electrical_item  ON item.item_id=electrical_item.item_id \r\n"
+				+ "          where item.item_name = ?";
 
 		try {
 			prepStatment = myDriver.getMyConn().prepareStatement(query);
 			prepStatment.setString(1, itemName);
 			myres = prepStatment.executeQuery();
-			
 
-			ArrayList<Items> itemArrayList = new ArrayList<>();
+//			ItemsList itemArrayList = new  ItemsList();
+			ArrayList<ElectricalItem> elecArrList = new ArrayList<>();
+			ArrayList<NonElectricalItem> nonElecArrList = new ArrayList<>();
+			
 
 			while (myres.next()) {
 
-				
+//				itemArrayList.add(new Items(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
+//						myres.getString("item_type"), myres.getInt("supplier_id")));
 
-				itemArrayList.add(new Items(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
-						myres.getString("item_type"), myres.getInt("supplier_id")));
-
+				if (myres.getString("power_type") != null) {
+					
+					
+					
+					elecArrList.add(new ElectricalItem(myres.getInt("item_id"), myres.getString("item_name"),
+							myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
+							myres.getInt("supplier_id"), myres.getString("power_type")));
+					
+//					itemArrayList.setElecItemList(elecArrList);
+					
+				}
+				if (myres.getString("power_type") == null) {
+					
+					
+							
+					nonElecArrList.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"),
+							myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
+							myres.getInt("supplier_id")));
+					
+//					
+				}
 
 			}
+			
+			ItemsList itemsList = new ItemsList(elecArrList, nonElecArrList);
+			
 
-			return itemArrayList;
+			return itemsList;
 
 		} catch (SQLException e) {
 
@@ -121,7 +171,7 @@ public class InventoryDBManager {
 		return null;
 
 	}
-	
+
 	public ArrayList<Items> getItemQtyPreparedStatement(String itemName) {
 
 		String query = "Select item_id, item_name,item_quantity from item where item_name=?";
@@ -130,17 +180,14 @@ public class InventoryDBManager {
 			prepStatment = myDriver.getMyConn().prepareStatement(query);
 			prepStatment.setString(1, itemName);
 			myres = prepStatment.executeQuery();
-			
 
 			ArrayList<Items> itemArrayList = new ArrayList<>();
 
 			while (myres.next()) {
 
-				
-
-				itemArrayList.add(new Items(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
-						myres.getString("item_type"), myres.getInt("supplier_id")));
-
+//				itemArrayList.add(new Items(myres.getInt("item_id"), myres.getString("item_name"),
+//						myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
+//						myres.getInt("supplier_id")));
 
 			}
 
@@ -153,7 +200,7 @@ public class InventoryDBManager {
 		return null;
 
 	}
-	
+
 	public ArrayList<Items> getItemQtyPreparedStatement(int itemId) {
 
 		String query = "Select item_id, item_name,item_quantity from item where item_id=?";
@@ -162,17 +209,14 @@ public class InventoryDBManager {
 			prepStatment = myDriver.getMyConn().prepareStatement(query);
 			prepStatment.setInt(1, itemId);
 			myres = prepStatment.executeQuery();
-			
 
 			ArrayList<Items> itemArrayList = new ArrayList<>();
 
 			while (myres.next()) {
 
-				
-
-				itemArrayList.add(new Items(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
-						myres.getString("item_type"), myres.getInt("supplier_id")));
-
+//				itemArrayList.add(new Items(myres.getInt("item_id"), myres.getString("item_name"),
+//						myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
+//						myres.getInt("supplier_id")));
 
 			}
 
@@ -185,13 +229,12 @@ public class InventoryDBManager {
 		return null;
 
 	}
-	
+
 	public ArrayList<Items> getItemListPreparedStatemen() {
 
-
-		String query = "SELECT  item.item_id,  item_name,  item_quantity,  item_price,  item_type,  supplier_id , electrical_item.power_type\r\n" + 
-				"          FROM item \r\n" + 
-				"          LEFT  JOIN electrical_item  ON item.item_id=electrical_item.item_id  ";
+		String query = "SELECT  item.item_id,  item_name,  item_quantity,  item_price,  item_type,  supplier_id , electrical_item.power_type\r\n"
+				+ "          FROM item \r\n"
+				+ "          LEFT  JOIN electrical_item  ON item.item_id=electrical_item.item_id  ";
 
 		try {
 			prepStatment = myDriver.getMyConn().prepareStatement(query);
@@ -202,15 +245,16 @@ public class InventoryDBManager {
 
 			while (myres.next()) {
 
-			if(myres.getString("power_type") != null) {
-				itemArrayList.add(new ElectricalItem(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
-						myres.getString("item_type"), myres.getInt("supplier_id"), myres.getString("power_type")));
-			}
-			if(myres.getString("power_type") == null) {
-				itemArrayList.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
-						myres.getString("item_type"), myres.getInt("supplier_id")));
-			}
-				
+				if (myres.getString("power_type") != null) {
+					itemArrayList.add(new ElectricalItem(myres.getInt("item_id"), myres.getString("item_name"),
+							myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
+							myres.getInt("supplier_id"), myres.getString("power_type")));
+				}
+				if (myres.getString("power_type") == null) {
+					itemArrayList.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"),
+							myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
+							myres.getInt("supplier_id")));
+				}
 
 //				System.out.println("search customer result in IDB: " + customerArrayList);
 
@@ -225,11 +269,8 @@ public class InventoryDBManager {
 		return null;
 
 	}
-	
-	
-	public ArrayList<InternationalSupplier> getSuppListPreparedStatemen() {
 
-		
+	public ArrayList<InternationalSupplier> getSuppListPreparedStatemen() {
 
 		String query = "Select * from supplier  s, international_supplier i where s.supplier_id = i.supplier_id";
 
@@ -242,8 +283,8 @@ public class InventoryDBManager {
 
 			while (myres.next()) {
 
-
-				supplierList.add(new InternationalSupplier(myres.getInt("supplier_id"), myres.getString("supplier_name"), myres.getString("address"), myres.getString("sales_contact"), 
+				supplierList.add(new InternationalSupplier(myres.getInt("supplier_id"),
+						myres.getString("supplier_name"), myres.getString("address"), myres.getString("sales_contact"),
 						myres.getString("company_name"), myres.getString("supplier_type"), myres.getInt("import_tax")));
 
 //				System.out.println("search customer result in IDB: " + customerArrayList);
@@ -380,7 +421,7 @@ public class InventoryDBManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return rowCount;
 
 	}
@@ -401,14 +442,11 @@ public class InventoryDBManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return rowCount;
 	}
-	
-	
-	
-	public ArrayList<ElectricalItem> getElectricalItemListPrepStat() {
 
+	public ArrayList<ElectricalItem> getElectricalItemListPrepStat() {
 
 		String query = "select * from item i, electrical_item e where i.item_id = e.item_id";
 
@@ -421,15 +459,15 @@ public class InventoryDBManager {
 
 			while (myres.next()) {
 
-			if(myres.getString("power_type") != null) {
-				itemArrayList.add(new ElectricalItem(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
-						myres.getString("item_type"), myres.getInt("supplier_id"), myres.getString("power_type")));
-			}
+				if (myres.getString("power_type") != null) {
+					itemArrayList.add(new ElectricalItem(myres.getInt("item_id"), myres.getString("item_name"),
+							myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
+							myres.getInt("supplier_id"), myres.getString("power_type")));
+				}
 //			if(myres.getString("power_type") == null) {
 //				itemArrayList.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
 //						myres.getString("item_type"), myres.getInt("supplier_id")));
 //			}
-				
 
 //				System.out.println("search customer result in IDB: " + customerArrayList);
 
@@ -445,9 +483,7 @@ public class InventoryDBManager {
 
 	}
 
-	
 	public ArrayList<NonElectricalItem> getNonElectricalItemListPrepStat() {
-
 
 		String query = "select * from item where item_type ='Non-Electrical'";
 
@@ -460,15 +496,14 @@ public class InventoryDBManager {
 
 			while (myres.next()) {
 
-			
-				itemArrayList.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
-						myres.getString("item_type"), myres.getInt("supplier_id")));
-			
+				itemArrayList.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"),
+						myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
+						myres.getInt("supplier_id")));
+
 //			if(myres.getString("power_type") == null) {
 //				itemArrayList.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"), myres.getInt("item_quantity"), myres.getFloat("item_price"), 
 //						myres.getString("item_type"), myres.getInt("supplier_id")));
 //			}
-				
 
 //				System.out.println("search customer result in IDB: " + customerArrayList);
 

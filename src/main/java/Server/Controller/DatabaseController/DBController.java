@@ -6,6 +6,7 @@ import Server.Model.Customer;
 import Server.Model.ElectricalItem;
 import Server.Model.InternationalSupplier;
 import Server.Model.Items;
+import Server.Model.ItemsList;
 import Server.Model.NonElectricalItem;
 import Server.Model.Suppliers;
 
@@ -132,11 +133,11 @@ public class DBController {
 		return dbManager.getItemListPreparedStatemen();
 	}
 	
-	public ArrayList<Items> getItemById(int itemId) {
+	public ItemsList getItemById(int itemId) {
 		return dbManager.getItemByIdPreparedStatement(itemId);
 	}
 	
-	public ArrayList<Items> getItemByName(String itemName) {
+	public ItemsList getItemByName(String itemName) {
 		return dbManager.getItemByNamePreparedStatement(itemName);
 	}
 	

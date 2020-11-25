@@ -14,7 +14,7 @@ public class Driver implements 	JDBCredentials{
 		
 		try {
 
-			setMyConn(DriverManager.getConnection("jdbc:mysql://localhost:3306/inventory", "root", "San@0103"));
+			setMyConn(DriverManager.getConnection("jdbc:mysql://localhost:3306/inventory", "root", "password"));
 			System.out.println("Connected to DB...");
 			
 		} catch (SQLException e) {

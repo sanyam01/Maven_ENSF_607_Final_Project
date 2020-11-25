@@ -25,9 +25,13 @@ public class ItemsList implements Serializable{
 
 	}
 	
-//	public ItemsList(ArrayList<Items> list) {
-//		this.setItemsList(list);
-//	}
+	public ItemsList(ArrayList<Items> list) {
+		this.setItemsList(list);
+	}
+
+	public ItemsList() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public ArrayList<Items> getItemsList() {
 		return itemsList;

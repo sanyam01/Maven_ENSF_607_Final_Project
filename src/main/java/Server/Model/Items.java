@@ -2,7 +2,20 @@ package Server.Model;
 
 import java.io.Serializable;
 
-public  class Items implements Serializable {
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+//@JsonTypeInfo(
+//		  use = JsonTypeInfo.Id.NAME, 
+//		  include = JsonTypeInfo.As.PROPERTY, 
+//		  property = "type")
+//		@JsonSubTypes({ 
+//		  @Type(value = ElectricalItem.class, name = "electricalItem"), 
+//		  @Type(value = NonElectricalItem.class, name = "nonElectricalItem") 
+//		})
+
+public  abstract class Items implements Serializable {
 
 	
 
@@ -66,6 +79,9 @@ public  class Items implements Serializable {
 //		this.setPowerType(null);
 	}
 
+	public Items() {
+		
+	}
 	/**
 	 * toString method overrides the method of the super class.
 	 * 

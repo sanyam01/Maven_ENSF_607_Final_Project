@@ -23,7 +23,7 @@ public class Shop {
 	public Shop() {
 
 		
-		inventory.addSuppliers(supplierList);
+//		inventory.addSuppliers(supplierList);
 		supplierList.addItems(inventory.getListItems());
 
 	}

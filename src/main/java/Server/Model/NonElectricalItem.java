@@ -12,5 +12,9 @@ public class NonElectricalItem extends Items{
 		super(itemID, itemName, itemQuantity, itemPrice, itemType, supplierID);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public NonElectricalItem() {
+		
+	}
 
 }
