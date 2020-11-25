@@ -34,12 +34,7 @@ public class ToolViewController {
 			if (e.getSource() == toolView.getSearch())
 				findSearchType();
 			if (e.getSource() == toolView.getListAllTools())
-				try {
 					getAllTools();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 			if (e.getSource() == toolView.getClearSearch())
 				clearSearch();
 			if (e.getSource() == toolView.getDecrease())
@@ -123,7 +118,7 @@ public class ToolViewController {
 	}
 
 	// getting all the tools
-	private void getAllTools() throws JsonParseException, JsonMappingException, IOException {
+	private void getAllTools() {
 
 		String response = modelControllerTool.getAllTools();
 		printToolListGUI(response);
@@ -136,10 +131,10 @@ public class ToolViewController {
 		String values = this.modelControllerTool.getIndexTool(index);
 		System.out.println("Values recieved to display on GUI are" + values);
 		String[] data = values.split("!!!");
-		if (data[6] != null)
+		if (data[2].contentEquals("Electrical"))
 			setValuesToolGUI(data[0], data[1], data[2], data[3], data[4], data[5], data[6]);
 		else
-			setValuesToolGUI(data[0], data[1], data[2], data[3], data[4], data[5], null);
+			setValuesToolGUI(data[0], data[1], data[2], data[3], data[4], data[5], "");
 
 	}
 

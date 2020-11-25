@@ -42,7 +42,7 @@ public class ModelControllerTool {
 	}
 
 	public String searchToolID(String toolID) {
-		String searchID = "3 " + toolID;
+		String searchID = "7 " + toolID;
 		// String response = clientControllerTool.searchTool(searchID);
 		String response = clientControllerTool.sendQuery(searchID);
 		getToolListFromJson(response);
@@ -51,7 +51,7 @@ public class ModelControllerTool {
 	}
 
 	public String checkToolID(String toolID) {
-		String searchID = "4 " + toolID;
+		String searchID = "7 " + toolID;
 		// String response = clientControllerTool.searchTool(searchID);
 		String response = clientControllerTool.sendQuery(searchID);
 		getToolListFromJson(response);
@@ -60,7 +60,7 @@ public class ModelControllerTool {
 	}
 
 	public String checkToolName(String name) {
-		String searchID = "6 " + name;
+		String searchID = "8 " + name;
 		// String response = clientControllerTool.searchTool(searchID);
 		String response = clientControllerTool.sendQuery(searchID);
 		getToolListFromJson(response);
@@ -69,7 +69,7 @@ public class ModelControllerTool {
 	}
 
 	public String searchToolName(String toolName) {
-		String searchID = "2 " + toolName;
+		String searchID = "8 " + toolName;
 		// String response = clientControllerTool.searchTool(searchID);
 		String response = clientControllerTool.sendQuery(searchID);
 		getToolListFromJson(response);
@@ -89,21 +89,20 @@ public class ModelControllerTool {
 //		return displayTool;
 //	}
 	
-	public String getAllTools() throws JsonParseException, JsonMappingException, IOException {
+	public String getAllTools() {
 	
 	String searchID = "6 ";
 	// String response = clientControllerTool.searchTool(searchID);
 	String response = clientControllerTool.sendQuery(searchID);
-	getAllData(response);
-	String displayTool = getNewAllList();
+	getToolListFromJson(response);
+	String displayTool = getStringToolList();
 	
 	return displayTool;
 }
 
 	// trying that link
-	public String getNewAllList() throws JsonParseException, JsonMappingException, IOException{
+	public String getStringToolList() {
 		
-		ObjectMapper objectMapper = new ObjectMapper();
 		String concat = "";
 		//ItemsList deserializedFleet = objectMapper.readValue(response, ItemsList.class);
 //		System.out.println("deserializedFleet: "+ deserializedFleet);
@@ -130,22 +129,22 @@ public class ModelControllerTool {
 		return concat;
 	}
 	
-	public void getAllData(String response) {
-
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.enableDefaultTyping();
-		try {
-
-			this.itemsList = objectMapper.readValue(response, ItemsList.class);
-			System.out.println();
-
-		} catch (IOException e) {
-			System.out.println("Unable to convert json to items List");
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
+//	public void getAllData(String response) {
+//
+//		ObjectMapper objectMapper = new ObjectMapper();
+//		objectMapper.enableDefaultTyping();
+//		try {
+//
+//			this.itemsList = objectMapper.readValue(response, ItemsList.class);
+//			System.out.println();
+//
+//		} catch (IOException e) {
+//			System.out.println("Unable to convert json to items List");
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//
+//	}
 
 	public String getAllList() {
 		
@@ -214,17 +213,18 @@ public class ModelControllerTool {
 	}
 
 	// concat the tools into string
-	private String getStringToolList() {
-		String concatTool = "";
-		for (Items item : this.itemsList.getItemsList())
-			concatTool = concatTool + item.getItemID() + " " + item.getItemName() + " " + " " + item.getItemType()
-					+ item.getItemPrice() + " " + item.getItemQuantity() + " " + item.getSupplierID() + " " + "\n";
-		return concatTool;
-	}
+//	private String getStringToolList() {
+//		String concatTool = "";
+//		for (Items item : this.itemsList.getItemsList())
+//			concatTool = concatTool + item.getItemID() + " " + item.getItemName() + " " + " " + item.getItemType()
+//					+ item.getItemPrice() + " " + item.getItemQuantity() + " " + item.getSupplierID() + " " + "\n";
+//		return concatTool;
+//	}
 
 	// convert JSon string into tool list
 	private void getToolListFromJson(String itemsList) {
 		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.enableDefaultTyping();
 		try {
 			this.itemsList = objectMapper.readValue(itemsList, ItemsList.class);
 		} catch (IOException e) {
@@ -259,7 +259,7 @@ public class ModelControllerTool {
 	
 	public String getIndexTool(int index) {
 
-		atIndexItem = getItemsList().getElecItemList().get(index);
+		atIndexItem = getItemsList().getItemsList().get(index);
 		String values ="";
 		
 		if(atIndexItem instanceof ElectricalItem) {
