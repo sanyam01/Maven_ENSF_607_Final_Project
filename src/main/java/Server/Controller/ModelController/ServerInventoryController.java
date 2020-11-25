@@ -79,7 +79,6 @@ public class ServerInventoryController {
 			System.out.println("Operation: list all tools");
 			System.out.println(responseArr[1]);
 
-			// trying new stuff
 			items = dbController.getItemList();
 			if (!items.isEmpty()) {
 

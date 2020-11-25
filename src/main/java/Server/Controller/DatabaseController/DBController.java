@@ -154,12 +154,26 @@ public class DBController {
 		return dbManager.getSuppListPreparedStatemen();
 	}
 	
-	public ArrayList<ElectricalItem> getElectricalItems() {
-		return dbManager.getElectricalItemListPrepStat();
-	}
+//	public ArrayList<ElectricalItem> getElectricalItems() {
+//		return dbManager.getElectricalItemListPrepStat();
+//	}
+//	
+//	public ArrayList<NonElectricalItem> getNonElectricalItems() {
+//		return dbManager.getNonElectricalItemListPrepStat();
+//	}
 	
-	public ArrayList<NonElectricalItem> getNonElectricalItems() {
-		return dbManager.getNonElectricalItemListPrepStat();
+	
+	public boolean updateItemQty(int itemQty, int itemId) {
+		
+		boolean updateFlag = false;
+		
+		 int rowcount = dbManager.updateItemQtyPrepStatement(itemId, itemQty);
+		 if(rowcount == 1) {
+			 //customer updated successfully
+			 updateFlag = true;
+		 }
+		 
+		 return updateFlag;
 	}
 	
 	
