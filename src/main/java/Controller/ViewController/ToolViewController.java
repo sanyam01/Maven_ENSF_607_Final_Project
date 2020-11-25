@@ -142,6 +142,9 @@ public class ToolViewController {
 		String response = fetchItemInformation();
 		toolView.getStatusText().setText(response);
 		clearToolFields();
+		toolView.getToolList().clearSelection();
+		printToolListGUI(response);
+		addListenerList();
 
 	}
 
@@ -158,32 +161,6 @@ public class ToolViewController {
 		return response;
 
 	}
-
-//	private void clearDecreaseGUI() {
-//
-//	}
-
-	// if item to be decreased is passed using the whole information
-//	private void fetchItemInformation() {
-//
-//		try {
-//			int iD = Integer.parseInt(this.getToolView().getToolID().getText());
-//			String name = this.getToolView().getToolName().getText();
-//			String type = (String) this.getToolView().getToolType().getSelectedItem();
-//			int quantity = Integer.parseInt(this.getToolView().getToolQuantity().getText());
-//			float price = Float.parseFloat(this.getToolView().getToolPrice().getText());
-//			int supplierID = Integer.parseInt(this.getToolView().getSupplierID().getText());
-//			String powerType = this.toolView.getPowerType().getText();
-//			
-//			System.out.println("Select item is " + type);
-//			if (type.contentEquals("Electrical"))
-//				this.modelControllerTool.setItem(new ElectricalItem(iD, name, quantity, price, type, supplierID, powerType));
-//		} catch (Exception e) {
-//			toolView.getStatusText().setText("Please enter the valid values in all the text fields");
-//			System.err.println("Please enter valid inputs");
-//		}
-//
-//	}
 
 	// need
 	private void getSelectedToolInfo(int index) {
