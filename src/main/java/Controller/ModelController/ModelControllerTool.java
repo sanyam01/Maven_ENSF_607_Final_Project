@@ -122,7 +122,7 @@ public class ModelControllerTool {
 			}
 			else {
 				concat = concat + i.getItemID() + " " + i.getItemName() + " " + i.getItemType() + " " + i.getItemPrice()
-				+ " " + i.getItemQuantity() + " " + i.getSupplierID() + " " + ((ElectricalItem)i).getPowerType() + "\n";
+				+ " " + i.getItemQuantity() + " " + i.getSupplierID() + "\n";
 			}
 		
 		
