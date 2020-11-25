@@ -143,7 +143,7 @@ public class ToolViewController {
 		toolView.getStatusText().setText(response);
 		clearToolFields();
 		toolView.getToolList().clearSelection();
-		printToolListGUI(response);
+		printToolListGUI(this.modelControllerTool.getStringToolList());
 		addListenerList();
 
 	}
