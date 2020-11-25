@@ -6,7 +6,12 @@ import java.util.ArrayList;
 
 public class ItemsList implements Serializable{
 
-	/**
+	
+	public ItemsList() {
+		super();
+	}
+/**
+	}
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;

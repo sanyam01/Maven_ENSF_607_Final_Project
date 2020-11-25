@@ -4,6 +4,10 @@ public class ElectricalItem extends Items{
 	
 	private String powerType ;
 	
+	public ElectricalItem() {
+		super();
+	}
+	
 	public ElectricalItem(int itemID, String itemName, int itemQuantity, float itemPrice, String itemType,
 			int supplierID, String powerType) {
 		super(itemID, itemName, itemQuantity, itemPrice, itemType, supplierID);

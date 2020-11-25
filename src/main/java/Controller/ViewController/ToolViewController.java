@@ -131,7 +131,7 @@ public class ToolViewController {
 
 	}
 
-	private void setValuesToolGUI(String itemID, String itemType, String itemName, String itemPrice,
+	private void setValuesToolGUI(String itemID, String itemName, String itemType, String itemPrice,
 			String itemQuantity,String supplierID) {
 
 		toolView.getToolID().setText(itemID);

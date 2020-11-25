@@ -24,8 +24,7 @@ public class ModelControllerTool {
 	private OrderLines orderLines;
 	private ElectricalItem electricalItem;
 	private NonElectricalItem nonElectricalItem;
-	
-	
+
 	public ModelControllerTool() {
 		clientControllerTool = new ClientControllerTool();
 	}
@@ -40,101 +39,102 @@ public class ModelControllerTool {
 
 	public String searchToolID(String toolID) {
 		String searchID = "3 " + toolID;
-		//String response = clientControllerTool.searchTool(searchID);
+		// String response = clientControllerTool.searchTool(searchID);
 		String response = clientControllerTool.sendQuery(searchID);
 		getToolListFromJson(response);
 		String displayTool = getStringToolList();
 		return displayTool;
 	}
-	
-	
-	
+
 	public String checkToolID(String toolID) {
 		String searchID = "4 " + toolID;
-		//String response = clientControllerTool.searchTool(searchID);
+		// String response = clientControllerTool.searchTool(searchID);
 		String response = clientControllerTool.sendQuery(searchID);
 		getToolListFromJson(response);
 		String displayQuantity = getStringToolList();
 		return displayQuantity;
 	}
-	
+
 	public String checkToolName(String name) {
 		String searchID = "6 " + name;
-		//String response = clientControllerTool.searchTool(searchID);
+		// String response = clientControllerTool.searchTool(searchID);
 		String response = clientControllerTool.sendQuery(searchID);
 		getToolListFromJson(response);
 		String displayQuantity = getStringToolList();
 		return displayQuantity;
 	}
-	
-	
 
-	
 	public String searchToolName(String toolName) {
 		String searchID = "2 " + toolName;
-		//String response = clientControllerTool.searchTool(searchID);
+		// String response = clientControllerTool.searchTool(searchID);
 		String response = clientControllerTool.sendQuery(searchID);
 		getToolListFromJson(response);
 		String displayTool = getStringToolList();
 		return displayTool;
 	}
-	
+
 	public String getAllTools() {
+		
 		String searchID = "6 ";
-		//String response = clientControllerTool.searchTool(searchID);
+		// String response = clientControllerTool.searchTool(searchID);
 		String response = clientControllerTool.sendQuery(searchID);
-		//String[] tempArr = response.split("!!");
-		getTestData(response);
+		getAllData(response);
+		String displayTool = getAllList();
 		
-		//getToolListFromJson(response);
-		
-		String displayTool = getStringQuantityList();
 		return displayTool;
 	}
-	
-	public void getTestData(String response) {
-		System.out.println("The response is " + response);
-		String[] tempArr = response.split("!!");
-		System.out.println("First value " + tempArr[0]);
-		System.out.println("Second value " + tempArr[1]);
-		
+
+	public void getAllData(String response) {
+
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
-			this.electricalItem = objectMapper.readValue(tempArr[0],ElectricalItem.class);
-			this.nonElectricalItem = objectMapper.readValue(tempArr[1],NonElectricalItem.class);
-			System.out.println(electricalItem.getItemID());
-			ItemsList list = new ItemsList(electricalItem);
-			
+
+			this.itemsList = objectMapper.readValue(response, ItemsList.class);
+			System.out.println();
+
 		} catch (IOException e) {
 			System.out.println("Unable to convert json to items List");
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
 	}
-	
-	public String printOrder() {
+
+	public String getAllList() {
 		
+		String concat = "";
+		for (ElectricalItem i : this.itemsList.getElecItemList())
+			concat = concat + i.getItemID() + " " + i.getItemName() + " " + i.getItemType() + " " + i.getItemPrice()
+					+ " " + i.getItemQuantity() + " " + i.getSupplierID() + " " + i.getPowerType() + "\n";
+		for (NonElectricalItem i : this.itemsList.getNonElecItemList())
+			concat = concat + i.getItemID() + " " + i.getItemName() + " " + i.getItemType() + " " + i.getItemPrice()
+					+ " " + i.getItemQuantity() + " " + i.getSupplierID() + "\n";
+		
+		return concat;
+
+	}
+
+	public String printOrder() {
+
 		String orderID = "7";
-		//String response = clientControllerTool.printOrder(orderID);
+		// String response = clientControllerTool.printOrder(orderID);
 		String response = clientControllerTool.sendQuery(orderID);
 		getOrderFromJson(response);
 		String displayOrder = getStringOrder();
 		writeToFile(displayOrder);
 		return displayOrder;
 	}
-	
+
 	private void writeToFile(String text) {
 		try {
-		      FileWriter myWriter = new FileWriter("orders.txt");
-		      myWriter.write(text);
-		      myWriter.close();
-		      System.out.println("Successfully wrote to the file.");
-		    } catch (IOException e) {
-		      System.out.println("An error occurred.");
-		      e.printStackTrace();
-		    }
+			FileWriter myWriter = new FileWriter("orders.txt");
+			myWriter.write(text);
+			myWriter.close();
+			System.out.println("Successfully wrote to the file.");
+		} catch (IOException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
+		}
 	}
 
 	private void getOrderFromJson(String value) {
@@ -147,21 +147,21 @@ public class ModelControllerTool {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private String getStringOrder() {
-		
+
 		String concatOrder = "";
 		concatOrder = concatOrder + order.getOrderId() + "\n";
 		concatOrder = concatOrder + order.getDate() + "\n";
 		for (OrderLines orderLines : this.order.getOrderLines())
-			concatOrder = concatOrder + orderLines.getItem()  + " " +orderLines.getAmount();
+			concatOrder = concatOrder + orderLines.getItem() + " " + orderLines.getAmount();
 		return concatOrder;
 	}
-	
+
 	private String getStringQuantityList() {
 		String concatTool = "";
 		for (Items item : this.itemsList.getItemsList())
-			concatTool = concatTool + item.getItemID()  + " " + item.getItemName() + " "+ " " + item.getItemType()
+			concatTool = concatTool + item.getItemID() + " " + item.getItemName() + " " + " " + item.getItemType()
 					+ item.getItemQuantity() + " " + "\n";
 		return concatTool;
 	}
@@ -170,13 +170,10 @@ public class ModelControllerTool {
 	private String getStringToolList() {
 		String concatTool = "";
 		for (Items item : this.itemsList.getItemsList())
-			concatTool = concatTool + item.getItemID()  + " " + item.getItemName() + " "+ " " + item.getItemType()
+			concatTool = concatTool + item.getItemID() + " " + item.getItemName() + " " + " " + item.getItemType()
 					+ item.getItemPrice() + " " + item.getItemQuantity() + " " + item.getSupplierID() + " " + "\n";
 		return concatTool;
 	}
-	
-
-	
 
 	// convert JSon string into tool list
 	private void getToolListFromJson(String itemsList) {
@@ -190,20 +187,24 @@ public class ModelControllerTool {
 		}
 
 	}
-	
+
 	// this is called when save is pressed for storing customer information
-		public void setItem(int iD, String name, String type, int price,
-				int quantity, int supplierID) {
+	public void setItem(int iD, String name, String type, int price, int quantity, int supplierID) {
 
-			this.items = new Items(iD, name, quantity, price, type, supplierID);
-		}
-
+		this.items = new Items(iD, name, quantity, price, type, supplierID);
+	}
 
 	public String getIndexTool(int index) {
-		
-		atIndexItem = getItemsList().getItemsList().get(index);
-		String values = atIndexItem.getItemID() + "!!!"  + atIndexItem.getItemName() + "!!!" + atIndexItem.getItemType() + "!!!"
-				 + atIndexItem.getItemPrice() + "!!!" + atIndexItem.getItemQuantity() + "!!!" + atIndexItem.getSupplierID();
+
+		int lenElectrical = itemsList.getElecItemList().size();
+		int lenNon = itemsList.getNonElecItemList().size();
+		if (index < lenElectrical)
+			atIndexItem = getItemsList().getElecItemList().get(index);
+		else
+			atIndexItem = getItemsList().getNonElecItemList().get(index-lenElectrical);
+		String values = atIndexItem.getItemID() + "!!!" + atIndexItem.getItemName() + "!!!" + atIndexItem.getItemType()
+				+ "!!!" + atIndexItem.getItemPrice() + "!!!" + atIndexItem.getItemQuantity() + "!!!"
+				+ atIndexItem.getSupplierID();
 		return values;
 	}
 
@@ -230,20 +231,13 @@ public class ModelControllerTool {
 		try {
 			jsonItem = objectMapper.writeValueAsString(items);
 			String temp = "5 " + jsonItem;
-			//response = this.clientControllerTool.saveDeleteTool(temp);
+			// response = this.clientControllerTool.saveDeleteTool(temp);
 			response = clientControllerTool.sendQuery(temp);
-			
 
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
 		return response;
 	}
-
-	
-
-	
-	
-	
 
 }
