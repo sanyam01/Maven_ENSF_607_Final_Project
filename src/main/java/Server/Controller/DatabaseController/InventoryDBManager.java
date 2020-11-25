@@ -605,14 +605,14 @@ public class InventoryDBManager {
 
 	public int updateItemQtyPrepStatement(int itemId, int itemqty) {
 
-		String query = "update item set item_quantity = ? where item_name = ?";
+		String query = "update item set item_quantity = ? where item_id = ?";
 
 		int rowCount = 0;
 
 		try {
 			PreparedStatement pStat = myDriver.getMyConn().prepareStatement(query);
 			pStat.setInt(1, itemqty);
-			pStat.setInt(1, itemId);
+			pStat.setInt(2, itemId);
 
 			rowCount = pStat.executeUpdate();
 			System.out.println("row Count = " + rowCount);

@@ -21,6 +21,7 @@ import Server.Model.InternationalSupplier;
 import Server.Model.Items;
 import Server.Model.ItemsList;
 import Server.Model.NonElectricalItem;
+import Server.Model.OrderLines;
 import Server.Model.Inventory;
 
 public class ServerInventoryController {
@@ -42,6 +43,20 @@ public class ServerInventoryController {
 		this.message = response;
 		this.dbController = dbC;
 		this.objectMapper = objectMapper;
+//		items = dbController.getItemList();
+		this.inventory = new Inventory(dbController.getItemList());
+
+		// load data in order table
+		System.out.println("loading data in order table for values: " + inventory.getTheOrder().getOrderId() + " "
+				+ inventory.getTheOrder().getDate());
+
+		boolean flag = this.dbController.addOrder(inventory.getTheOrder().getOrderId(),
+				inventory.getTheOrder().getDate());
+		if (!flag) {
+			flag = false;
+			System.out.println("Add order failed");
+
+		}
 
 	}
 
@@ -225,17 +240,95 @@ public class ServerInventoryController {
 
 			System.out.println("Operation: Decrease item quantity");
 			System.out.println(responseArr[1]); // will get id here
+			int new_quantity = 0;
+			int tempItemId = Integer.parseInt(responseArr[1]);
+			
 
-			if (responseArr[1] instanceof String) {
+			if (!responseArr[1].isEmpty()) {
+				
 
-				inventory.decreaseQuantity(responseArr[1]);
+				int orderLineSizeOld = inventory.getTheOrder().getOrderLines().size();
 
-			} else {
+				new_quantity = inventory.decreaseQuantity(Integer.parseInt(responseArr[1]));
 
+			
+
+					// check if order lines are geenrated
+					int orderLineSizeNew = inventory.getTheOrder().getOrderLines().size();
+
+//					if (orderLineSizeNew > 0) {
+//
+//						OrderLines orderLine = inventory.getTheOrder().getOrderLines().get(orderLineSizeNew - 1);
+//
+//					}
+
+					if (orderLineSizeNew > orderLineSizeOld) {
+						
+						OrderLines orderLine = inventory.getTheOrder().getOrderLines().get(orderLineSizeNew - 1);
+
+						System.out.println("new order line generated for: ");
+
+						System.out.println(inventory.getTheOrder().getOrderId() + " " + orderLine.getItem().getItemID()
+								+ " " + orderLine.getItem().getSupplierID() + " "
+								+ orderLine.getItem().getItemQuantity());
+
+						// orderline table insert
+						flag = dbController.addOrderLine(inventory.getTheOrder().getOrderId(),
+								orderLine.getItem().getItemID(), orderLine.getItem().getSupplierID(),
+								orderLine.getItem().getItemQuantity());
+						if (!flag) {
+							flag = false;
+							System.out.println("Add orderline failed");
+
+						}
+
+//						System.out.println("qty to jasonstring: "+Integer.toString(orderLine.getItem().getItemQuantity()));
+//						jsonItemList = Integer.toString(orderLine.getItem().getItemQuantity());
+
+					}
+
+					for(Items i : inventory.getListItems()) {
+						
+						if(i.getItemID() == tempItemId) {
+							
+							System.out.println("updating item quantity for item: " + tempItemId + " "
+									+ i.getItemQuantity());
+							// update statement to update qty in item
+							flag = dbController.updateItemQty(i.getItemQuantity(),
+									tempItemId);
+							if (!flag) {
+								flag = false;
+								System.out.println("Item update failed");
+
+							}
+							
+							
+						}
+						
+					}
+					jsonItemList = Integer.toString(new_quantity);
+					System.out.println("json qty: " + jsonItemList);
+
+				
+			}
+
+			else {
+				jsonItemList = "ERROR !! Request to decrease item failed";
 			}
 
 			break;
 
+		case 10:
+			
+			try {
+				jsonItemList = objectMapper.writeValueAsString(inventory.getTheOrder());
+			} catch (JsonProcessingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			break;
 		}
 
 		return jsonItemList;

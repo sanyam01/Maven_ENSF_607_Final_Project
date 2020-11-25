@@ -1,5 +1,6 @@
 package Server.Controller.DatabaseController;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import Server.Model.Customer;
@@ -177,6 +178,27 @@ public class DBController {
 	}
 	
 	
+	public boolean addOrderLine(int orderId, int toolId, int supplierId, int quantity) {
+		boolean updateFlag = false;
+		 int rowcount = createDBTables.insertOrderLinePrepStatment(orderId, toolId, supplierId, quantity);
+		 if(rowcount == 1) {
+			 //customer updated successfully
+			 updateFlag = true;
+		 }
+		 
+		 return updateFlag;
+	}
+	
+	public boolean addOrder(int orderId, String date) {
+		boolean updateFlag = false;
+		 int rowcount = createDBTables.insertOrderPrepStatment(orderId, date);
+		 if(rowcount == 1) {
+			 //customer updated successfully
+			 updateFlag = true;
+		 }
+		 
+		 return updateFlag;
+	}
 
 
 

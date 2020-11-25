@@ -21,7 +21,7 @@ public class Order {
 	/**
 	 * orderID represents a unique 5 digit order id
 	 */
-	private float orderId;
+	private int orderId;
 
 	/**
 	 * date represents the order for particular date
@@ -61,7 +61,7 @@ public class Order {
 		orderLines.add(line);
 	}
 
-	public void setOrderId(float orderId) {
+	public void setOrderId(int orderId) {
 		this.orderId = orderId;
 	}
 

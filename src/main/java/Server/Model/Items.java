@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+
+import Server.Controller.DatabaseController.DBController;
+
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(
@@ -53,7 +56,7 @@ public  abstract class Items implements Serializable {
 	
 	private Suppliers sup;
 	
-	
+
 	
 	
 
@@ -145,47 +148,56 @@ public  abstract class Items implements Serializable {
 	}
 	
 	
-	public String decreaseQuantity(Order order, int itemQty) {
+	public int decreaseQuantity(Order order, int itemQty) {
+		
+		
 
 		OrderLines ol = null;
 		String s = "\nNo new OrderLine generated. Printing order: \n";
 		s = s + "....................................................................\n\n";
 		if (itemQty > 0)
 			this.setItemQuantity(itemQty - 1);
-		//update statement to update qty in item
+		
+
 		
 		if (itemQty < 40) {
 			int initiallyItem = itemQty;
 			ol = new OrderLines(this, 50 - initiallyItem);
 			
+			
 			order.addOrderLine(ol);
 			this.setItemQuantity(50);
-			//update statement to update qty in item
-			
-			s = "\nNew order line generated. Updated Order for the day is:\n\n";
-			s = s + "....................................................................\n";
-			s = s + "Order Id : " + order.getOrderId() + "\n" + "Order date : " + order.getDate() + "\n\n";
 			
 			
+			
+			
+			
+//			s = "\nNew order line generated. Updated Order for the day is:\n\n";
+//			s = s + "....................................................................\n";
+//			s = s + "Order Id : " + order.getOrderId() + "\n" + "Order date : " + order.getDate() + "\n\n";
+//			
+//			
 			
 
 		}
 
-		else {
-			s = s + "Order Id : " + order.getOrderId() + "\n" + "Order date : " + order.getDate() + "\n\n";
-			
-		}
-		for (OrderLines k : order.getOrderLines()) {
-			s = s + "ItemName: " + k.getItem().getItemName() + ", Quantity ordered: " + k.getAmount()
-					+ ", Supplier name: " + k.getItem().getSup().getSupplierName() + "\n";
-			
-			
-			//orderline table insert
-			
-		}
-
-		s = s + "\n....................................................................\n\n";
-		return s;
+//		else {
+//			s = s + "Order Id : " + order.getOrderId() + "\n" + "Order date : " + order.getDate() + "\n\n";
+//			
+//		}
+////		for (OrderLines k : order.getOrderLines()) {
+////			s = s + "ItemName: " + k.getItem().getItemName() + ", Quantity ordered: " + k.getAmount()
+////					+ ", Supplier name: " + k.getItem().getSup().getSupplierName() + "\n";
+////			
+////			
+////			
+////			
+////		}
+//
+//		s = s + "\n....................................................................\n\n";
+		
+		System.out.println("New item qty for item is: " + this.getItemID() + " " + this.getItemQuantity());
+		return this.getItemQuantity();
 
 	}
 

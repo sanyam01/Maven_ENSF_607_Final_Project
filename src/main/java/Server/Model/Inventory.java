@@ -15,8 +15,8 @@ public class Inventory {
 	 * Order theOrder represents the order of the items
 	 */
 	private Order theOrder;
-	private DBController dbController;
 
+	private boolean orderLineFlag ;
 	/**
 	 * Constructs an object of the class Inventory.
 	 * 
@@ -25,9 +25,10 @@ public class Inventory {
 	 * @param listItems an array list of items/tools
 	 */
 	public Inventory(ArrayList<Items> listItems) {
+		
 		this.setListItems(listItems);
 		theOrder = new Order();
-		
+		this.orderLineFlag = false;
 		
 		
 
@@ -70,16 +71,25 @@ public class Inventory {
 
 	}
 	
-	public void decreaseQuantity(int id) {
-		listItems = dbController.getItemById(id);
-		if(!listItems.isEmpty()) {
+	public int decreaseQuantity(int id) {
+		System.out.println("decreaing qty for item id: "+ id);
+//		listItems = dbController.getItemById(id);
+		int new_qty = 0;
+		
+		
 			for (Items i : listItems) {
-				i.decreaseQuantity(this.getTheOrder(), i.getItemQuantity());
+				if (i.getItemID() == id) {
+					
+					System.out.println("calling method decreaseQuantity in item with parameters: "+ this.getTheOrder().getOrderId()+" "+ i.getItemQuantity());
+					new_qty = i.decreaseQuantity(this.getTheOrder(), i.getItemQuantity());
+				}
+				
+
 			}
 			
-		}
-
 		
+
+		return new_qty;
 		
 
 	}
@@ -112,6 +122,14 @@ public class Inventory {
 
 	public void setListItems(ArrayList<Items> listItems) {
 		this.listItems = listItems;
+	}
+
+	public boolean isOrderLineFlag() {
+		return orderLineFlag;
+	}
+
+	public void setOrderLineFlag(boolean orderLineFlag) {
+		this.orderLineFlag = orderLineFlag;
 	}
 
 }

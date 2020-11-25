@@ -124,7 +124,7 @@ public class ModelControllerTool {
 	public String sendItemInfoDecrease(int id) {
 
 		String response = "";
-		String temp = "5 " + Integer.toString(id);
+		String temp = "9 " + Integer.toString(id);
 		response = clientControllerTool.sendQuery(temp);
 		if (response.split("!!")[0].contentEquals("ERROR"))
 			return response;
@@ -211,7 +211,7 @@ public class ModelControllerTool {
 
 	public String printOrder() {
 
-		String orderID = "7";
+		String orderID = "10";
 		// String response = clientControllerTool.printOrder(orderID);
 		String response = clientControllerTool.sendQuery(orderID);
 		getOrderFromJson(response);
