@@ -157,7 +157,6 @@ public  abstract class Items implements Serializable {
 		if (itemQty < 40) {
 			int initiallyItem = itemQty;
 			ol = new OrderLines(this, 50 - initiallyItem);
-			//orderline table create 
 			
 			order.addOrderLine(ol);
 			this.setItemQuantity(50);

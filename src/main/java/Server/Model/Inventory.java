@@ -28,8 +28,7 @@ public class Inventory {
 		this.setListItems(listItems);
 		theOrder = new Order();
 		
-		//create order table
-		//data loads here
+		
 		
 
 	}
