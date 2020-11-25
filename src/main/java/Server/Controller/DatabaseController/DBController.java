@@ -133,11 +133,11 @@ public class DBController {
 		return dbManager.getItemListPreparedStatemen();
 	}
 	
-	public ItemsList getItemById(int itemId) {
+	public ArrayList<Items> getItemById(int itemId) {
 		return dbManager.getItemByIdPreparedStatement(itemId);
 	}
 	
-	public ItemsList getItemByName(String itemName) {
+	public ArrayList<Items> getItemByName(String itemName) {
 		return dbManager.getItemByNamePreparedStatement(itemName);
 	}
 	

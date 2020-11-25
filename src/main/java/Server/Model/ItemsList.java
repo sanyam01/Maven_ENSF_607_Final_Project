@@ -17,13 +17,13 @@ public class ItemsList implements Serializable{
 	private ArrayList<ElectricalItem> elecItemList;
 	private ArrayList<NonElectricalItem> nonElecItemList;
 	
-	public ItemsList(ArrayList<ElectricalItem> elecItemList, ArrayList<NonElectricalItem> nonElecItemList) {
-		
-		this.setElecItemList(elecItemList);
-		this.nonElecItemList = nonElecItemList;
-
-
-	}
+//	public ItemsList(ArrayList<ElectricalItem> elecItemList, ArrayList<NonElectricalItem> nonElecItemList) {
+//		
+//		this.setElecItemList(elecItemList);
+//		this.nonElecItemList = nonElecItemList;
+//
+//
+//	}
 	
 	public ItemsList(ArrayList<Items> list) {
 		this.setItemsList(list);
