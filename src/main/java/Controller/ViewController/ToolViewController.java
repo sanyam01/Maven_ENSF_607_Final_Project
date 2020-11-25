@@ -2,9 +2,13 @@ package Controller.ViewController;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import ClientView.ToolView;
 import Controller.ModelController.ModelControllerTool;
@@ -30,7 +34,12 @@ public class ToolViewController {
 			if (e.getSource() == toolView.getSearch())
 				findSearchType();
 			if (e.getSource() == toolView.getListAllTools())
-				getAllTools();
+				try {
+					getAllTools();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			if (e.getSource() == toolView.getClearSearch())
 				clearSearch();
 			if (e.getSource() == toolView.getDecrease())
@@ -109,12 +118,12 @@ public class ToolViewController {
 		int supplierID = Integer.parseInt(this.getToolView().getSupplierID().getText());
 		String itemType = this.toolView.getPowerType().getText();
 		System.out.println("Selecte item is " + type);
-		this.modelControllerTool.setItem(iD, name, type, quantity, price, supplierID);
+		//this.modelControllerTool.setItem(iD, name, type, quantity, price, supplierID);
 
 	}
 
 	// getting all the tools
-	private void getAllTools() {
+	private void getAllTools() throws JsonParseException, JsonMappingException, IOException {
 
 		String response = modelControllerTool.getAllTools();
 		printToolListGUI(response);
@@ -127,21 +136,27 @@ public class ToolViewController {
 		String values = this.modelControllerTool.getIndexTool(index);
 		System.out.println("Values recieved to display on GUI are" + values);
 		String[] data = values.split("!!!");
-		setValuesToolGUI(data[0], data[1], data[2], data[3], data[4], data[5]);
+		if (data[6] != null)
+			setValuesToolGUI(data[0], data[1], data[2], data[3], data[4], data[5], data[6]);
+		else
+			setValuesToolGUI(data[0], data[1], data[2], data[3], data[4], data[5], null);
 
 	}
 
 	private void setValuesToolGUI(String itemID, String itemName, String itemType, String itemPrice,
-			String itemQuantity,String supplierID) {
+			String itemQuantity,String supplierID, String powerType) {
 
 		toolView.getToolID().setText(itemID);
 		toolView.getToolName().setText(itemName);
 		toolView.getToolPrice().setText(itemPrice);
 		toolView.getToolQuantity().setText(itemQuantity);
 		toolView.getSupplierID().setText(supplierID);
+		toolView.getPowerType().setText(powerType);
 		System.out.println("The value of ttpe is " + itemType);
-		if (itemType.contentEquals("Electrical"))
+		if (itemType.contentEquals("Electrical")) {
 			toolView.getToolType().setSelectedIndex(1);
+			
+		}
 		else
 			toolView.getToolType().setSelectedIndex(2);
 

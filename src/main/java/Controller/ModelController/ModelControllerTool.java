@@ -4,7 +4,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ClientModel.ElectricalItem;
@@ -14,6 +16,8 @@ import ClientModel.NonElectricalItem;
 import Controller.ClientController.ClientControllerTool;
 import ClientModel.Order;
 import ClientModel.OrderLines;
+
+
 
 public class ModelControllerTool {
 
@@ -73,20 +77,63 @@ public class ModelControllerTool {
 		return displayTool;
 	}
 
-	public String getAllTools() {
-		
-		String searchID = "6 ";
-		// String response = clientControllerTool.searchTool(searchID);
-		String response = clientControllerTool.sendQuery(searchID);
-		getAllData(response);
-		String displayTool = getAllList();
-		
-		return displayTool;
-	}
+	// when had separate electrical and non electrical type array list
+//	public String getAllTools() {
+//		
+//		String searchID = "6 ";
+//		// String response = clientControllerTool.searchTool(searchID);
+//		String response = clientControllerTool.sendQuery(searchID);
+//		getAllData(response);
+//		String displayTool = getAllList();
+//		
+//		return displayTool;
+//	}
+	
+	public String getAllTools() throws JsonParseException, JsonMappingException, IOException {
+	
+	String searchID = "6 ";
+	// String response = clientControllerTool.searchTool(searchID);
+	String response = clientControllerTool.sendQuery(searchID);
+	getAllData(response);
+	String displayTool = getNewAllList();
+	
+	return displayTool;
+}
 
+	// trying that link
+	public String getNewAllList() throws JsonParseException, JsonMappingException, IOException{
+		
+		ObjectMapper objectMapper = new ObjectMapper();
+		String concat = "";
+		//ItemsList deserializedFleet = objectMapper.readValue(response, ItemsList.class);
+//		System.out.println("deserializedFleet: "+ deserializedFleet);
+//		System.out.println(deserializedFleet.getItemsList().get(0));
+//		System.out.println(deserializedFleet.getItemsList().get(1));
+		
+		for(Items i: itemsList.getItemsList()) {
+			
+			if(i instanceof ElectricalItem) {
+				
+				//System.out.println("electrical item");
+				concat = concat + i.getItemID() + " " + i.getItemName() + " " + i.getItemType() + " " + i.getItemPrice()
+				+ " " + i.getItemQuantity() + " " + i.getSupplierID() + " " + ((ElectricalItem)i).getPowerType() + "\n";
+				//System.out.println(((ElectricalItem) i).getPowerType() + i.getItemName());
+				
+			}
+			else {
+				concat = concat + i.getItemID() + " " + i.getItemName() + " " + i.getItemType() + " " + i.getItemPrice()
+				+ " " + i.getItemQuantity() + " " + i.getSupplierID() + " " + ((ElectricalItem)i).getPowerType() + "\n";
+			}
+		
+		
+	}
+		return concat;
+	}
+	
 	public void getAllData(String response) {
 
 		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.enableDefaultTyping();
 		try {
 
 			this.itemsList = objectMapper.readValue(response, ItemsList.class);
@@ -188,23 +235,44 @@ public class ModelControllerTool {
 
 	}
 
-	// this is called when save is pressed for storing customer information
-	public void setItem(int iD, String name, String type, int price, int quantity, int supplierID) {
+//	// this is called when save is pressed for storing tool information
+//	public void setItem(int iD, String name, String type, int price, int quantity, int supplierID, ) {
+//
+//		this.items = new Items(iD, name, quantity, price, type, supplierID);
+//	}
 
-		this.items = new Items(iD, name, quantity, price, type, supplierID);
-	}
-
+	
+	//when electrical and non -electrical were diff
+//	public String getIndexTool(int index) {
+//
+//		int lenElectrical = itemsList.getElecItemList().size();
+//		int lenNon = itemsList.getNonElecItemList().size();
+//		if (index < lenElectrical)
+//			atIndexItem = getItemsList().getElecItemList().get(index);
+//		else
+//			atIndexItem = getItemsList().getNonElecItemList().get(index-lenElectrical);
+//		String values = atIndexItem.getItemID() + "!!!" + atIndexItem.getItemName() + "!!!" + atIndexItem.getItemType()
+//				+ "!!!" + atIndexItem.getItemPrice() + "!!!" + atIndexItem.getItemQuantity() + "!!!"
+//				+ atIndexItem.getSupplierID();
+//		return values;
+//	}
+	
 	public String getIndexTool(int index) {
 
-		int lenElectrical = itemsList.getElecItemList().size();
-		int lenNon = itemsList.getNonElecItemList().size();
-		if (index < lenElectrical)
-			atIndexItem = getItemsList().getElecItemList().get(index);
-		else
-			atIndexItem = getItemsList().getNonElecItemList().get(index-lenElectrical);
-		String values = atIndexItem.getItemID() + "!!!" + atIndexItem.getItemName() + "!!!" + atIndexItem.getItemType()
+		atIndexItem = getItemsList().getElecItemList().get(index);
+		String values ="";
+		
+		if(atIndexItem instanceof ElectricalItem) {
+			
+		values = atIndexItem.getItemID() + "!!!" + atIndexItem.getItemName() + "!!!" + atIndexItem.getItemType()
 				+ "!!!" + atIndexItem.getItemPrice() + "!!!" + atIndexItem.getItemQuantity() + "!!!"
-				+ atIndexItem.getSupplierID();
+				+ atIndexItem.getSupplierID() + "!!!" +  ((ElectricalItem)atIndexItem).getPowerType();
+		}
+		else {
+			values = atIndexItem.getItemID() + "!!!" + atIndexItem.getItemName() + "!!!" + atIndexItem.getItemType()
+			+ "!!!" + atIndexItem.getItemPrice() + "!!!" + atIndexItem.getItemQuantity() + "!!!"
+			+ atIndexItem.getSupplierID();
+		}
 		return values;
 	}
 

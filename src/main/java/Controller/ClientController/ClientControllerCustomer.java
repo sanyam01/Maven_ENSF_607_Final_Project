@@ -60,6 +60,9 @@ public class ClientControllerCustomer {
 		getSockets();
 		socketOut.println(query);
 		String response = "";
+		if ((response.split("!!!")[0]).contentEquals("ERROR")){
+			System.out.println("ERROR");
+		}
 		try {
 			this.socketIn = new BufferedReader(new InputStreamReader(customerSocket.getInputStream()));
 			response = response + socketIn.readLine();
