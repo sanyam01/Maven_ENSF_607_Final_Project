@@ -14,7 +14,36 @@ public class ClientControllerTool {
 	private BufferedReader socketIn;
 
 	public ClientControllerTool() {
+		super();
 
+	}
+
+	public void getSockets() {
+
+		try {
+			this.toolSocket = clientController.getaSocket();
+			this.socketOut = new PrintWriter(toolSocket.getOutputStream(), true);
+			this.socketIn = new BufferedReader(new InputStreamReader(toolSocket.getInputStream()));
+		} catch (Exception e) {
+		
+			System.err.println("Unable to access the sockets in ClientControllerTool for connecting with server");
+		}
+
+	}
+
+	public String sendQuery(String query) {
+		
+		String response = "";
+		try {
+			getSockets();
+			socketOut.println(query);
+			this.socketIn = new BufferedReader(new InputStreamReader(toolSocket.getInputStream()));
+			response = response + socketIn.readLine();
+			System.out.println("The input is " + response);
+		} catch (Exception e) {
+			System.err.println("Didn't get anything from server");
+		}
+		return response;
 	}
 
 	public Socket getToolSocket() {
@@ -32,7 +61,7 @@ public class ClientControllerTool {
 	public void setClientController(ClientController clientController) {
 		this.clientController = clientController;
 	}
-	
+
 	public PrintWriter getSocketOut() {
 		return socketOut;
 	}
@@ -41,76 +70,4 @@ public class ClientControllerTool {
 		return socketIn;
 	}
 
-	
-	public void getSockets() {
-		
-		try {
-			this.toolSocket = clientController.getaSocket();
-			this.socketOut = new PrintWriter(toolSocket.getOutputStream(), true);
-			this.socketIn = new BufferedReader(new InputStreamReader(toolSocket.getInputStream()));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-	
-	public String sendQuery(String query) {
-		getSockets();
-		socketOut.println(query);
-		String response = "";
-		try {
-			this.socketIn = new BufferedReader(new InputStreamReader(toolSocket.getInputStream()));
-			response = response + socketIn.readLine();
-			System.out.println("The input is " + response);
-		} catch (IOException e) {
-			System.out.println("Didn't get anything from server");
-			e.printStackTrace();
-		}
-		return response;
-	}
-
-//	public String searchTool(String toolID) {
-//		socketOut.println(toolID);
-//		String response = "";
-//		try {
-//			this.socketIn = new BufferedReader(new InputStreamReader(toolSocket.getInputStream()));
-//			response = response + socketIn.readLine();
-//			System.out.println("The input is " + response);
-//		} catch (IOException e) {
-//			System.out.println("In client controller couldnt get anything in return to the query for searching tool based on the tool ID");
-//			e.printStackTrace();
-//		}
-//		return response;
-//	}
-//
-//	public String saveDeleteTool(String toolInfo) {
-//		getSockets();
-//		socketOut.println(toolInfo);
-//		String response = "";
-//		try {
-//			response = response + socketIn.readLine();
-//		} catch (IOException e) {
-//			System.out.println("In ClientControllerTool, unable to read from server after sending the tool information to save");
-//			e.printStackTrace();
-//		}
-//		System.out.println("Got the response");
-//		return response;
-//	}
-
-//	public String printOrder(String orderID) {
-//		socketOut.println(orderID);
-//		String response = "";
-//		try {
-//			this.socketIn = new BufferedReader(new InputStreamReader(toolSocket.getInputStream()));
-//			response = response + socketIn.readLine();
-//			System.out.println("The input is " + response);
-//		} catch (IOException e) {
-//			System.out.println("In client controller couldnt get anything in return to the query for printing order based on the tool ID");
-//			e.printStackTrace();
-//		}
-//		return response;
-//	}
-//	
-	
 }

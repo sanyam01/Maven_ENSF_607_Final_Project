@@ -163,10 +163,6 @@ public class ToolView extends JFrame {
 
 	}
 
-	public JComboBox getToolType() {
-		return toolType;
-	}
-
 	// adding tool list to the GUI
 	public void addToolList(String list) {
 
@@ -181,6 +177,19 @@ public class ToolView extends JFrame {
 	public void addListenerList(ListSelectionListener toolListener) {
 		ListSelectionModel listSelectionModel = toolList.getSelectionModel();
 		listSelectionModel.addListSelectionListener(toolListener);
+	}
+
+	// clears the list
+	public void clearToolList() {
+		toolList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		toolList.setLayoutOrientation(JList.VERTICAL_WRAP);
+		String[] listArray = {};
+		toolList.setListData(listArray);
+
+	}
+
+	public JComboBox getToolType() {
+		return toolType;
 	}
 
 	public JButton getCheckQuantity() {
@@ -339,21 +348,12 @@ public class ToolView extends JFrame {
 		this.group = group;
 	}
 
-	
 	public JTextField getPowerType() {
 		return powerType;
 	}
 
 	public void setPowerType(JTextField powerType) {
 		this.powerType = powerType;
-	}
-
-	public void clearToolList() {
-		toolList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		toolList.setLayoutOrientation(JList.VERTICAL_WRAP);
-		String[] listArray = {};
-		toolList.setListData(listArray);
-
 	}
 
 }

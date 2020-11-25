@@ -1,18 +1,20 @@
 package ClientModel;
 
-public class ElectricalItem extends Items{
-	
-	private String powerType ;
-	
+public class ElectricalItem extends Items {
+
+	private String powerType;
+
 	public ElectricalItem() {
 		super();
 	}
-	
+
 	public ElectricalItem(int itemID, String itemName, int itemQuantity, float itemPrice, String itemType,
 			int supplierID, String powerType) {
+		
 		super(itemID, itemName, itemQuantity, itemPrice, itemType, supplierID);
+		
 		this.powerType = powerType;
-//		super.setPowerType(powerType);
+
 
 	}
 
@@ -25,10 +27,5 @@ public class ElectricalItem extends Items{
 	}
 
 	private static final long serialVersionUID = 1L;
-	
-	
-	
-
-	
 
 }
