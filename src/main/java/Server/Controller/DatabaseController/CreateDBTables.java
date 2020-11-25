@@ -100,12 +100,12 @@ public class CreateDBTables {
 		/*
 		 * CREATE TABLE supplier ( supplier_id integer not null, supplier_name
 		 * varchar(25), supplier_type char(10), address varchar(25), company_name
-		 * varchar(25), sales_contact varchar(25), primary key (supplier_id) );
+		 * varchar(25), phone_number varchar(25), primary key (supplier_id) );
 		 */
 		String sql = "CREATE TABLE supplier ( " + " supplier_id       integer not null, "
 				+ " supplier_name		varchar(25), " + " supplier_type 	varchar(25), "
 				+ " address      		varchar(50), " + " company_name 		varchar(25), "
-				+ "sales_contact 	varchar(25), " + " primary key (supplier_id) \r\n" + "  ) ";
+				+ "phone_number 	varchar(25), " + " primary key (supplier_id) \r\n" + "  ) ";
 
 		try {
 			myStmt = myDriver.getMyConn().createStatement();
@@ -337,7 +337,7 @@ public class CreateDBTables {
 
 		int rowCount = 0;
 		try {
-			String query = "INSERT INTO supplier ( supplier_id,  supplier_name,  supplier_type,  address,  company_name,  sales_contact) values (?,?,?,?,?,?)";
+			String query = "INSERT INTO supplier ( supplier_id,  supplier_name,  supplier_type,  address,  company_name,  phone_number) values (?,?,?,?,?,?)";
 			PreparedStatement pStat = myDriver.getMyConn().prepareStatement(query);
 			pStat.setInt(1, id);
 			pStat.setString(2, suppName);

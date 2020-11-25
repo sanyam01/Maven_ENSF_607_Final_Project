@@ -1,46 +1,62 @@
 package Server.Controller.ModelController;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import com.fasterxml.jackson.core.JsonParseException;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 
+//import Server.Model.ElectricalItem;
+//import Server.Model.InternationalSupplier;
+
 import Server.Controller.DatabaseController.DBController;
-import Server.Model.CustomerList;
-import Server.Model.ElectricalItem;
-import Server.Model.InternationalSupplier;
 import Server.Model.Items;
 import Server.Model.ItemsList;
-import Server.Model.NonElectricalItem;
 import Server.Model.OrderLines;
 import Server.Model.Inventory;
 
 public class ServerInventoryController {
 
-	private int taskId;
 	DBController dbController;
-	private Items items;
-	private ElectricalItem eItem;
-	private InternationalSupplier intSupplier;
-	private ItemsList itemList;
+//	private Items items;
+//	private ElectricalItem eItem;
+//	private InternationalSupplier intSupplier;
+//	private ItemsList itemList;
 	private Inventory inventory;
 
 	ObjectMapper objectMapper;
 	private String message;
 
-	public ServerInventoryController(String response, DBController dbC, ObjectMapper objectMapper) throws IOException {
-		System.out.println("CustomerController constructor called ");
+//	public ServerInventoryController(String response, DBController dbC, ObjectMapper objectMapper) throws IOException {
+//		System.out.println("CustomerController constructor called ");
+//
+//		this.message = response;
+//		this.dbController = dbC;
+//		this.objectMapper = objectMapper;
+////		items = dbController.getItemList();
+//		this.inventory = new Inventory(dbController.getItemList());
+//
+//		// load data in order table
+//		System.out.println("loading data in order table for values: " + inventory.getTheOrder().getOrderId() + " "
+//				+ inventory.getTheOrder().getDate());
+//
+//		boolean flag = this.dbController.addOrder(inventory.getTheOrder().getOrderId(),
+//				inventory.getTheOrder().getDate());
+//		if (!flag) {
+//			flag = false;
+//			System.out.println("Add order failed");
+//
+//		}
+//
+//	}
+	
+	
+	public ServerInventoryController( DBController dbC, ObjectMapper objectMapper) throws IOException {
+//		System.out.println("CustomerController constructor called ");
 
-		this.message = response;
+		this.message = null;
 		this.dbController = dbC;
 		this.objectMapper = objectMapper;
 //		items = dbController.getItemList();
@@ -60,14 +76,32 @@ public class ServerInventoryController {
 
 	}
 
-	public String readClientMessage() {
+//	public String readClientMessage() {
+//		String[] responseArr = null;
+//		String switchBoardResponse = null;
+//
+//		System.out.println("Request from client: " + message);
+//
+//		if (message != null) {
+////			String jsonCustomer = objectMapper.writeValueAsString(response);
+//			responseArr = message.split(" ", 2);
+//			switchBoardResponse = switchBoard(responseArr);
+//
+//		}
+//
+//		return switchBoardResponse;
+//
+//	}
+	
+	
+	public String readClientMessage(String clientRequest) {
 		String[] responseArr = null;
 		String switchBoardResponse = null;
+		message = clientRequest;
 
 		System.out.println("Request from client: " + message);
 
 		if (message != null) {
-//			String jsonCustomer = objectMapper.writeValueAsString(response);
 			responseArr = message.split(" ", 2);
 			switchBoardResponse = switchBoard(responseArr);
 
@@ -77,14 +111,70 @@ public class ServerInventoryController {
 
 	}
 
+	public boolean callUpdateItemQuantity(int itemId) {
+		boolean flag = false;
+		for (Items i : inventory.getListItems()) {
+
+			if (i.getItemID() == itemId) {
+
+				System.out.println("updating item quantity for item: " + itemId + " " + i.getItemQuantity());
+				// update statement to update qty in item
+				flag = dbController.updateItemQty(i.getItemQuantity(), itemId);
+				if (!flag) {
+					flag = false;
+					System.out.println("Item update failed");
+
+				}
+
+			}
+
+		}
+		return flag;
+
+	}
+	
+	public boolean checkOrderLineGeneration(int itemId) {
+		boolean flag = false;
+		
+		int orderLineSizeOld = inventory.getTheOrder().getOrderLines().size();
+		int new_quantity = inventory.decreaseQuantity(itemId);
+
+
+		int orderLineSizeNew = inventory.getTheOrder().getOrderLines().size();
+
+
+		if (orderLineSizeNew > orderLineSizeOld) {
+			
+			flag = true;
+			
+			
+		}
+		return flag;
+	}
+
+	public int generateOrderLine(OrderLines orderLine) {
+		
+		System.out.println("new order line generated for: ");
+
+		System.out.println(inventory.getTheOrder().getOrderId() + " " + orderLine.getItem().getItemID()
+				+ " " + orderLine.getItem().getSupplierID() + " " + orderLine.getItem().getItemQuantity());
+
+		// orderline table insert
+		boolean flag = dbController.addOrderLine(inventory.getTheOrder().getOrderId(),
+				orderLine.getItem().getItemID(), orderLine.getItem().getSupplierID(),
+				orderLine.getItem().getItemQuantity());
+		
+		
+		
+		return orderLine.getItem().getItemQuantity();
+	}
 	private String switchBoard(String[] responseArr) {
 
 		int choice = Integer.parseInt(responseArr[0]);
 		System.out.println("choice is: " + choice);
 		String jsonItemList = null;
 		ArrayList<Items> items;
-		ArrayList<ElectricalItem> elecItems;
-		ArrayList<NonElectricalItem> nonElecItems;
+
 		boolean flag;
 
 		switch (choice) {
@@ -192,31 +282,6 @@ public class ServerInventoryController {
 			// Search for tool by toolName
 			System.out.println("Operation: Search for tool by toolName");
 
-//			itemList = dbController.getItemByName(responseArr[1]);
-//
-//			
-//			if (itemList.getElecItemList().isEmpty() && itemList.getNonElecItemList().isEmpty()) {
-//				
-//				jsonItemList = "Item Name not found!!";
-//				System.out.println("Item Name not found!!");
-//				
-//				
-//
-//			} else {
-//				
-//
-//				try {
-//					jsonItemList = objectMapper.writeValueAsString(itemList);
-//					System.out.println("Sending to client: " + jsonItemList);
-//
-//				} catch (JsonProcessingException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				
-//
-//			}
-
 			items = dbController.getItemByName(responseArr[1]);
 
 			if (!items.isEmpty()) {
@@ -241,75 +306,29 @@ public class ServerInventoryController {
 			System.out.println("Operation: Decrease item quantity");
 			System.out.println(responseArr[1]); // will get id here
 			int new_quantity = 0;
-			int tempItemId = Integer.parseInt(responseArr[1]);
-			
 
 			if (!responseArr[1].isEmpty()) {
 				
-
-				int orderLineSizeOld = inventory.getTheOrder().getOrderLines().size();
-
-				new_quantity = inventory.decreaseQuantity(Integer.parseInt(responseArr[1]));
-
-			
-
-					// check if order lines are geenrated
-					int orderLineSizeNew = inventory.getTheOrder().getOrderLines().size();
-
-//					if (orderLineSizeNew > 0) {
-//
-//						OrderLines orderLine = inventory.getTheOrder().getOrderLines().get(orderLineSizeNew - 1);
-//
-//					}
-
-					if (orderLineSizeNew > orderLineSizeOld) {
-						
-						OrderLines orderLine = inventory.getTheOrder().getOrderLines().get(orderLineSizeNew - 1);
-
-						System.out.println("new order line generated for: ");
-
-						System.out.println(inventory.getTheOrder().getOrderId() + " " + orderLine.getItem().getItemID()
-								+ " " + orderLine.getItem().getSupplierID() + " "
-								+ orderLine.getItem().getItemQuantity());
-
-						// orderline table insert
-						flag = dbController.addOrderLine(inventory.getTheOrder().getOrderId(),
-								orderLine.getItem().getItemID(), orderLine.getItem().getSupplierID(),
-								orderLine.getItem().getItemQuantity());
-						if (!flag) {
-							flag = false;
-							System.out.println("Add orderline failed");
-
-						}
-
-//						System.out.println("qty to jasonstring: "+Integer.toString(orderLine.getItem().getItemQuantity()));
-//						jsonItemList = Integer.toString(orderLine.getItem().getItemQuantity());
-
-					}
-
-					for(Items i : inventory.getListItems()) {
-						
-						if(i.getItemID() == tempItemId) {
-							
-							System.out.println("updating item quantity for item: " + tempItemId + " "
-									+ i.getItemQuantity());
-							// update statement to update qty in item
-							flag = dbController.updateItemQty(i.getItemQuantity(),
-									tempItemId);
-							if (!flag) {
-								flag = false;
-								System.out.println("Item update failed");
-
-							}
-							
-							
-						}
-						
-					}
-					jsonItemList = Integer.toString(new_quantity);
-					System.out.println("json qty: " + jsonItemList);
-
 				
+				if( checkOrderLineGeneration(Integer.parseInt(responseArr[1]))) {
+					System.out.println("orderline is generated");
+					
+
+					OrderLines orderLine = inventory.getTheOrder().getOrderLines().get(inventory.getTheOrder().getOrderLines().size() - 1);
+
+					new_quantity = generateOrderLine(orderLine);
+					if(new_quantity == 0) {
+						jsonItemList = "ERROR !! Orderline generation failed";
+						break;
+					}
+				}
+
+				if (callUpdateItemQuantity(Integer.parseInt(responseArr[1]))) {
+					jsonItemList = Integer.toString(new_quantity);
+				} else {
+					jsonItemList = "ERROR !! Update tool quantity failed";
+				}
+
 			}
 
 			else {
@@ -319,15 +338,14 @@ public class ServerInventoryController {
 			break;
 
 		case 10:
-			
+
 			try {
 				jsonItemList = objectMapper.writeValueAsString(inventory.getTheOrder());
 			} catch (JsonProcessingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			
+
 			break;
 		}
 

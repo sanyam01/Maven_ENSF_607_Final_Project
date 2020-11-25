@@ -32,18 +32,29 @@ public class ServerCustomerController {
 	ObjectMapper objectMapper;
 	private String message;
 
-	public ServerCustomerController(String response, DBController dbC, ObjectMapper objectMapper) throws IOException {
-		System.out.println("CustomerController constructor called ");
+//	public ServerCustomerController(String response, DBController dbC, ObjectMapper objectMapper) throws IOException {
+//		System.out.println("CustomerController constructor called ");
+//
+//		this.message = response;
+//		this.dbController = dbC;
+//		this.objectMapper = objectMapper;
+//
+//	}
+	
+	
+	public ServerCustomerController( DBController dbC, ObjectMapper objectMapper) throws IOException {
+//		System.out.println("CustomerController constructor called ");
 
-		this.message = response;
+		this.message = null;
 		this.dbController = dbC;
 		this.objectMapper = objectMapper;
 
 	}
 
-	public String readClientMessage() {
+	public String readClientMessage(String clientRequest) {
 		String[] responseArr = null;
 		String switchBoardResponse = null;
+		message = clientRequest;
 
 		System.out.println("Request from client: " + message);
 

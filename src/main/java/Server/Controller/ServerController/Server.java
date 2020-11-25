@@ -14,7 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Server.Controller.DatabaseController.DBController;
-import Server.Controller.ModelController.ServerController;
+import Server.Controller.ModelController.ServerModelController;
 import Server.Controller.ModelController.ServerCustomerController;
 
 public class Server {
@@ -42,6 +42,7 @@ public class Server {
 	}
 
 	public void runServer() {
+		System.out.println("Server is running...");
 		String messageToClient = null;
 		try {
 			socket = serverSocket.accept();
@@ -52,14 +53,16 @@ public class Server {
 
 		DBController dbController = new DBController();
 		System.out.println("dbController instantiated");
+		ServerModelController serverModelController = new ServerModelController(socket, dbController);
+
 
 		while (true) {
 
 			//System.out.println("Server is running");
 
-			ServerController serverController = new ServerController(socket, dbController);
+//			ServerModelController serverModelController = new ServerModelController(socket, dbController);
 			
-			serverController.run();
+			serverModelController.run();
 				//pool.execute(serverController);
 //				
 		}
