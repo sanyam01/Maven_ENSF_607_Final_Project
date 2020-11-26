@@ -221,10 +221,10 @@ public class InventoryDBManager {
 //	}
 
 	public ArrayList<Items> getItemByNamePreparedStatement(String itemName) {
-		String query = "SELECT  item.item_id,  item_name,  item_quantity,  item_price,  item_type,  supplier_id , electrical_item.power_type\r\n"
-				+ "          FROM item \r\n"
-				+ "          LEFT  JOIN electrical_item  ON item.item_id=electrical_item.item_id \r\n"
-				+ "          where item.item_name like '%?%'";
+		String query = "SELECT  item.item_id,  item_name,  item_quantity,  item_price,  item_type,  supplier_id , electrical_item.power_type\r\n" + 
+				"          FROM item \r\n" + 
+				"          LEFT  JOIN electrical_item  ON item.item_id=electrical_item.item_id \r\n" + 
+				"          where item.item_name like '%?%';";
 
 		try {
 			prepStatment = myDriver.getMyConn().prepareStatement(query);
