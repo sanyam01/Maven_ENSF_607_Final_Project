@@ -53,9 +53,8 @@ public class ServerInventoryController {
 //		}
 //
 //	}
-	
-	
-	public ServerInventoryController( DBController dbC, ObjectMapper objectMapper) throws IOException {
+
+	public ServerInventoryController(DBController dbC, ObjectMapper objectMapper) throws IOException {
 //		System.out.println("CustomerController constructor called ");
 
 		this.message = null;
@@ -63,8 +62,6 @@ public class ServerInventoryController {
 		this.objectMapper = objectMapper;
 //		items = dbController.getItemList();
 		this.inventory = new Inventory(dbController.getItemList());
-
-		
 
 	}
 
@@ -84,8 +81,7 @@ public class ServerInventoryController {
 //		return switchBoardResponse;
 //
 //	}
-	
-	
+
 	public String readClientMessage(String clientRequest) {
 		String[] responseArr = null;
 		String switchBoardResponse = null;
@@ -124,53 +120,46 @@ public class ServerInventoryController {
 		return flag;
 
 	}
-	
+
 	public boolean checkOrderLineGeneration(int itemId) {
 		boolean flag = false;
-		
+
 		int orderLineSizeOld = inventory.getTheOrder().getOrderLines().size();
 		int new_quantity = inventory.decreaseQuantity(itemId);
 
-
 		int orderLineSizeNew = inventory.getTheOrder().getOrderLines().size();
 
-
 		if (orderLineSizeNew > orderLineSizeOld) {
-			
+
 			flag = true;
-			
-			
+
 		}
 		return flag;
 	}
-	
+
 	public boolean checkOrder() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd ");
 		Date orderDate = null;
 		String stringOrderDate = inventory.getTheOrder().getDate().trim();
 		Date todayDate = new Date();
-		String stringTodayDate = sdf.format(todayDate).trim(); 
-		
-		System.out.println("\nstringTodayDate: "+  stringTodayDate);
-		System.out.println("\nstringOrderDate: "+  stringOrderDate);
-		
-		
-		if(stringTodayDate.equals(stringOrderDate)) {
-			
+		String stringTodayDate = sdf.format(todayDate).trim();
+
+		System.out.println("\nstringTodayDate: " + stringTodayDate);
+		System.out.println("\nstringOrderDate: " + stringOrderDate);
+
+		if (stringTodayDate.equals(stringOrderDate)) {
+
 			System.out.println("in check order, both dates are same\n");
 			return true;
-			
-		}
-		else {
+
+		} else {
 			System.out.println("in check order, both dates are different\n");
 		}
 		return false;
-		
+
 //		System.out.println("\ntoday date: "+todayDate);
 //		System.out.println("inventory order date: "+inventory.getTheOrder().getDate());
-		
-		
-		
+
 //		
 //		try {
 //			 orderDate = sdf.parse(stringOrderDate);
@@ -179,57 +168,53 @@ public class ServerInventoryController {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
-		
+
 //		if(todayDate.equals(orderDate)) {
 //			System.out.println("today is same as orderDate\n");
 //		}
-		
+
 //		if(todayDate.equals(stringOrderDate)) {
 //			System.out.println("today is same as stringOrderDate\n");
 //		}
 	}
 
 	public boolean generateOrder() {
-		
+
 		boolean flag = false;
 		// load data in order table
-				System.out.println("loading data in order table for values: " + inventory.getTheOrder().getOrderId() + " "
-						+ inventory.getTheOrder().getDate()+"\n");
-				System.out.println(checkOrder()+"\n");
-				if(!checkOrder()) {
-					
-					
-					
-					flag = this.dbController.addOrder(inventory.getTheOrder().getOrderId(),
-							inventory.getTheOrder().getDate());
-					
-				}else {
-					System.out.println("Order is already generated for today!!: "+ inventory.getTheOrder().getOrderId());
-					flag = true;
-				}
-				
+		System.out.println("loading data in order table for values: " + inventory.getTheOrder().getOrderId() + " "
+				+ inventory.getTheOrder().getDate() + "\n");
+		System.out.println(checkOrder() + "\n");
+		if (!checkOrder()) {
+
+			flag = this.dbController.addOrder(inventory.getTheOrder().getOrderId(), inventory.getTheOrder().getDate());
+
+		} else {
+			System.out.println("Order is already generated for today!!: " + inventory.getTheOrder().getOrderId());
+			flag = true;
+		}
+
 //				if(inventory.getTheOrder().getDate() ) {
 //					
 //				}
-				return flag;
-				
+		return flag;
+
 	}
+
 	public int generateOrderLine(OrderLines orderLine) {
-		
+
 		System.out.println("new order line generated for: ");
 
-		System.out.println(inventory.getTheOrder().getOrderId() + " " + orderLine.getItem().getItemID()
-				+ " " + orderLine.getItem().getSupplierID() + " " + orderLine.getItem().getItemQuantity());
+		System.out.println(inventory.getTheOrder().getOrderId() + " " + orderLine.getItem().getItemID() + " "
+				+ orderLine.getItem().getSupplierID() + " " + orderLine.getItem().getItemQuantity());
 
 		// orderline table insert
-		 dbController.addOrderLine(inventory.getTheOrder().getOrderId(),
-				orderLine.getItem().getItemID(), orderLine.getItem().getSupplierID(),
-				orderLine.getItem().getItemQuantity());
-		
-		
-		
+		dbController.addOrderLine(inventory.getTheOrder().getOrderId(), orderLine.getItem().getItemID(),
+				orderLine.getItem().getSupplierID(), orderLine.getItem().getItemQuantity());
+
 		return orderLine.getItem().getItemQuantity();
 	}
+
 	private String switchBoard(String[] responseArr) {
 
 		int choice = Integer.parseInt(responseArr[0]);
@@ -245,13 +230,13 @@ public class ServerInventoryController {
 			// list all tools
 			System.out.println("Operation: list all tools");
 			System.out.println(responseArr[1]);
-			
-			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+
+			if (responseArr[1].isEmpty() || responseArr[1].isBlank()) {
 				System.out.println("\nInvalid input\n");
 				jsonItemList = "ERROR!! Invalid input!!";
-				
-			}else {
-				
+
+			} else {
+
 				items = dbController.getItemList();
 				if (!items.isEmpty()) {
 
@@ -268,10 +253,8 @@ public class ServerInventoryController {
 				} else {
 					jsonItemList = "ERROR!! Items list is empty!!";
 				}
-				
-			}
 
-			
+			}
 
 //			elecItems = dbController.getElectricalItems();
 //			nonElecItems = dbController.getNonElectricalItems();
@@ -306,7 +289,6 @@ public class ServerInventoryController {
 			System.out.println("Operation: Search for tool by toolId");
 			System.out.println(responseArr[1]);
 
-			
 //			itemList = dbController.getItemById(Integer.parseInt(responseArr[1]));
 //			
 //			if (itemList.getElecItemList().isEmpty() && itemList.getNonElecItemList().isEmpty()) {
@@ -330,24 +312,20 @@ public class ServerInventoryController {
 //				
 //
 //			}
-			
-		
-			
-			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+
+			if (responseArr[1].isEmpty() || responseArr[1].isBlank()) {
 				System.out.println("\nInvalid input\n");
 				jsonItemList = "ERROR!! Invalid input!!";
-				
-			}else {
-				
+
+			} else {
+
 				try {
 					System.out.println(Integer.parseInt(responseArr[1].trim()));
-				}
-				catch(NumberFormatException e ) {
+				} catch (NumberFormatException e) {
 					jsonItemList = "ERROR !! Invalid input, enter integer value";
 					break;
 				}
 				items = dbController.getItemById(Integer.parseInt(responseArr[1].trim()));
-				
 
 				if (!items.isEmpty()) {
 
@@ -364,10 +342,8 @@ public class ServerInventoryController {
 				} else {
 					jsonItemList = "ERROR!! Items Id not found!!";
 				}
-				
-			}
 
-			
+			}
 
 			break;
 
@@ -375,12 +351,12 @@ public class ServerInventoryController {
 			// Search for tool by toolName
 			System.out.println("Operation: Search for tool by toolName");
 
-			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+			if (responseArr[1].isEmpty() || responseArr[1].isBlank()) {
 				System.out.println("\nInvalid input\n");
 				jsonItemList = "ERROR!! Invalid input!!";
-				
-			}else {
-				
+
+			} else {
+
 				items = dbController.getItemByName(responseArr[1].trim());
 
 				if (!items.isEmpty()) {
@@ -398,40 +374,39 @@ public class ServerInventoryController {
 				} else {
 					jsonItemList = "ERROR!! Item Name not found!!";
 				}
-				
+
 			}
-			
+
 			break;
 
 		case 9:
 
 			System.out.println("Operation: Decrease item quantity");
 			System.out.println(responseArr[1]); // will get id here
-			
-			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+
+			if (responseArr[1].isEmpty() || responseArr[1].isBlank()) {
 				System.out.println("\nInvalid input\n");
 				jsonItemList = "ERROR!! Invalid input!!";
-				
-			}else {
-				
+
+			} else {
+
 				int new_quantity = 0;
 
 				if (!responseArr[1].isEmpty()) {
-					
-					if( !generateOrder() ) {
+
+					if (!generateOrder()) {
 						jsonItemList = "ERROR !! Order generation failed";
 						break;
 					}
-					
-					
-					if( checkOrderLineGeneration(Integer.parseInt(responseArr[1].trim()))) {
-						System.out.println("orderline is generated");
-						
 
-						OrderLines orderLine = inventory.getTheOrder().getOrderLines().get(inventory.getTheOrder().getOrderLines().size() - 1);
+					if (checkOrderLineGeneration(Integer.parseInt(responseArr[1].trim()))) {
+						System.out.println("orderline is generated");
+
+						OrderLines orderLine = inventory.getTheOrder().getOrderLines()
+								.get(inventory.getTheOrder().getOrderLines().size() - 1);
 
 						new_quantity = generateOrderLine(orderLine);
-						if(new_quantity == 0) {
+						if (new_quantity == 0) {
 							jsonItemList = "ERROR !! Orderline generation failed";
 							break;
 						}
@@ -464,7 +439,7 @@ public class ServerInventoryController {
 			}
 
 			break;
-			
+
 		default:
 			System.out.println("Invalid choice!");
 		}
