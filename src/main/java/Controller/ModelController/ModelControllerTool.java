@@ -26,7 +26,7 @@ public class ModelControllerTool {
 	public String searchToolID(String toolID) {
 		String searchID = "7 " + toolID;
 		String response = clientControllerTool.sendQuery(searchID);
-		if (response.split("!!")[0].contentEquals("ERROR"))
+		if (response.split("!!")[0].strip().contentEquals("ERROR"))
 			return response;
 		getToolListFromJson(response);
 		String displayTool = getStringToolList();
@@ -36,7 +36,7 @@ public class ModelControllerTool {
 	public String searchToolName(String toolName) {
 		String searchID = "8 " + toolName;
 		String response = clientControllerTool.sendQuery(searchID);
-		if (response.split("!!")[0].contentEquals("ERROR"))
+		if (response.split("!!")[0].strip().contentEquals("ERROR"))
 			return response;
 		getToolListFromJson(response);
 		String displayTool = getStringToolList();
@@ -79,7 +79,7 @@ public class ModelControllerTool {
 	public String checkToolID(String toolID) {
 		String searchID = "7 " + toolID;
 		String response = clientControllerTool.sendQuery(searchID);
-		if (response.split("!!")[0].contentEquals("ERROR"))
+		if (response.split("!!")[0].strip().contentEquals("ERROR"))
 			return response;
 		getToolListFromJson(response);
 		String displayQuantity = getStringQuantityList();
@@ -89,7 +89,7 @@ public class ModelControllerTool {
 	public String checkToolName(String name) {
 		String searchID = "8 " + name;
 		String response = clientControllerTool.sendQuery(searchID);
-		if (response.split("!!")[0].contentEquals("ERROR"))
+		if (response.split("!!")[0].strip().contentEquals("ERROR"))
 			return response;
 		getToolListFromJson(response);
 		String displayQuantity = getStringQuantityList();
@@ -108,7 +108,7 @@ public class ModelControllerTool {
 
 		String searchID = "6 ";
 		String response = clientControllerTool.sendQuery(searchID);
-		if (response.split("!!")[0].contentEquals("ERROR"))
+		if (response.split("!!")[0].strip().contentEquals("ERROR"))
 			return response;
 		getToolListFromJson(response);
 		String displayTool = getStringToolList();
