@@ -150,10 +150,10 @@ public class DBController {
 		return dbManager.getItemQtyPreparedStatement(itemId);
 	}
 	
-	
-	public ArrayList<InternationalSupplier> getSupplierList() {
-		return dbManager.getSuppListPreparedStatemen();
-	}
+//	
+//	public ArrayList<InternationalSupplier> getSupplierList() {
+//		return dbManager.getSuppListPreparedStatemen();
+//	}
 	
 //	public ArrayList<ElectricalItem> getElectricalItems() {
 //		return dbManager.getElectricalItemListPrepStat();

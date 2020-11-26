@@ -40,7 +40,6 @@ public class CreateDBTables {
 //		fillSupplierTable();
 //		fillIntSupplierTable();
 //		fillElecItemTable();
-//	insertCustomerPreparedStatment(1,"Fred","Evil","address","123456","123-234-234","C") ;
 	}
 
 	/**
@@ -92,7 +91,7 @@ public class CreateDBTables {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Created customer table in given database...");
+		System.out.println("Created Customer table in given database...");
 	}
 
 	public void createSupplierTable() {
@@ -110,7 +109,7 @@ public class CreateDBTables {
 
 		try {
 			myStmt = myDriver.getMyConn().createStatement();
-			myStmt.executeUpdate(sql_temp);
+//			myStmt.executeUpdate(sql_temp);
 			myStmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -141,13 +140,13 @@ public class CreateDBTables {
 				+ "		  references supplier(supplier_id) );";
 		try {
 			myStmt = myDriver.getMyConn().createStatement();
-			myStmt.executeUpdate(sql_temp);
+//			myStmt.executeUpdate(sql_temp);
 			myStmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Created item table in given database...");
+		System.out.println("Created Item table in given database...");
 	}
 
 // Query to create purchase table in db.
@@ -166,13 +165,13 @@ public class CreateDBTables {
 
 		try {
 			myStmt = myDriver.getMyConn().createStatement();
-			myStmt.executeUpdate(sql_temp);
+//			myStmt.executeUpdate(sql_temp);
 			myStmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Created purchase table in given database...");
+		System.out.println("Created Purchase table in given database...");
 	}
 
 // Query to create order table in db.
@@ -191,13 +190,13 @@ public class CreateDBTables {
 
 		try {
 			myStmt = myDriver.getMyConn().createStatement();
-			myStmt.executeUpdate(sql_temp);
+//			myStmt.executeUpdate(sql_temp);
 			myStmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Created order table in given database...");
+		System.out.println("Created Orders table in given database...");
 	}
 
 // Query to create orderline table in db.
@@ -221,13 +220,13 @@ public class CreateDBTables {
 
 		try {
 			myStmt = myDriver.getMyConn().createStatement();
-			myStmt.executeUpdate(sql_temp);
+//			myStmt.executeUpdate(sql_temp);
 			myStmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Created orderline table in given database...");
+		System.out.println("Created Orderline table in given database...");
 	}
 
 // Query to create electrical_item table in db.
@@ -246,13 +245,13 @@ public class CreateDBTables {
 
 		try {
 			myStmt = myDriver.getMyConn().createStatement();
-			myStmt.executeUpdate(sql_temp);
+//			myStmt.executeUpdate(sql_temp);
 			myStmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Created electrical_item table in given database...");
+		System.out.println("Created Electrical_item table in given database...");
 	}
 
 // Query to create electrical_item table in db.
@@ -272,13 +271,13 @@ public class CreateDBTables {
 
 		try {
 			myStmt = myDriver.getMyConn().createStatement();
-			myStmt.executeUpdate(sql_temp);
+//			myStmt.executeUpdate(sql_temp);
 			myStmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Created international_supplier table in given database...");
+		System.out.println("Created International_supplier table in given database...");
 	}
 
 	public int insertCustomerPreparedStatment(int id, String fName, String lName, String address, String postal_code,
@@ -296,13 +295,13 @@ public class CreateDBTables {
 			pStat.setString(6, phone_number);
 			pStat.setString(7, customer_type);
 			rowCount = pStat.executeUpdate();
-			System.out.println("row Count = " + rowCount);
-			System.out.println("Added data in customer table");
+//			System.out.println("row Count = " + rowCount);
+			
 			pStat.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+//		System.out.println("Added data in customer table");
 		return rowCount;
 
 	}
@@ -322,8 +321,8 @@ public class CreateDBTables {
 			pStat.setInt(6, suppId);
 
 			rowCount = pStat.executeUpdate();
-			System.out.println("row Count = " + rowCount);
-			System.out.println("Added data in item table");
+//			System.out.println("row Count = " + rowCount);
+//			System.out.println("Added data in item table");
 			pStat.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -349,7 +348,7 @@ public class CreateDBTables {
 
 			rowCount = pStat.executeUpdate();
 //			System.out.println("row Count = " + rowCount);
-			System.out.println("Added data in supplier table");
+//			System.out.println("Added data in supplier table");
 			pStat.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -370,7 +369,7 @@ public class CreateDBTables {
 
 			rowCount = pStat.executeUpdate();
 //			System.out.println("row Count = " + rowCount);
-			System.out.println("Added data in international_supplier table");
+//			System.out.println("Added data in international_supplier table");
 			pStat.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -391,7 +390,7 @@ public class CreateDBTables {
 
 			rowCount = pStat.executeUpdate();
 //			System.out.println("row Count = " + rowCount);
-			System.out.println("Added data in electrical_item table");
+//			System.out.println("Added data in electrical_item table");
 			pStat.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -409,6 +408,7 @@ public class CreateDBTables {
 				insertCustomerPreparedStatment(Integer.parseInt(customerInfo[0]), customerInfo[1], customerInfo[2],
 						customerInfo[3], customerInfo[4], customerInfo[5], customerInfo[6]);
 			}
+			System.out.println("Added data in Customer table");
 			sc.close();
 		} catch (FileNotFoundException e) {
 			System.err.println("File " + "clients.txt" + " Not Found!");
@@ -425,7 +425,9 @@ public class CreateDBTables {
 				insertItemPreparedStatment(Integer.parseInt(items[0]), items[1], Integer.parseInt(items[2]),
 						Double.parseDouble(items[3]), items[4], Integer.parseInt(items[5]));
 			}
+			System.out.println("Added data in Item table");
 			sc.close();
+			
 		} catch (FileNotFoundException e) {
 			System.err.println("File " + "items.txt" + " Not Found!");
 		} catch (Exception e) {
@@ -443,6 +445,7 @@ public class CreateDBTables {
 						suppliers[4], suppliers[5]);
 			}
 			sc.close();
+			System.out.println("Added data in Supplier table");
 		} catch (FileNotFoundException e) {
 			System.err.println("File " + "suppliers.txt" + " Not Found!");
 		} catch (Exception e) {
@@ -458,6 +461,7 @@ public class CreateDBTables {
 				insertIntSupplierPrepStatment(Integer.parseInt(intSuppliers[0]), Double.parseDouble(intSuppliers[1]));
 			}
 			sc.close();
+			System.out.println("Added data in International_suppliers table");
 		} catch (FileNotFoundException e) {
 			System.err.println("File " + "International_suppliers.txt" + " Not Found!");
 		} catch (Exception e) {
@@ -473,6 +477,7 @@ public class CreateDBTables {
 				insertElecItemPrepStatment(Integer.parseInt(elecItems[0]), elecItems[1]);
 			}
 			sc.close();
+			System.out.println("Added data in Electrical_items table");
 		} catch (FileNotFoundException e) {
 			System.err.println("File " + "electrical_items.txt" + " Not Found!");
 		} catch (Exception e) {

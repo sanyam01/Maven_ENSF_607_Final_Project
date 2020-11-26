@@ -52,7 +52,7 @@ public class Server {
 //		}
 
 		DBController dbController = new DBController();
-		System.out.println("dbController instantiated");
+		System.out.println("DBController instantiated");
 //		ServerModelController serverModelController = new ServerModelController(socket, dbController);
 
 //		pool.execute(serverModelController);

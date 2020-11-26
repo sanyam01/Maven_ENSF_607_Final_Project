@@ -245,23 +245,33 @@ public class ServerInventoryController {
 			// list all tools
 			System.out.println("Operation: list all tools");
 			System.out.println(responseArr[1]);
+			
+			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+				System.out.println("\nInvalid input\n");
+				jsonItemList = "ERROR!! Invalid input!!";
+				
+			}else {
+				
+				items = dbController.getItemList();
+				if (!items.isEmpty()) {
 
-			items = dbController.getItemList();
-			if (!items.isEmpty()) {
+					ItemsList serializedFleet = new ItemsList();
+					serializedFleet.setItemsList(items);
 
-				ItemsList serializedFleet = new ItemsList();
-				serializedFleet.setItemsList(items);
+					try {
+						jsonItemList = objectMapper.writeValueAsString(serializedFleet);
+					} catch (JsonProcessingException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 
-				try {
-					jsonItemList = objectMapper.writeValueAsString(serializedFleet);
-				} catch (JsonProcessingException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				} else {
+					jsonItemList = "ERROR!! Items list is empty!!";
 				}
-
-			} else {
-				jsonItemList = "ERROR!! Items list is empty!!";
+				
 			}
+
+			
 
 //			elecItems = dbController.getElectricalItems();
 //			nonElecItems = dbController.getNonElectricalItems();
@@ -296,6 +306,7 @@ public class ServerInventoryController {
 			System.out.println("Operation: Search for tool by toolId");
 			System.out.println(responseArr[1]);
 
+			
 //			itemList = dbController.getItemById(Integer.parseInt(responseArr[1]));
 //			
 //			if (itemList.getElecItemList().isEmpty() && itemList.getNonElecItemList().isEmpty()) {
@@ -319,24 +330,44 @@ public class ServerInventoryController {
 //				
 //
 //			}
-
-			items = dbController.getItemById(Integer.parseInt(responseArr[1]));
-
-			if (!items.isEmpty()) {
-
-				ItemsList serializedFleet = new ItemsList();
-				serializedFleet.setItemsList(items);
-
+			
+		
+			
+			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+				System.out.println("\nInvalid input\n");
+				jsonItemList = "ERROR!! Invalid input!!";
+				
+			}else {
+				
 				try {
-					jsonItemList = objectMapper.writeValueAsString(serializedFleet);
-				} catch (JsonProcessingException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					System.out.println(Integer.parseInt(responseArr[1].trim()));
 				}
+				catch(NumberFormatException e ) {
+					jsonItemList = "ERROR !! Invalid input, enter integer value";
+					break;
+				}
+				items = dbController.getItemById(Integer.parseInt(responseArr[1].trim()));
+				
 
-			} else {
-				jsonItemList = "ERROR!! Items Id not found!!";
+				if (!items.isEmpty()) {
+
+					ItemsList serializedFleet = new ItemsList();
+					serializedFleet.setItemsList(items);
+
+					try {
+						jsonItemList = objectMapper.writeValueAsString(serializedFleet);
+					} catch (JsonProcessingException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+				} else {
+					jsonItemList = "ERROR!! Items Id not found!!";
+				}
+				
 			}
+
+			
 
 			break;
 
@@ -344,62 +375,80 @@ public class ServerInventoryController {
 			// Search for tool by toolName
 			System.out.println("Operation: Search for tool by toolName");
 
-			items = dbController.getItemByName(responseArr[1]);
+			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+				System.out.println("\nInvalid input\n");
+				jsonItemList = "ERROR!! Invalid input!!";
+				
+			}else {
+				
+				items = dbController.getItemByName(responseArr[1].trim());
 
-			if (!items.isEmpty()) {
+				if (!items.isEmpty()) {
 
-				ItemsList serializedFleet = new ItemsList();
-				serializedFleet.setItemsList(items);
+					ItemsList serializedFleet = new ItemsList();
+					serializedFleet.setItemsList(items);
 
-				try {
-					jsonItemList = objectMapper.writeValueAsString(serializedFleet);
-				} catch (JsonProcessingException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					try {
+						jsonItemList = objectMapper.writeValueAsString(serializedFleet);
+					} catch (JsonProcessingException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+				} else {
+					jsonItemList = "ERROR!! Item Name not found!!";
 				}
-
-			} else {
-				jsonItemList = "ERROR!! Item Name not found!!";
+				
 			}
+			
 			break;
 
 		case 9:
 
 			System.out.println("Operation: Decrease item quantity");
 			System.out.println(responseArr[1]); // will get id here
-			int new_quantity = 0;
+			
+			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+				System.out.println("\nInvalid input\n");
+				jsonItemList = "ERROR!! Invalid input!!";
+				
+			}else {
+				
+				int new_quantity = 0;
 
-			if (!responseArr[1].isEmpty()) {
-				
-				if( !generateOrder() ) {
-					jsonItemList = "ERROR !! Order generation failed";
-					break;
-				}
-				
-				
-				if( checkOrderLineGeneration(Integer.parseInt(responseArr[1]))) {
-					System.out.println("orderline is generated");
+				if (!responseArr[1].isEmpty()) {
 					
-
-					OrderLines orderLine = inventory.getTheOrder().getOrderLines().get(inventory.getTheOrder().getOrderLines().size() - 1);
-
-					new_quantity = generateOrderLine(orderLine);
-					if(new_quantity == 0) {
-						jsonItemList = "ERROR !! Orderline generation failed";
+					if( !generateOrder() ) {
+						jsonItemList = "ERROR !! Order generation failed";
 						break;
 					}
+					
+					
+					if( checkOrderLineGeneration(Integer.parseInt(responseArr[1].trim()))) {
+						System.out.println("orderline is generated");
+						
+
+						OrderLines orderLine = inventory.getTheOrder().getOrderLines().get(inventory.getTheOrder().getOrderLines().size() - 1);
+
+						new_quantity = generateOrderLine(orderLine);
+						if(new_quantity == 0) {
+							jsonItemList = "ERROR !! Orderline generation failed";
+							break;
+						}
+					}
+
+					if (callUpdateItemQuantity(Integer.parseInt(responseArr[1]))) {
+						jsonItemList = Integer.toString(new_quantity);
+					} else {
+						jsonItemList = "ERROR !! Update tool quantity failed";
+					}
+
 				}
 
-				if (callUpdateItemQuantity(Integer.parseInt(responseArr[1]))) {
-					jsonItemList = Integer.toString(new_quantity);
-				} else {
-					jsonItemList = "ERROR !! Update tool quantity failed";
+				else {
+					jsonItemList = "ERROR !! Request to decrease item failed";
 				}
 
-			}
-
-			else {
-				jsonItemList = "ERROR !! Request to decrease item failed";
 			}
 
 			break;
