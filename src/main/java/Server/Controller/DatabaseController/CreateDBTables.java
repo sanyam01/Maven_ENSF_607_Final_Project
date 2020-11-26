@@ -104,7 +104,7 @@ public class CreateDBTables {
 		 * varchar(25), phone_number varchar(25), primary key (supplier_id) );
 		 */
 		String sql = "CREATE TABLE supplier ( " + " supplier_id       integer not null, "
-				+ " supplier_name		varchar(25), " + " supplier_type 	varchar(25), "
+				+ " supplier_name		varchar(25) unique, " + " supplier_type 	varchar(25), "
 				+ " address      		varchar(50), " + " company_name 		varchar(25), "
 				+ "phone_number 	varchar(25), " + " primary key (supplier_id) \r\n" + "  ) ";
 
@@ -135,7 +135,7 @@ public class CreateDBTables {
 //				+ "supplier_id  integer, " + "primary key (item_id), "
 //				+ "foreign key (supplier_id) references supplier(supplier_id)\r\n" + "			) ";
 
-		String sql = "CREATE TABLE item ( item_id integer not null, item_name varchar(25),\r\n"
+		String sql = "CREATE TABLE item ( item_id integer not null, item_name varchar(25) unique,\r\n"
 				+ "		item_quantity integer, item_price decimal(10,2), item_type varchar(25),\r\n"
 				+ "		  supplier_id integer, primary key (item_id), foreign key (supplier_id)\r\n"
 				+ "		  references supplier(supplier_id) );";

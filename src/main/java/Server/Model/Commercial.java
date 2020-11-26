@@ -11,4 +11,7 @@ public class Commercial extends Customer{
 		super(customerID, firstName, lastName, address, postalCode, phoneNumber, customerType);
 	}
 
+	public Commercial() {
+		super();
+	}
 }
