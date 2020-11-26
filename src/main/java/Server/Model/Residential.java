@@ -10,4 +10,8 @@ public class Residential extends Customer{
 	public Residential(int customerID, String firstName, String lastName, String address, String postalCode, String phoneNumber, String customerType) {
 		super(customerID, firstName, lastName, address, postalCode, phoneNumber, customerType);
 	}
+	
+	public Residential() {
+		super();
+	}
 }

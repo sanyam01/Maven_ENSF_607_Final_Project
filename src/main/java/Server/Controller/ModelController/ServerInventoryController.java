@@ -1,8 +1,10 @@
 package Server.Controller.ModelController;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Date;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -141,15 +143,76 @@ public class ServerInventoryController {
 		}
 		return flag;
 	}
+	
+	public boolean checkOrder() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd ");
+		Date orderDate = null;
+		String stringOrderDate = inventory.getTheOrder().getDate().trim();
+		Date todayDate = new Date();
+		String stringTodayDate = sdf.format(todayDate).trim(); 
+		
+		System.out.println("\nstringTodayDate: "+  stringTodayDate);
+		System.out.println("\nstringOrderDate: "+  stringOrderDate);
+		
+		
+		if(stringTodayDate.equals(stringOrderDate)) {
+			
+			System.out.println("in check order, both dates are same\n");
+			return true;
+			
+		}
+		else {
+			System.out.println("in check order, both dates are different\n");
+		}
+		return false;
+		
+//		System.out.println("\ntoday date: "+todayDate);
+//		System.out.println("inventory order date: "+inventory.getTheOrder().getDate());
+		
+		
+		
+//		
+//		try {
+//			 orderDate = sdf.parse(stringOrderDate);
+//			System.out.println("inventory order date converetd : "+orderDate);
+//		} catch (ParseException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+//		if(todayDate.equals(orderDate)) {
+//			System.out.println("today is same as orderDate\n");
+//		}
+		
+//		if(todayDate.equals(stringOrderDate)) {
+//			System.out.println("today is same as stringOrderDate\n");
+//		}
+	}
 
 	public boolean generateOrder() {
+		
+		boolean flag = false;
 		// load data in order table
 				System.out.println("loading data in order table for values: " + inventory.getTheOrder().getOrderId() + " "
-						+ inventory.getTheOrder().getDate());
-
-				boolean flag = this.dbController.addOrder(inventory.getTheOrder().getOrderId(),
-						inventory.getTheOrder().getDate());
+						+ inventory.getTheOrder().getDate()+"\n");
+				System.out.println(checkOrder()+"\n");
+				if(!checkOrder()) {
+					
+					
+					
+					flag = this.dbController.addOrder(inventory.getTheOrder().getOrderId(),
+							inventory.getTheOrder().getDate());
+					
+				}else {
+					System.out.println("Order is already generated for today!!: "+ inventory.getTheOrder().getOrderId());
+					flag = true;
+				}
+				
+//				if(inventory.getTheOrder().getDate() ) {
+//					
+//				}
 				return flag;
+				
 	}
 	public int generateOrderLine(OrderLines orderLine) {
 		
