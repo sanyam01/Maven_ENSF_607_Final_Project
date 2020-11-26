@@ -2,11 +2,24 @@ package ClientModel;
 
 import java.io.Serializable;
 
-public class Customer implements Serializable {
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(
+		  use = JsonTypeInfo.Id.NAME, 
+		  include = JsonTypeInfo.As.PROPERTY, 
+		  property = "type")
+		@JsonSubTypes({ 
+		  @Type(value = Residential.class, name = "residential"), 
+		  @Type(value = Commercial.class, name = "commercial") 
+		})
+
+public abstract class Customer implements Serializable {
 	
-	public Customer() {
-		super();
-	}
+	/**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	private int customerID;
 	private String firstName;
@@ -16,8 +29,12 @@ public class Customer implements Serializable {
 	private String phoneNumber;
 	private String customerType;
 	
+	
+	public Customer() {
+        super();
+    }
+	
 	public Customer(int customerID, String firstName, String lastName, String address, String postalCode, String phoneNumber, String customerType) {
-		
 		this.customerID = customerID;
 		this.firstName = firstName;
 		this.lastName = lastName;

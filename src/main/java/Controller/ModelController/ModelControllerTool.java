@@ -18,6 +18,10 @@ public class ModelControllerTool {
 	private Items items, atIndexItem;
 	private ItemsList itemsList;
 	private Order order;
+	
+	public ModelControllerTool() {
+		clientControllerTool = new ClientControllerTool();
+	}
 
 	public String searchToolID(String toolID) {
 		String searchID = "7 " + toolID;
@@ -118,7 +122,7 @@ public class ModelControllerTool {
 		String response = "";
 		String temp = "9 " + Integer.toString(id);
 		response = clientControllerTool.sendQuery(temp);
-		if (response.split("!!")[0].contentEquals("ERROR"))
+		if ((response.split("!!")[0].strip()).contentEquals("ERROR"))
 			return response;
 		else
 			setUpdatedValueItem(id, response);
@@ -173,10 +177,10 @@ public class ModelControllerTool {
 	private String getStringOrder() {
 
 		String concatOrder = "";
-		concatOrder = concatOrder + order.getOrderId() + "\n";
-		concatOrder = concatOrder + order.getDate() + "\n";
+		concatOrder = concatOrder + "Order ID: "+ order.getOrderId() + "\n";
+		concatOrder = concatOrder + "Order Date: " + order.getDate() + "\n";
 		for (OrderLines orderLines : this.order.getOrderLines())
-			concatOrder = concatOrder + orderLines.getItem() + " " + orderLines.getAmount();
+			concatOrder = concatOrder + "Item ID: " + orderLines.getItem().getItemID() + " Amount: " + orderLines.getAmount();
 		return concatOrder;
 	}
 
@@ -200,9 +204,7 @@ public class ModelControllerTool {
 		return values;
 	}
 
-	public ModelControllerTool() {
-		clientControllerTool = new ClientControllerTool();
-	}
+	
 
 	public ClientControllerTool getClientControllerTool() {
 		return clientControllerTool;

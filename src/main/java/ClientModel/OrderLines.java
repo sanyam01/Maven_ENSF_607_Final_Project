@@ -26,7 +26,11 @@ public class OrderLines {
 	 * 
 	 * @param item   represents the item object for which order line is generated
 	 * @param amount tells the number of items ordered
+	 * 
 	 */
+	public OrderLines() {
+		super();
+	}
 	public OrderLines(Items item, int amount) {
 
 		this.setItem(item);

@@ -140,12 +140,12 @@ public class ToolViewController {
 	private void decreaseItem() {
 		System.out.println("Decrease has been called");
 		String response = fetchItemInformation();
+		if (response != "") {
 		toolView.getStatusText().setText(response);
 		clearToolFields();
 		toolView.getToolList().clearSelection();
-		printToolListGUI(this.modelControllerTool.getStringToolList());
-		addListenerList();
-
+		toolView.getToolList().setEnabled(true);
+		}
 	}
 
 	private String fetchItemInformation() {
@@ -155,8 +155,8 @@ public class ToolViewController {
 			response = this.modelControllerTool.sendItemInfoDecrease(iD);
 
 		} catch (Exception e) {
-			toolView.getStatusText().setText("Please enter the valid values in all the text fields");
-			System.err.println("Please enter valid inputs");
+			System.err.println("Please enter valid inputs here");
+			this.toolView.getStatusText().setText("Please enter valid input ID");
 		}
 		return response;
 
@@ -207,6 +207,7 @@ public class ToolViewController {
 
 		String value = this.getModelControllerTool().printOrder();
 		printToolListGUI(value);
+			toolView.getToolList().setEnabled(false);
 	}
 
 	public ToolView getToolView() {
@@ -228,6 +229,8 @@ public class ToolViewController {
 	class ToolListener implements ActionListener, ListSelectionListener {
 
 		public void actionPerformed(ActionEvent e) {
+			
+			toolView.getToolList().setEnabled(true);
 
 			if (e.getSource() == toolView.getSearch())
 				findSearchType();
@@ -241,16 +244,25 @@ public class ToolViewController {
 				clearItem();
 			if (e.getSource() == toolView.getCheckQuantity())
 				findCheckQuantity();
-			if (e.getSource() == toolView.getPrintOrder())
+			if (e.getSource() == toolView.getPrintOrder()) {
+				toolView.getToolList().setEnabled(false);
 				printOrder();
+			}
+			
 		}
 
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 
-			int index = toolView.getToolList().getSelectedIndex();
-			System.out.println("First index is" + index);
-			getSelectedToolInfo(index);
+			if (toolView.getToolList().getSelectedIndex() == -1) {
+				toolView.getToolList().clearSelection();
+				toolView.getToolList().setEnabled(true);
+			} else {
+				toolView.getToolList().setEnabled(true);
+				int index = toolView.getToolList().getSelectedIndex();
+				System.out.println("First index is" + index);
+				getSelectedToolInfo(index);
+			}
 		}
 
 	}

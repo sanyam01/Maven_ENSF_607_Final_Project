@@ -5,8 +5,10 @@ import java.io.IOException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import ClientModel.Commercial;
 import ClientModel.Customer;
 import ClientModel.CustomerList;
+import ClientModel.Residential;
 import Controller.ClientController.ClientControllerCustomer;
 
 public class ModelControllerCustomer {
@@ -22,9 +24,11 @@ public class ModelControllerCustomer {
 	// this is called when save is pressed for storing customer information
 	public void setCustomer(int iD, String firstName, String lastName, String address, String postalCode,
 			String phoneNo, String type) {
-
-		this.customer = new Customer(iD, firstName, lastName, address, postalCode, phoneNo, type);
-		System.out.println(firstName + lastName);
+		if (type.contentEquals("Commercial"))
+			this.customer = new Commercial(iD, firstName, lastName, address, postalCode, phoneNo, type);
+		else
+			this.customer = new Residential(iD, firstName, lastName, address, postalCode, phoneNo, type);
+		
 	}
 
 	public String sendCustomerInfo() {
@@ -102,8 +106,9 @@ public class ModelControllerCustomer {
 	// search based on customerID
 	public String searchClientID(String clientID) {
 		String searchID = "1 " + clientID;
-		//String response = clientControllerCustomer.searchClient(searchID);
 		String response = clientControllerCustomer.sendQuery(searchID);
+		if (response.split("!!")[0].contentEquals("ERROR"))
+			return response;
 		getCustomerListFromJson(response);
 		String displayCustomer = getStringCustList();
 		return displayCustomer;
@@ -112,8 +117,9 @@ public class ModelControllerCustomer {
 	// search based on lastName
 	public String searchLastName(String lastName) {
 		String searchID = "2 " + lastName;
-		//String response = clientControllerCustomer.searchClient(searchID);
 		String response = clientControllerCustomer.sendQuery(searchID);
+		if ((response.split("!!")[0].strip()).contentEquals("ERROR"))
+			return response;
 		getCustomerListFromJson(response);
 		String displayCustomer = getStringCustList();
 		return displayCustomer;
@@ -122,8 +128,9 @@ public class ModelControllerCustomer {
 	// search based on customer type
 	public String searchCustomerType(String type) {
 		String searchID = "3 " + type;
-		//String response = clientControllerCustomer.searchClient(searchID);
 		String response = clientControllerCustomer.sendQuery(searchID);
+		if (response.split("!!")[0].contentEquals("ERROR"))
+			return response;
 		getCustomerListFromJson(response);
 		String displayCustomer = getStringCustList();
 		return displayCustomer;
@@ -152,6 +159,7 @@ public class ModelControllerCustomer {
 	// convert Json to customer
 	private void getCustomerFromJson(String customer) {
 		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.enableDefaultTyping();
 		try {
 			this.customer = objectMapper.readValue(customer, Customer.class);
 		} catch (IOException e) {
@@ -164,6 +172,8 @@ public class ModelControllerCustomer {
 	private void getCustomerListFromJson(String customerList) {
 
 		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.enableDefaultTyping();
+		
 		try {
 			this.customerList = objectMapper.readValue(customerList, CustomerList.class);
 		} catch (IOException e) {
