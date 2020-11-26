@@ -82,7 +82,6 @@ public class CustomerViewController {
 			else
 				this.customerView.getStatusText()
 						.setText("Couldn't find an option on which valid search is to be made");
-			check = false;
 		}
 
 	// gets the client ID and passes it
@@ -147,13 +146,6 @@ public class CustomerViewController {
 		clearCustomerFields();
 	}
 
-//	public void clearDeleteGUI() {
-//		
-////		int selectedIndex = customerView.getCustomerList().getSelectedIndex();
-//////		if (selectedIndex > -1)
-//////			customerView.getCustomerList().remove(selectedIndex);
-//	}
-
 	// method for saving the customer info
 	public void saveCustomer() {
 		System.out.println("Save has been called");
@@ -174,6 +166,7 @@ public class CustomerViewController {
 			String postalCode = this.getCustomerView().getPostalCode().getText();
 			String phoneNo = this.getCustomerView().getPhoneNo().getText();
 			String type = (String) this.getCustomerView().getTypeCustomer().getSelectedItem();
+			
 			System.out.println("Selecte item is " + type);
 			this.modelControllerCustomer.setCustomer(iD, firstName, lastName, address, postalCode, phoneNo, type);
 		} catch (Exception e) {
