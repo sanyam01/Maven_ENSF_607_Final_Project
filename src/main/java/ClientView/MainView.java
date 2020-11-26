@@ -48,10 +48,10 @@ public class MainView extends JFrame {
 		ToolView = toolView;
 	}
 
-	public static void main(String[] args) {
-		MainView mainView = new MainView();
-		mainView.setVisible(true);
-		mainView.pack();
-	}
+//	public static void main(String[] args) {
+//		MainView mainView = new MainView();
+//		mainView.setVisible(true);
+//		mainView.pack();
+//	}
 
 }
