@@ -137,7 +137,9 @@ public class CustomerViewController {
 	}
 
 	private void deleteCustomer() {
-		checkInputs();
+		if (checkInputs())
+			customerView.getStatusText().setText("Please enter all the inputs");
+		else {
 		System.out.println("Delete has been called");
 		fetchCustomerInformation();
 		String response = modelControllerCustomer.sendCustomerInfoDelete();
@@ -146,18 +148,41 @@ public class CustomerViewController {
 		customerView.getCustomerList().setEnabled(true);
 		clearCustomerFields();
 	}
+	}
 
 	// method for saving the customer info
 	public void saveCustomer() {
-		checkInputs();
+		if (checkInputs())
+			customerView.getStatusText().setText("Please enter all the inputs");
+		else {
+		
 		System.out.println("Save has been called");
 		fetchCustomerInformation();
 		String response = modelControllerCustomer.sendCustomerInfo();
 		customerView.getStatusText().setText(response);
+		}
 	}
 
-	public void checkInputs() {
+	public boolean checkInputs() {
 		
+		boolean check = false;
+		
+		if(this.getCustomerView().getCustomerID().getText().contentEquals(""))
+			check = true;
+		if(this.getCustomerView().getFirstName().getText().contentEquals(""))
+			check = true;
+		if(this.getCustomerView().getLastName().getText().contentEquals(""))
+			check = true;
+		if(this.getCustomerView().getAddress().getText().contentEquals(""))
+			check = true;
+		if(this.getCustomerView().getPostalCode().getText().contentEquals(""))
+			check = true;
+		if(this.getCustomerView().getPhoneNo().getText().contentEquals(""))
+			check = true;
+		if(this.getCustomerView().getTypeCustomer().getSelectedItem() == "")
+			check = true;
+		
+		return check;
 	}
 	// reads information of the customer from GUI
 	public void fetchCustomerInformation() {
