@@ -93,25 +93,35 @@ public class CustomerViewController {
 	private void searchClientID() {
 		String clientID = customerView.getSearchParameter().getText();
 		String response = modelControllerCustomer.searchClientID(clientID);
-		printCustListGUI(response);
-		addListenerList();
+		if (response.split("!!")[0].contentEquals("ERROR"))
+			this.customerView.getStatusText().setText(response);
+		else {
+			printCustListGUI(response);
+			addListenerList();
+		}
 
 	}
 
 	private void searchLastName() {
 		String lastName = customerView.getSearchParameter().getText();
 		String response = modelControllerCustomer.searchLastName(lastName);
-		printCustListGUI(response);
-		addListenerList();
-
+		if (response.split("!!")[0].contentEquals("ERROR"))
+			this.customerView.getStatusText().setText(response);
+		else {
+			printCustListGUI(response);
+			addListenerList();
+		}
 	}
 
 	private void searchType() {
 		String type = customerView.getSearchParameter().getText();
 		String response = modelControllerCustomer.searchCustomerType(type);
-		printCustListGUI(response);
-		addListenerList();
-
+		if (response.split("!!")[0].contentEquals("ERROR"))
+			this.customerView.getStatusText().setText(response);
+		else {
+			printCustListGUI(response);
+			addListenerList();
+		}
 	}
 
 	// method for adding action listeners to the list
@@ -195,11 +205,16 @@ public class CustomerViewController {
 
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
-			// TODO Auto-generated method stub
-			// int index = e.getFirstIndex();
-			int index = customerView.getCustomerList().getSelectedIndex();
-			System.out.println("First index is" + index);
-			getSelectedCustInfo(index);
+
+			if (customerView.getCustomerList().getSelectedIndex() == -1) {
+				customerView.getCustomerList().clearSelection();
+				customerView.getCustomerList().setEnabled(true);
+			} else {
+				customerView.getCustomerList().setEnabled(true);
+				int index = customerView.getCustomerList().getSelectedIndex();
+				System.out.println("First index is" + index);
+				getSelectedCustInfo(index);
+			}
 		}
 
 	}

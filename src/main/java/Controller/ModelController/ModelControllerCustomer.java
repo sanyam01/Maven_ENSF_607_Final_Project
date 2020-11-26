@@ -107,6 +107,8 @@ public class ModelControllerCustomer {
 	public String searchClientID(String clientID) {
 		String searchID = "1 " + clientID;
 		String response = clientControllerCustomer.sendQuery(searchID);
+		if (response.split("!!")[0].contentEquals("ERROR"))
+			return response;
 		getCustomerListFromJson(response);
 		String displayCustomer = getStringCustList();
 		return displayCustomer;
@@ -116,6 +118,8 @@ public class ModelControllerCustomer {
 	public String searchLastName(String lastName) {
 		String searchID = "2 " + lastName;
 		String response = clientControllerCustomer.sendQuery(searchID);
+		if ((response.split("!!")[0].strip()).contentEquals("ERROR"))
+			return response;
 		getCustomerListFromJson(response);
 		String displayCustomer = getStringCustList();
 		return displayCustomer;
@@ -125,6 +129,8 @@ public class ModelControllerCustomer {
 	public String searchCustomerType(String type) {
 		String searchID = "3 " + type;
 		String response = clientControllerCustomer.sendQuery(searchID);
+		if (response.split("!!")[0].contentEquals("ERROR"))
+			return response;
 		getCustomerListFromJson(response);
 		String displayCustomer = getStringCustList();
 		return displayCustomer;
@@ -153,6 +159,7 @@ public class ModelControllerCustomer {
 	// convert Json to customer
 	private void getCustomerFromJson(String customer) {
 		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.enableDefaultTyping();
 		try {
 			this.customer = objectMapper.readValue(customer, Customer.class);
 		} catch (IOException e) {
@@ -165,6 +172,8 @@ public class ModelControllerCustomer {
 	private void getCustomerListFromJson(String customerList) {
 
 		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.enableDefaultTyping();
+		
 		try {
 			this.customerList = objectMapper.readValue(customerList, CustomerList.class);
 		} catch (IOException e) {
