@@ -322,9 +322,10 @@ public class ServerInventoryController {
 				try {
 					System.out.println(Integer.parseInt(responseArr[1].trim()));
 				} catch (NumberFormatException e) {
-					jsonItemList = "ERROR !! Invalid input, enter integer value";
+					jsonItemList = "ERROR!! Invalid input, enter integer value";
 					break;
 				}
+				
 				items = dbController.getItemById(Integer.parseInt(responseArr[1].trim()));
 
 				if (!items.isEmpty()) {
