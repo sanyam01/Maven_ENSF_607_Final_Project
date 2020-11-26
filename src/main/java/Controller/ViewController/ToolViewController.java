@@ -54,8 +54,10 @@ public class ToolViewController {
 	private void searchName() {
 		String toolName = toolView.getSearchParameter().getText();
 		String response = modelControllerTool.searchToolName(toolName);
-		if (response.split("!!")[0].strip().contentEquals("ERROR"))
+		if (response.split("!!")[0].strip().contentEquals("ERROR")) {
 			toolView.getStatusText().setText(response.split("!!")[1]);
+			toolView.clearToolList();
+		}
 		else {
 			printToolListGUI(response);
 			addListenerList();
@@ -231,7 +233,7 @@ public class ToolViewController {
 		public void actionPerformed(ActionEvent e) {
 			
 			toolView.getToolList().setEnabled(true);
-
+			toolView.getStatusText().setText("");
 			if (e.getSource() == toolView.getSearch())
 				findSearchType();
 			if (e.getSource() == toolView.getListAllTools())

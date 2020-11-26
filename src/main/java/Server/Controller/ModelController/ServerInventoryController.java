@@ -147,6 +147,7 @@ public class ServerInventoryController {
 		System.out.println("\nstringTodayDate: " + stringTodayDate);
 		System.out.println("\nstringOrderDate: " + stringOrderDate);
 
+		this.dbController.addOrder(inventory.getTheOrder().getOrderId(), inventory.getTheOrder().getDate());
 		if (stringTodayDate.equals(stringOrderDate)) {
 
 			System.out.println("in check order, both dates are same\n");
@@ -231,11 +232,11 @@ public class ServerInventoryController {
 			System.out.println("Operation: list all tools");
 			System.out.println(responseArr[1]);
 
-			if (responseArr[1].isEmpty() || responseArr[1].isBlank()) {
-				System.out.println("\nInvalid input\n");
-				jsonItemList = "ERROR!! Invalid input!!";
-
-			} else {
+//			if (responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+//				System.out.println("\nInvalid input\n");
+//				jsonItemList = "ERROR!! Invalid input!!";
+//
+//			} else {
 
 				items = dbController.getItemList();
 				if (!items.isEmpty()) {
@@ -254,7 +255,7 @@ public class ServerInventoryController {
 					jsonItemList = "ERROR!! Items list is empty!!";
 				}
 
-			}
+			
 
 //			elecItems = dbController.getElectricalItems();
 //			nonElecItems = dbController.getNonElectricalItems();

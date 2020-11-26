@@ -226,6 +226,7 @@ public class CustomerViewController {
 
 		public void actionPerformed(ActionEvent e) {
 
+			customerView.getStatusText().setText("");
 			if (e.getSource() == customerView.getSearch())
 				findSearchType();
 			if (e.getSource() == customerView.getSave())
