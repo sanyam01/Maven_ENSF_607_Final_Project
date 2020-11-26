@@ -1,8 +1,23 @@
 package Server.Model;
 
 import java.io.Serializable;
+import Server.Model.Commercial;
+import Server.Model.Residential;
 
-public class Customer implements Serializable {
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
+@JsonTypeInfo(
+		  use = JsonTypeInfo.Id.NAME, 
+		  include = JsonTypeInfo.As.PROPERTY, 
+		  property = "type")
+		@JsonSubTypes({ 
+		  @Type(value = Residential.class, name = "residential"), 
+		  @Type(value = Commercial.class, name = "commercial") 
+		})
+
+public abstract class Customer implements Serializable {
 	
 	/**
 	 * 
