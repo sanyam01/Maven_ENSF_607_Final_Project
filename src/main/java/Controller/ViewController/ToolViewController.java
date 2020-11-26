@@ -207,7 +207,7 @@ public class ToolViewController {
 
 		String value = this.getModelControllerTool().printOrder();
 		printToolListGUI(value);
-		toolView.getToolList().setEnabled(false);
+			toolView.getToolList().setEnabled(false);
 	}
 
 	public ToolView getToolView() {
