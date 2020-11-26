@@ -156,7 +156,11 @@ public class CustomerView extends JFrame {
 		customerList.setListData(listArray);
 
 	}
-	
+	public void clearToolList() {
+		String[] listArray = {};
+		customerList.setListData(listArray);
+
+	}
 	public void clearCustomerList() {
 		customerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		customerList.setLayoutOrientation(JList.VERTICAL_WRAP);

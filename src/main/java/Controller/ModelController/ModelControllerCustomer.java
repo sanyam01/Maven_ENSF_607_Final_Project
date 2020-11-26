@@ -28,18 +28,18 @@ public class ModelControllerCustomer {
 			this.customer = new Commercial(iD, firstName, lastName, address, postalCode, phoneNo, type);
 		else
 			this.customer = new Residential(iD, firstName, lastName, address, postalCode, phoneNo, type);
-		
+
 	}
 
 	public String sendCustomerInfo() {
 
-		ObjectMapper objectMapper = new ObjectMapper();
 		String jsonCustomer;
 		String response = "";
 		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.enableDefaultTyping();
 			jsonCustomer = objectMapper.writeValueAsString(customer);
 			String temp = "4 " + jsonCustomer;
-			//response = this.clientControllerCustomer.saveDeleteCustomer(temp);
 			response = clientControllerCustomer.sendQuery(temp);
 
 		} catch (JsonProcessingException e) {
@@ -51,20 +51,31 @@ public class ModelControllerCustomer {
 
 	public String sendCustomerInfoDelete() {
 
-		ObjectMapper objectMapper = new ObjectMapper();
 		String jsonCustomer;
 		String response = "";
 		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.enableDefaultTyping();
 			jsonCustomer = objectMapper.writeValueAsString(customer);
 			String temp = "5 " + jsonCustomer;
-			//response = this.clientControllerCustomer.saveDeleteCustomer(temp);
 			response = clientControllerCustomer.sendQuery(temp);
+			if (!(response.split("!!")[0].strip().contentEquals("ERROR")))
+				removeCustFromList();
 
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
 		return response;
 
+	}
+
+	private void removeCustFromList() {
+		if (this.getCustomerList().getCustomerList() != null) {
+			for (Customer i : this.getCustomerList().getCustomerList()) {
+				if (i.getCustomerID() == this.getCustomer().getCustomerID())
+					this.getCustomerList().getCustomerList().remove(this.getCustomer());
+			}
+		}
 	}
 
 	public Customer getCustomer() {
@@ -107,7 +118,7 @@ public class ModelControllerCustomer {
 	public String searchClientID(String clientID) {
 		String searchID = "1 " + clientID;
 		String response = clientControllerCustomer.sendQuery(searchID);
-		if (response.split("!!")[0].contentEquals("ERROR"))
+		if (response.split("!!")[0].strip().contentEquals("ERROR"))
 			return response;
 		getCustomerListFromJson(response);
 		String displayCustomer = getStringCustList();
@@ -129,7 +140,7 @@ public class ModelControllerCustomer {
 	public String searchCustomerType(String type) {
 		String searchID = "3 " + type;
 		String response = clientControllerCustomer.sendQuery(searchID);
-		if (response.split("!!")[0].contentEquals("ERROR"))
+		if (response.split("!!")[0].strip().contentEquals("ERROR"))
 			return response;
 		getCustomerListFromJson(response);
 		String displayCustomer = getStringCustList();
@@ -171,13 +182,12 @@ public class ModelControllerCustomer {
 	// convert json string into customer list
 	private void getCustomerListFromJson(String customerList) {
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.enableDefaultTyping();
-		
 		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.enableDefaultTyping();
 			this.customerList = objectMapper.readValue(customerList, CustomerList.class);
 		} catch (IOException e) {
-			System.out.println("Unable to convert json to customer List");
+			System.out.println("Unable to convert json to customer List here");
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
