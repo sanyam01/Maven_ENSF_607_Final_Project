@@ -339,6 +339,7 @@ public class ServerInventoryController {
 
 		case 10:
 
+			System.out.println("Operation: Print order");
 			try {
 				jsonItemList = objectMapper.writeValueAsString(inventory.getTheOrder());
 			} catch (JsonProcessingException e) {
@@ -347,6 +348,9 @@ public class ServerInventoryController {
 			}
 
 			break;
+			
+		default:
+			System.out.println("Invalid choice!");
 		}
 
 		return jsonItemList;

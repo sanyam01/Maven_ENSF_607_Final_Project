@@ -44,26 +44,33 @@ public class Server {
 	public void runServer() {
 		System.out.println("Server is running...");
 		String messageToClient = null;
-		try {
-			socket = serverSocket.accept();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//		try {
+//			socket = serverSocket.accept();
+//		} catch (IOException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 
 		DBController dbController = new DBController();
 		System.out.println("dbController instantiated");
-		ServerModelController serverModelController = new ServerModelController(socket, dbController);
+//		ServerModelController serverModelController = new ServerModelController(socket, dbController);
 
+//		pool.execute(serverModelController);
 
 		while (true) {
-
-			//System.out.println("Server is running");
-
-//			ServerModelController serverModelController = new ServerModelController(socket, dbController);
 			
-			serverModelController.run();
-				//pool.execute(serverController);
+			try {
+				socket = serverSocket.accept(); //for multiple clients
+			} catch (IOException e1) {
+
+				e1.printStackTrace();
+			}
+
+
+			ServerModelController serverModelController = new ServerModelController(socket, dbController);
+			
+//			serverModelController.run();
+				pool.execute(serverModelController);
 //				
 		}
 

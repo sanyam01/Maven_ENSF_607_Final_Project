@@ -85,10 +85,8 @@ public class ServerCustomerController {
 		switch (choice) {
 
 		case 1:
-			// get customer based on id
 
-//			System.out.println("Sending getcustomer search to client");
-			System.out.println("Operation: get customer by id");
+			System.out.println("Operation: Get customer by id");
 			System.out.println(responseArr[1]);
 
 			cust = dbController.getCustomerbyId(Integer.parseInt(responseArr[1]));
@@ -104,8 +102,8 @@ public class ServerCustomerController {
 					e.printStackTrace();
 				}
 			} else {
-				jsonCustomerList = "Customer not found!!";
-				System.out.println("Customer not found!!");
+				jsonCustomerList = "ERROR !! Customer not found!!";
+//				System.out.println("Customer not found!!");
 
 			}
 
@@ -114,7 +112,7 @@ public class ServerCustomerController {
 		case 2:
 			// get customer based on lastname
 
-			System.out.println("Operation: get customer by lastname");
+			System.out.println("Operation: Get customer by lastname");
 			System.out.println(responseArr[1]);
 
 			cust = dbController.getCustomerbyLname(responseArr[1]);
@@ -132,8 +130,8 @@ public class ServerCustomerController {
 				}
 
 			} else {
-				jsonCustomerList = "Customer not found!!";
-				System.out.println("Customer not found!!");
+				jsonCustomerList = "ERROR !! Customer not found!!";
+//				System.out.println("Customer not found!!");
 
 			}
 
@@ -142,7 +140,7 @@ public class ServerCustomerController {
 		case 3:
 			// get customer based on type
 
-			System.out.println("Operation: get customer by type");
+			System.out.println("Operation: Get customer by type");
 			System.out.println(responseArr[1]);
 
 			cust = dbController.getCustomerbyType(responseArr[1]);
@@ -159,8 +157,8 @@ public class ServerCustomerController {
 				}
 
 			} else {
-				jsonCustomerList = "Customer not found!!";
-				System.out.println("Customer not found!!");
+				jsonCustomerList = "ERROR !! Customer not found!!";
+//				System.out.println("Customer not found!!");
 
 			}
 
@@ -169,9 +167,9 @@ public class ServerCustomerController {
 		case 4:
 			// save customer
 
-			System.out.println("Operation: save");
+			System.out.println("Operation: Save");
 
-			System.out.println("printing responseArr[1]");
+//			System.out.println("printing responseArr[1]");
 			System.out.println(responseArr[1]);
 
 			try {
@@ -204,7 +202,7 @@ public class ServerCustomerController {
 					jsonCustomerList = "Customer updated successfully";
 
 				} else {
-					jsonCustomerList = "Customer update failed";
+					jsonCustomerList = "ERROR !! Customer update failed";
 				}
 			} else {
 				System.out.println("customer not present, inserting");
@@ -217,7 +215,7 @@ public class ServerCustomerController {
 					jsonCustomerList = "Customer inserted successfully";
 
 				} else {
-					jsonCustomerList = "Customer insert failed";
+					jsonCustomerList = "ERROR !! Customer insert failed";
 				}
 
 			}
@@ -227,9 +225,8 @@ public class ServerCustomerController {
 		case 5:
 			// delete customer
 
-			System.out.println("delete customer");
+			System.out.println("Operation: Delete customer");
 
-			System.out.println("printing responseArr[1]");
 			System.out.println(responseArr[1]);
 
 			try {
@@ -258,13 +255,13 @@ public class ServerCustomerController {
 					jsonCustomerList = "Customer deleted successfully";
 
 				} else {
-					jsonCustomerList = "Customer delete failed";
+					jsonCustomerList = "ERROR !! Customer delete failed";
 				}
 
 			} else {
-				System.out.println("customer is not present to delete");
+				System.out.println("ERROR !! customer is not present to delete");
 				// customer does not exist
-				jsonCustomerList = "Delete Failed!! Customer does not exist.";
+				jsonCustomerList = "ERROR !! Delete failed, Customer does not exist.";
 			}
 
 			break;

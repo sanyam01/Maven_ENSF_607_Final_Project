@@ -51,27 +51,31 @@ public class ServerModelController implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		String message = getClientMessage();
-		int taskId = getTaskId(message);
-//		System.out.println(" taskid is " + taskId);
+		System.out.println("calling run");
 
-		while (true) {
+		while(true) {
+			String message = getClientMessage();
+			int taskId = getTaskId(message);
+//			System.out.println(" taskid is " + taskId);
 
-			if (taskId > 0 && taskId < 6) {
-				System.out.println("Calling CustomerController");
 
-				// call runCustomerController
-				runCustomerController(message);
+				if (taskId > 0 && taskId < 6) {
+					System.out.println("Calling CustomerController");
 
-			} else if (taskId >= 6 && taskId < 12) {
+					// call runCustomerController
+					runCustomerController(message);
 
-				System.out.println("Calling InventoryController");
-				runInventoryController(message);
+				} else if (taskId >= 6 && taskId < 12) {
 
-			}
+					System.out.println("Calling InventoryController");
+					runInventoryController(message);
 
+				}
 		}
+
+		
+
+		
 //		closeSockets();
 
 	}
@@ -104,15 +108,17 @@ public class ServerModelController implements Runnable {
 		try {
 			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
 		try {
 			request = socketIn.readLine();
 		} catch (IOException e) {
+			System.out.println("closing connections");
 
-			e.printStackTrace();
+//			e.printStackTrace();
+			closeSockets();
 		}
 		System.out.println("Request from client: " + request);
 		return request;
