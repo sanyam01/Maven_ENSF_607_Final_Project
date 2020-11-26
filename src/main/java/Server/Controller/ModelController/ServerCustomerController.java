@@ -134,24 +134,33 @@ public class ServerCustomerController {
 
 			System.out.println("Operation: Get customer by id");
 			System.out.println(responseArr[1]);
-
-			cust = dbController.getCustomerbyId(Integer.parseInt(responseArr[1]));
-			if (!cust.isEmpty()) {
-				customerList = new CustomerList(cust);
-
-				try {
-					jsonCustomerList = objectMapper.writeValueAsString(customerList);
-					System.out.println("Sending to client: " + jsonCustomerList);
-
-				} catch (JsonProcessingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} else {
-				jsonCustomerList = "ERROR !! Customer not found!!";
-//				System.out.println("Customer not found!!");
-
+			
+			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+				System.out.println("\nInvalid input\n");
+				jsonCustomerList = "ERROR!! Invalid input!!";
+				
 			}
+			else {
+				cust = dbController.getCustomerbyId(Integer.parseInt(responseArr[1].trim()));
+				if (!cust.isEmpty()) {
+					customerList = new CustomerList(cust);
+
+					try {
+						jsonCustomerList = objectMapper.writeValueAsString(customerList);
+						System.out.println("Sending to client: " + jsonCustomerList);
+
+					} catch (JsonProcessingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else {
+					jsonCustomerList = "ERROR !! Customer not found!!";
+//					System.out.println("Customer not found!!");
+
+				}
+			}
+
+			
 
 			break;
 
@@ -160,26 +169,34 @@ public class ServerCustomerController {
 
 			System.out.println("Operation: Get customer by lastname");
 			System.out.println(responseArr[1]);
+			
+			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+				System.out.println("\nInvalid input\n");
+				jsonCustomerList = "ERROR!! Invalid input!!";
+				
+			}else {
+				cust = dbController.getCustomerbyLname(responseArr[1].trim());
 
-			cust = dbController.getCustomerbyLname(responseArr[1]);
+				if (!cust.isEmpty()) {
+					customerList = new CustomerList(cust);
 
-			if (!cust.isEmpty()) {
-				customerList = new CustomerList(cust);
+					try {
+						jsonCustomerList = objectMapper.writeValueAsString(customerList);
+						System.out.println("Sending to client: " + jsonCustomerList);
 
-				try {
-					jsonCustomerList = objectMapper.writeValueAsString(customerList);
-					System.out.println("Sending to client: " + jsonCustomerList);
+					} catch (JsonProcessingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
-				} catch (JsonProcessingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} else {
+					jsonCustomerList = "ERROR !! Customer not found!!";
+//					System.out.println("Customer not found!!");
+
 				}
-
-			} else {
-				jsonCustomerList = "ERROR !! Customer not found!!";
-//				System.out.println("Customer not found!!");
-
 			}
+
+			
 
 			break;
 
@@ -189,24 +206,32 @@ public class ServerCustomerController {
 			System.out.println("Operation: Get customer by type");
 			System.out.println(responseArr[1]);
 
-			cust = dbController.getCustomerbyType(responseArr[1]);
-			if (!cust.isEmpty()) {
-				customerList = new CustomerList(cust);
-
-				try {
-					jsonCustomerList = objectMapper.writeValueAsString(customerList);
-					System.out.println("Sending to client: " + jsonCustomerList);
-
-				} catch (JsonProcessingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			} else {
-				jsonCustomerList = "ERROR !! Customer not found!!";
-//				System.out.println("Customer not found!!");
-
+			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+				System.out.println("\nInvalid input\n");
+				jsonCustomerList = "ERROR!! Invalid input!!";
+				
 			}
+			else {
+				cust = dbController.getCustomerbyType(responseArr[1].trim());
+				if (!cust.isEmpty()) {
+					customerList = new CustomerList(cust);
+
+					try {
+						jsonCustomerList = objectMapper.writeValueAsString(customerList);
+						System.out.println("Sending to client: " + jsonCustomerList);
+
+					} catch (JsonProcessingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				} else {
+					jsonCustomerList = "ERROR !! Customer not found!!";
+//					System.out.println("Customer not found!!");
+
+				}
+			}
+			
 
 			break;
 
@@ -218,47 +243,55 @@ public class ServerCustomerController {
 //			System.out.println("printing responseArr[1]");
 			System.out.println(responseArr[1]);
 
-			try {
-				this.customer = objectMapper.readValue(responseArr[1], Customer.class);
-			} catch (JsonParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+				System.out.println("\nInvalid input\n");
+				jsonCustomerList = "ERROR!! Invalid input!!";
+				
 			}
-
-			// check if customer is new or already present
-
-			flag = checkCustomerExists();
-			if (flag) {
-				// customer is present
-				// update customer
-				if (callUpdatecustomer()) {
-					jsonCustomerList = "Customer updated successfully";
-
-				} else {
-					jsonCustomerList = "ERROR !! Customer update failed";
-				}
-
-			}
-
 			else {
-				// customer is not present
-				System.out.println("customer not present, inserting");
-
-				// insert customer
-				if (callInsertcustomer()) {
-					jsonCustomerList = "Customer inserted successfully";
-
-				} else {
-					jsonCustomerList = "ERROR !! Customer insert failed";
+				try {
+					this.customer = objectMapper.readValue(responseArr[1], Customer.class);
+				} catch (JsonParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JsonMappingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 
+				// check if customer is new or already present
+
+				flag = checkCustomerExists();
+				if (flag) {
+					// customer is present
+					// update customer
+					if (callUpdatecustomer()) {
+						jsonCustomerList = "Customer updated successfully";
+
+					} else {
+						jsonCustomerList = "ERROR !! Customer update failed";
+					}
+
+				}
+
+				else {
+					// customer is not present
+					System.out.println("customer not present, inserting");
+
+					// insert customer
+					if (callInsertcustomer()) {
+						jsonCustomerList = "Customer inserted successfully";
+
+					} else {
+						jsonCustomerList = "ERROR !! Customer insert failed";
+					}
+
+				}
 			}
+			
 
 //			cust = dbController.getCustomerbyId(customer.getCustomerID());
 //			customerList = new CustomerList(cust);
@@ -301,30 +334,39 @@ public class ServerCustomerController {
 
 			System.out.println(responseArr[1]);
 
-			try {
-				this.customer = objectMapper.readValue(responseArr[1], Customer.class);
-			} catch (JsonParseException e) {
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+
+			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+				System.out.println("\nInvalid input\n");
+				jsonCustomerList = "ERROR!! Invalid input!!";
+				
 			}
+			else {
+				try {
+					this.customer = objectMapper.readValue(responseArr[1], Customer.class);
+				} catch (JsonParseException e) {
+					e.printStackTrace();
+				} catch (JsonMappingException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 
-			// check if customer is present
-			flag = checkCustomerExists();
-			if (flag) {
-				// customer is present
-				// delete customer
-				jsonCustomerList = callDeletecustomer();
+				// check if customer is present
+				flag = checkCustomerExists();
+				if (flag) {
+					// customer is present
+					// delete customer
+					jsonCustomerList = callDeletecustomer();
 
-			} else {
-				// customer is not present
-				System.out.println("ERROR !! customer is not present to delete");
-				// customer does not exist
-				jsonCustomerList = "ERROR !! Delete failed, Customer does not exist.";
+				} else {
+					// customer is not present
+					System.out.println("ERROR !! customer is not present to delete");
+					// customer does not exist
+					jsonCustomerList = "ERROR !! Delete failed, Customer does not exist.";
 
+				}
 			}
+			
 
 //			cust = dbController.getCustomerbyId(customer.getCustomerID());
 //			customerList = new CustomerList(cust);

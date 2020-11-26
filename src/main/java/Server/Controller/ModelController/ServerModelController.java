@@ -51,10 +51,20 @@ public class ServerModelController implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("Calling run in ServerModelController");
+//		System.out.println("Calling run in ServerModelController");
 
+		String message = null;
 		while(true) {
-			String message = getClientMessage();
+			
+			try {
+				message = getClientMessage();
+			} catch (IOException e) {
+
+				System.out.println("Catching exception in run server model controller and breaking");
+				closeSockets();
+				break;
+//				e.printStackTrace();
+			}
 			int taskId = getTaskId(message);
 //			System.out.println(" taskid is " + taskId);
 
@@ -76,7 +86,7 @@ public class ServerModelController implements Runnable {
 		
 
 		
-//		closeSockets();
+		closeSockets();
 
 	}
 
@@ -100,28 +110,44 @@ public class ServerModelController implements Runnable {
 
 	}
 
-	public String getClientMessage() {
+//	public String getClientMessage() {
+//
+//		System.out.println("Getting taskid");
+//		String request = null;
+//
+//		try {
+//			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//		} catch (IOException e) {
+//
+////			e.printStackTrace();
+//			System.out.println("closing connections");
+//			closeSockets();
+//		}
+//
+//		try {
+//			request = socketIn.readLine();
+//		} catch (IOException e) {
+//			System.out.println("closing connections");
+//
+////			e.printStackTrace();
+//			closeSockets();
+//		}
+//		System.out.println("Request from client: " + request);
+//		return request;
+//
+//	}
+	
+	public String getClientMessage() throws IOException {
 
 		System.out.println("Getting taskid");
 		String request = null;
 
-		try {
+		
 			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		} catch (IOException e) {
-
-//			e.printStackTrace();
-			System.out.println("closing connections");
-			closeSockets();
-		}
-
-		try {
+		
+		
 			request = socketIn.readLine();
-		} catch (IOException e) {
-			System.out.println("closing connections");
-
-//			e.printStackTrace();
-			closeSockets();
-		}
+		
 		System.out.println("Request from client: " + request);
 		return request;
 
