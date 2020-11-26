@@ -18,6 +18,10 @@ public class ModelControllerTool {
 	private Items items, atIndexItem;
 	private ItemsList itemsList;
 	private Order order;
+	
+	public ModelControllerTool() {
+		clientControllerTool = new ClientControllerTool();
+	}
 
 	public String searchToolID(String toolID) {
 		String searchID = "7 " + toolID;
@@ -200,9 +204,7 @@ public class ModelControllerTool {
 		return values;
 	}
 
-	public ModelControllerTool() {
-		clientControllerTool = new ClientControllerTool();
-	}
+	
 
 	public ClientControllerTool getClientControllerTool() {
 		return clientControllerTool;

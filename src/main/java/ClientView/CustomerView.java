@@ -143,18 +143,6 @@ public class CustomerView extends JFrame {
 		save.addActionListener(customerListener);
 		delete.addActionListener(customerListener);
 		clear.addActionListener(customerListener);
-		customerID.addActionListener(customerListener);
-		firstName.addActionListener(customerListener);
-		lastName.addActionListener(customerListener);
-		address.addActionListener(customerListener);
-		postalCode.addActionListener(customerListener);
-		phoneNo.addActionListener(customerListener);
-		typeCustomer.addActionListener(customerListener);
-		// displayText.addActionListener(customerListener);
-		searchCustomerID.addActionListener(customerListener);
-		searchLastName.addActionListener(customerListener);
-		searchCustomerType.addActionListener(customerListener);
-		searchParameter.addActionListener(customerListener);
 		search.addActionListener(customerListener);
 		clearSearch.addActionListener(customerListener);
 	}

@@ -102,7 +102,6 @@ public class ToolView extends JFrame {
 		
 
 		JScrollPane scroll = new JScrollPane(toolList);
-		// leftView.add("Center", new JLabel("Search Results :"));
 		leftView.add("South", scroll);
 
 		JPanel leftNorth = new JPanel(new GridLayout(8, 1, 2, 2));
