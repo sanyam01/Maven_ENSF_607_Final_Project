@@ -137,6 +137,7 @@ public class CustomerViewController {
 	}
 
 	private void deleteCustomer() {
+		checkInputs();
 		System.out.println("Delete has been called");
 		fetchCustomerInformation();
 		String response = modelControllerCustomer.sendCustomerInfoDelete();
@@ -148,12 +149,16 @@ public class CustomerViewController {
 
 	// method for saving the customer info
 	public void saveCustomer() {
+		checkInputs();
 		System.out.println("Save has been called");
 		fetchCustomerInformation();
 		String response = modelControllerCustomer.sendCustomerInfo();
 		customerView.getStatusText().setText(response);
 	}
 
+	public void checkInputs() {
+		
+	}
 	// reads information of the customer from GUI
 	public void fetchCustomerInformation() {
 

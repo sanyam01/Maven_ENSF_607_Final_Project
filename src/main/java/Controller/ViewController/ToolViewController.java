@@ -42,7 +42,7 @@ public class ToolViewController {
 	private void searchClientID() {
 		String toolID = toolView.getSearchParameter().getText();
 		String response = modelControllerTool.searchToolID(toolID);
-		if (response.split("!!")[0].contentEquals("ERROR"))
+		if (response.split("!!")[0].strip().contentEquals("ERROR"))
 			toolView.getStatusText().setText(response.split("!!")[1]);
 		else {
 			printToolListGUI(response);
@@ -54,7 +54,7 @@ public class ToolViewController {
 	private void searchName() {
 		String toolName = toolView.getSearchParameter().getText();
 		String response = modelControllerTool.searchToolName(toolName);
-		if (response.split("!!")[0].contentEquals("ERROR"))
+		if (response.split("!!")[0].strip().contentEquals("ERROR"))
 			toolView.getStatusText().setText(response.split("!!")[1]);
 		else {
 			printToolListGUI(response);
@@ -77,7 +77,7 @@ public class ToolViewController {
 
 		String toolID = toolView.getSearchParameter().getText();
 		String response = modelControllerTool.checkToolID(toolID);
-		if (response.split("!!")[0].contentEquals("ERROR"))
+		if (response.split("!!")[0].strip().contentEquals("ERROR"))
 			toolView.getStatusText().setText(response.split("!!")[1]);
 		else {
 			printToolListGUI(response);
@@ -89,7 +89,7 @@ public class ToolViewController {
 	private void checkName() {
 		String name = toolView.getSearchParameter().getText();
 		String response = modelControllerTool.checkToolName(name);
-		if (response.split("!!")[0].contentEquals("ERROR"))
+		if (response.split("!!")[0].strip().contentEquals("ERROR"))
 			toolView.getStatusText().setText(response.split("!!")[1]);
 		else {
 			printToolListGUI(response);
@@ -102,7 +102,7 @@ public class ToolViewController {
 	private void getAllTools() {
 
 		String response = modelControllerTool.getAllTools();
-		if (response.split("!!")[0].contentEquals("ERROR"))
+		if (response.split("!!")[0].strip().contentEquals("ERROR"))
 			toolView.getStatusText().setText(response.split("!!")[1]);
 		else {
 			printToolListGUI(response);
