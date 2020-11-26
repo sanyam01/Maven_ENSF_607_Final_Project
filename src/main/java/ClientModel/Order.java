@@ -40,17 +40,24 @@ public class Order {
 	 * 
 	 * It generates a five digit random number and assigns the date to order
 	 */
+	
 	public Order() {
+		super();
+	}
+	public Order(int orderId, String date, ArrayList<OrderLines> orderLines) {
 
-		orderId = 10000 + new Random().nextInt(90000);
-
-		// setting today's date
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-		Date date = new Date();
-		this.date = dateFormat.format(date);
+//		orderId = 10000 + new Random().nextInt(90000);
+//
+//		// setting today's date
+//		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+//		Date date = new Date();
+//		this.date = dateFormat.format(date);
 
 		// add here orderLine, will be generated in item
-		this.orderLines = new ArrayList<OrderLines>();
+		this.setOrderLines(orderLines);
+		this.setOrderId(orderId);
+		this.setDate(date);
+		
 	}
 
 	public float getOrderId() {
