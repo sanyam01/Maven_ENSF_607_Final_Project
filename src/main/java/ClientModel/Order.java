@@ -60,7 +60,7 @@ public class Order {
 		
 	}
 
-	public float getOrderId() {
+	public int getOrderId() {
 		return orderId;
 	}
 
