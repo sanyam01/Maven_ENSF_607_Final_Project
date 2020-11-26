@@ -25,19 +25,10 @@ public class CustomerViewController {
 		this.modelControllerCustomer = modelControllerCustomer;
 	}
 
-	private void deleteCustomer() {
-		System.out.println("Delete has been called");
-		fetchCustomerInformation();
-		String response = modelControllerCustomer.sendCustomerInfoDelete();
-		customerView.getStatusText().setText(response);
-		clearDeleteGUI();
-	}
-
 	// clears the search
 	public void clearSearch() {
 		customerView.getGroup().clearSelection();
 		customerView.getSearchParameter().setText("");
-		// customerView.getCustomerList().removeAll();
 		customerView.clearCustomerList();
 
 	}
@@ -79,23 +70,29 @@ public class CustomerViewController {
 
 	// checks the type on which search is to be done for entered text
 	public void findSearchType() {
-		if (customerView.getSearchCustomerID().isSelected())
-			searchClientID();
-		else if (customerView.getSearchLastName().isSelected())
-			searchLastName();
-		else if (customerView.getSearchCustomerType().isSelected())
-			searchType();
-		else
-			System.out.println("Could find an option on which valid search is to be made");
-	}
+		
+			if (customerView.getSearchParameter().getText().equals(""))
+				this.customerView.getStatusText().setText("Please enter the parameter");
+			else if (customerView.getSearchCustomerID().isSelected())
+				searchClientID();
+			else if (customerView.getSearchLastName().isSelected())
+				searchLastName();
+			else if (customerView.getSearchCustomerType().isSelected())
+				searchType();
+			else
+				this.customerView.getStatusText()
+						.setText("Couldn't find an option on which valid search is to be made");
+			check = false;
+		}
 
 	// gets the client ID and passes it
 	private void searchClientID() {
 		String clientID = customerView.getSearchParameter().getText();
 		String response = modelControllerCustomer.searchClientID(clientID);
-		if (response.split("!!")[0].contentEquals("ERROR"))
+		if (response.split("!!")[0].strip().contentEquals("ERROR")) {
 			this.customerView.getStatusText().setText(response);
-		else {
+			this.customerView.clearToolList();
+		} else {
 			printCustListGUI(response);
 			addListenerList();
 		}
@@ -105,9 +102,10 @@ public class CustomerViewController {
 	private void searchLastName() {
 		String lastName = customerView.getSearchParameter().getText();
 		String response = modelControllerCustomer.searchLastName(lastName);
-		if (response.split("!!")[0].contentEquals("ERROR"))
+		if (response.split("!!")[0].strip().contentEquals("ERROR")) {
 			this.customerView.getStatusText().setText(response);
-		else {
+			this.customerView.clearToolList();
+		} else {
 			printCustListGUI(response);
 			addListenerList();
 		}
@@ -116,9 +114,10 @@ public class CustomerViewController {
 	private void searchType() {
 		String type = customerView.getSearchParameter().getText();
 		String response = modelControllerCustomer.searchCustomerType(type);
-		if (response.split("!!")[0].contentEquals("ERROR"))
+		if (response.split("!!")[0].strip().contentEquals("ERROR")) {
 			this.customerView.getStatusText().setText(response);
-		else {
+			this.customerView.clearToolList();
+		} else {
 			printCustListGUI(response);
 			addListenerList();
 		}
@@ -138,6 +137,23 @@ public class CustomerViewController {
 		return customerView;
 	}
 
+	private void deleteCustomer() {
+		System.out.println("Delete has been called");
+		fetchCustomerInformation();
+		String response = modelControllerCustomer.sendCustomerInfoDelete();
+		this.customerView.getStatusText().setText(response);
+		customerView.getCustomerList().clearSelection();
+		customerView.getCustomerList().setEnabled(true);
+		clearCustomerFields();
+	}
+
+//	public void clearDeleteGUI() {
+//		
+////		int selectedIndex = customerView.getCustomerList().getSelectedIndex();
+//////		if (selectedIndex > -1)
+//////			customerView.getCustomerList().remove(selectedIndex);
+//	}
+
 	// method for saving the customer info
 	public void saveCustomer() {
 		System.out.println("Save has been called");
@@ -149,23 +165,20 @@ public class CustomerViewController {
 	// reads information of the customer from GUI
 	public void fetchCustomerInformation() {
 
-		int iD = Integer.parseInt(this.getCustomerView().getCustomerID().getText());
-		String firstName = this.getCustomerView().getFirstName().getText();
-		String lastName = this.getCustomerView().getLastName().getText();
-		String address = this.getCustomerView().getAddress().getText();
-		String postalCode = this.getCustomerView().getPostalCode().getText();
-		String phoneNo = this.getCustomerView().getPhoneNo().getText();
-		String type = (String) this.getCustomerView().getTypeCustomer().getSelectedItem();
-		System.out.println("Selecte item is " + type);
-		this.modelControllerCustomer.setCustomer(iD, firstName, lastName, address, postalCode, phoneNo, type);
+		try {
 
-	}
-
-	public void clearDeleteGUI() {
-		clearCustomerFields();
-		int selectedIndex = customerView.getCustomerList().getSelectedIndex();
-		if (selectedIndex > -1)
-			customerView.getCustomerList().remove(selectedIndex);
+			int iD = Integer.parseInt(this.getCustomerView().getCustomerID().getText());
+			String firstName = this.getCustomerView().getFirstName().getText();
+			String lastName = this.getCustomerView().getLastName().getText();
+			String address = this.getCustomerView().getAddress().getText();
+			String postalCode = this.getCustomerView().getPostalCode().getText();
+			String phoneNo = this.getCustomerView().getPhoneNo().getText();
+			String type = (String) this.getCustomerView().getTypeCustomer().getSelectedItem();
+			System.out.println("Selecte item is " + type);
+			this.modelControllerCustomer.setCustomer(iD, firstName, lastName, address, postalCode, phoneNo, type);
+		} catch (Exception e) {
+			this.getCustomerView().getStatusText().setText("Please enter valid inputs");
+		}
 	}
 
 	public void clearCustomerFields() {
