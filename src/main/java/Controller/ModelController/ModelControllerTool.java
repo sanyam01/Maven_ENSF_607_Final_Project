@@ -118,7 +118,7 @@ public class ModelControllerTool {
 		String response = "";
 		String temp = "9 " + Integer.toString(id);
 		response = clientControllerTool.sendQuery(temp);
-		if (response.split("!!")[0].contentEquals("ERROR"))
+		if ((response.split("!!")[0].strip()).contentEquals("ERROR"))
 			return response;
 		else
 			setUpdatedValueItem(id, response);

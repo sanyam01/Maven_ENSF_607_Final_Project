@@ -99,6 +99,7 @@ public class ToolView extends JFrame {
 		JPanel leftView = new JPanel(new BorderLayout());
 
 		toolList = new JList();
+		
 
 		JScrollPane scroll = new JScrollPane(toolList);
 		// leftView.add("Center", new JLabel("Search Results :"));
@@ -149,7 +150,6 @@ public class ToolView extends JFrame {
 		toolName.addActionListener(toolListener);
 		toolType.addActionListener(toolListener);
 		toolQuantity.addActionListener(toolListener);
-		;
 		toolPrice.addActionListener(toolListener);
 		supplierID.addActionListener(toolListener);
 		searchToolID.addActionListener(toolListener);
@@ -181,8 +181,8 @@ public class ToolView extends JFrame {
 
 	// clears the list
 	public void clearToolList() {
-		toolList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		toolList.setLayoutOrientation(JList.VERTICAL_WRAP);
+//		toolList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//		toolList.setLayoutOrientation(JList.VERTICAL_WRAP);
 		String[] listArray = {};
 		toolList.setListData(listArray);
 

@@ -142,9 +142,14 @@ public class ToolViewController {
 		String response = fetchItemInformation();
 		toolView.getStatusText().setText(response);
 		clearToolFields();
+		//
+//		printToolListGUI(this.modelControllerTool.getStringToolList());
+//		System.out.println("ERROR 4");
+//		addListenerList();
+//		System.out.println("ERROR 5");
 		toolView.getToolList().clearSelection();
-		printToolListGUI(this.modelControllerTool.getStringToolList());
-		addListenerList();
+		toolView.getToolList().setEnabled(true);
+		
 
 	}
 
@@ -248,9 +253,16 @@ public class ToolViewController {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 
-			int index = toolView.getToolList().getSelectedIndex();
-			System.out.println("First index is" + index);
-			getSelectedToolInfo(index);
+			if (e.getSource() == toolView.getToolList().getSelectionModel()) {
+			if (toolView.getToolList().getSelectedIndex() == -1) {
+				toolView.getToolList().setEnabled(false);
+			} else {
+				toolView.getToolList().setEnabled(true);
+				int index = toolView.getToolList().getSelectedIndex();
+				System.out.println("First index is" + index);
+				getSelectedToolInfo(index);
+			}
+			}
 		}
 
 	}
