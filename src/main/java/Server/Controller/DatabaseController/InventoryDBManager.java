@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import Server.Model.Commercial;
 import Server.Model.Customer;
 import Server.Model.CustomerList;
 import Server.Model.ElectricalItem;
@@ -12,6 +13,7 @@ import Server.Model.InternationalSupplier;
 import Server.Model.Items;
 import Server.Model.ItemsList;
 import Server.Model.NonElectricalItem;
+import Server.Model.Residential;
 import Server.Model.Suppliers;
 
 public class InventoryDBManager {
@@ -411,9 +413,17 @@ public class InventoryDBManager {
 //						myres.getString("address"), myres.getString("postal_code"), myres.getString("phone_number"),
 //						myres.getString("customer_type"));
 
-				customerArrayList.add(new Customer(myres.getInt("customer_id"), myres.getString("fname"),
-						myres.getString("lname"), myres.getString("address"), myres.getString("postal_code"),
-						myres.getString("phone_number"), myres.getString("customer_type")));
+				if(myres.getString("customer_type").contentEquals("R")) {
+					customerArrayList.add(new Residential(myres.getInt("customer_id"), myres.getString("fname"),
+							myres.getString("lname"), myres.getString("address"), myres.getString("postal_code"),
+							myres.getString("phone_number"), myres.getString("customer_type")));
+				}
+				if(myres.getString("customer_type").contentEquals("C")) {
+					customerArrayList.add(new Commercial(myres.getInt("customer_id"), myres.getString("fname"),
+							myres.getString("lname"), myres.getString("address"), myres.getString("postal_code"),
+							myres.getString("phone_number"), myres.getString("customer_type")));
+				}
+				
 
 //				System.out.println("search customer result in IDB: " + customerArrayList);
 
@@ -443,9 +453,16 @@ public class InventoryDBManager {
 
 			while (myres.next()) {
 
-				customerArrayList.add(new Customer(myres.getInt("customer_id"), myres.getString("fname"),
-						myres.getString("lname"), myres.getString("address"), myres.getString("postal_code"),
-						myres.getString("phone_number"), myres.getString("customer_type")));
+				if(myres.getString("customer_type").contentEquals("R")) {
+					customerArrayList.add(new Residential(myres.getInt("customer_id"), myres.getString("fname"),
+							myres.getString("lname"), myres.getString("address"), myres.getString("postal_code"),
+							myres.getString("phone_number"), myres.getString("customer_type")));
+				}
+				if(myres.getString("customer_type").contentEquals("C")) {
+					customerArrayList.add(new Commercial(myres.getInt("customer_id"), myres.getString("fname"),
+							myres.getString("lname"), myres.getString("address"), myres.getString("postal_code"),
+							myres.getString("phone_number"), myres.getString("customer_type")));
+				}
 
 //				System.out.println("search customer result in IDB: " + customerArrayList);
 
@@ -474,9 +491,16 @@ public class InventoryDBManager {
 
 			while (myres.next()) {
 
-				customerArrayList.add(new Customer(myres.getInt("customer_id"), myres.getString("fname"),
-						myres.getString("lname"), myres.getString("address"), myres.getString("postal_code"),
-						myres.getString("phone_number"), myres.getString("customer_type")));
+				if(myres.getString("customer_type").contentEquals("R")) {
+					customerArrayList.add(new Residential(myres.getInt("customer_id"), myres.getString("fname"),
+							myres.getString("lname"), myres.getString("address"), myres.getString("postal_code"),
+							myres.getString("phone_number"), myres.getString("customer_type")));
+				}
+				if(myres.getString("customer_type").contentEquals("C")) {
+					customerArrayList.add(new Commercial(myres.getInt("customer_id"), myres.getString("fname"),
+							myres.getString("lname"), myres.getString("address"), myres.getString("postal_code"),
+							myres.getString("phone_number"), myres.getString("customer_type")));
+				}
 
 //				System.out.println("search customer result in IDB: " + customerArrayList);
 
@@ -508,7 +532,7 @@ public class InventoryDBManager {
 			pStat.setInt(7, id);
 
 			rowCount = pStat.executeUpdate();
-			System.out.println("row Count = " + rowCount);
+//			System.out.println("row Count = " + rowCount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -529,7 +553,7 @@ public class InventoryDBManager {
 			PreparedStatement pStat = myDriver.getMyConn().prepareStatement(deleteClient);
 			pStat.setInt(1, id);
 			rowCount = pStat.executeUpdate();
-			System.out.println("row Count = " + rowCount);
+//			System.out.println("row Count = " + rowCount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -615,7 +639,7 @@ public class InventoryDBManager {
 			pStat.setInt(2, itemId);
 
 			rowCount = pStat.executeUpdate();
-			System.out.println("row Count = " + rowCount);
+//			System.out.println("row Count = " + rowCount);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

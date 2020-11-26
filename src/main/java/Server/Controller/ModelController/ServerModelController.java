@@ -109,7 +109,9 @@ public class ServerModelController implements Runnable {
 			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		} catch (IOException e) {
 
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("closing connections");
+			closeSockets();
 		}
 
 		try {

@@ -32,6 +32,8 @@ public class ServerCustomerController {
 	ObjectMapper objectMapper;
 	private String message;
 
+	private ArrayList<Customer> cust;
+
 //	public ServerCustomerController(String response, DBController dbC, ObjectMapper objectMapper) throws IOException {
 //		System.out.println("CustomerController constructor called ");
 //
@@ -40,9 +42,8 @@ public class ServerCustomerController {
 //		this.objectMapper = objectMapper;
 //
 //	}
-	
-	
-	public ServerCustomerController( DBController dbC, ObjectMapper objectMapper) throws IOException {
+
+	public ServerCustomerController(DBController dbC, ObjectMapper objectMapper) throws IOException {
 //		System.out.println("CustomerController constructor called ");
 
 		this.message = null;
@@ -68,6 +69,51 @@ public class ServerCustomerController {
 
 	}
 
+	public boolean checkCustomerExists() {
+
+		cust = dbController.getCustomerbyId(customer.getCustomerID());
+		customerList = new CustomerList(cust);
+		if (!cust.isEmpty()) {
+			System.out.println("customer is present, updating");
+			return true;
+		}
+		return false;
+	}
+
+	public boolean callUpdatecustomer() {
+
+		// update
+		boolean flag = dbController.updateCustomer(customer.getFirstName(), customer.getLastName(),
+				customer.getAddress(), customer.getPostalCode(), customer.getPhoneNumber(), customer.getCustomerType(),
+				customer.getCustomerID());
+
+		return flag;
+	}
+
+	public boolean callInsertcustomer() {
+		boolean flag = dbController.insertCustomer(customer.getFirstName(), customer.getLastName(),
+				customer.getAddress(), customer.getPostalCode(), customer.getPhoneNumber(), customer.getCustomerType(),
+				customer.getCustomerID());
+
+		return flag;
+	}
+
+	public String callDeletecustomer() {
+		String temp = "";
+		// delete
+		boolean flag = dbController.deleteCustomer(customer.getCustomerID());
+		if (flag) {
+
+			temp = "Customer deleted successfully";
+			System.out.println("Customer deleted successfully");
+
+		} else {
+			temp = "ERROR !! Customer delete failed";
+			System.out.println(temp);
+		}
+		return temp;
+	}
+
 	public String switchBoard(String[] responseArr) {
 
 		// 1 search based on client-id
@@ -79,7 +125,7 @@ public class ServerCustomerController {
 		int choice = Integer.parseInt(responseArr[0]);
 		System.out.println("choice is: " + choice);
 		String jsonCustomerList = null;
-		ArrayList<Customer> cust;
+//		ArrayList<Customer> cust;
 		boolean flag;
 
 		switch (choice) {
@@ -187,31 +233,25 @@ public class ServerCustomerController {
 
 			// check if customer is new or already present
 
-			cust = dbController.getCustomerbyId(customer.getCustomerID());
-			customerList = new CustomerList(cust);
-			if (!cust.isEmpty()) {
-				System.out.println("customer is present, updating");
-
-				// update
-				flag = dbController.updateCustomer(customer.getFirstName(), customer.getLastName(),
-						customer.getAddress(), customer.getPostalCode(), customer.getPhoneNumber(),
-						customer.getCustomerType(), customer.getCustomerID());
-				if (flag) {
-
-//					jsonCustomerList = "4 " + flag + " update";
+			flag = checkCustomerExists();
+			if (flag) {
+				// customer is present
+				// update customer
+				if (callUpdatecustomer()) {
 					jsonCustomerList = "Customer updated successfully";
 
 				} else {
 					jsonCustomerList = "ERROR !! Customer update failed";
 				}
-			} else {
-				System.out.println("customer not present, inserting");
-				// insert
-				flag = dbController.insertCustomer(customer.getFirstName(), customer.getLastName(),
-						customer.getAddress(), customer.getPostalCode(), customer.getPhoneNumber(),
-						customer.getCustomerType(), customer.getCustomerID());
-				if (flag) {
 
+			}
+
+			else {
+				// customer is not present
+				System.out.println("customer not present, inserting");
+
+				// insert customer
+				if (callInsertcustomer()) {
 					jsonCustomerList = "Customer inserted successfully";
 
 				} else {
@@ -219,6 +259,38 @@ public class ServerCustomerController {
 				}
 
 			}
+
+//			cust = dbController.getCustomerbyId(customer.getCustomerID());
+//			customerList = new CustomerList(cust);
+//			if (!cust.isEmpty()) {
+//				System.out.println("customer is present, updating");
+//
+//				// update
+//				flag = dbController.updateCustomer(customer.getFirstName(), customer.getLastName(),
+//						customer.getAddress(), customer.getPostalCode(), customer.getPhoneNumber(),
+//						customer.getCustomerType(), customer.getCustomerID());
+//				if (flag) {
+//
+//					jsonCustomerList = "Customer updated successfully";
+//
+//				} else {
+//					jsonCustomerList = "ERROR !! Customer update failed";
+//				}
+//			} else {
+//				System.out.println("customer not present, inserting");
+//				// insert
+//				flag = dbController.insertCustomer(customer.getFirstName(), customer.getLastName(),
+//						customer.getAddress(), customer.getPostalCode(), customer.getPhoneNumber(),
+//						customer.getCustomerType(), customer.getCustomerID());
+//				if (flag) {
+//
+//					jsonCustomerList = "Customer inserted successfully";
+//
+//				} else {
+//					jsonCustomerList = "ERROR !! Customer insert failed";
+//				}
+//
+//			}
 
 			break;
 
@@ -232,37 +304,47 @@ public class ServerCustomerController {
 			try {
 				this.customer = objectMapper.readValue(responseArr[1], Customer.class);
 			} catch (JsonParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
-			// check if customer is new or already present
-
-			cust = dbController.getCustomerbyId(customer.getCustomerID());
-			customerList = new CustomerList(cust);
-			if (!cust.isEmpty()) {
-				System.out.println("customer is present, deleting");
-				// delete
-				flag = dbController.deleteCustomer(customer.getCustomerID());
-				if (flag) {
-
-					jsonCustomerList = "Customer deleted successfully";
-
-				} else {
-					jsonCustomerList = "ERROR !! Customer delete failed";
-				}
+			// check if customer is present
+			flag = checkCustomerExists();
+			if (flag) {
+				// customer is present
+				// delete customer
+				jsonCustomerList = callDeletecustomer();
 
 			} else {
+				// customer is not present
 				System.out.println("ERROR !! customer is not present to delete");
 				// customer does not exist
 				jsonCustomerList = "ERROR !! Delete failed, Customer does not exist.";
+
 			}
+
+//			cust = dbController.getCustomerbyId(customer.getCustomerID());
+//			customerList = new CustomerList(cust);
+//			if (!cust.isEmpty()) {
+//				System.out.println("customer is present, deleting");
+//				// delete
+//				flag = dbController.deleteCustomer(customer.getCustomerID());
+//				if (flag) {
+//
+//					jsonCustomerList = "Customer deleted successfully";
+//
+//				} else {
+//					jsonCustomerList = "ERROR !! Customer delete failed";
+//				}
+//
+//			} else {
+//				System.out.println("ERROR !! customer is not present to delete");
+//				// customer does not exist
+//				jsonCustomerList = "ERROR !! Delete failed, Customer does not exist.";
+//			}
 
 			break;
 

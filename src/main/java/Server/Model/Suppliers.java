@@ -26,7 +26,7 @@ public class Suppliers implements Serializable{
 	private String supplierAddress;
 
 	/**
-	 * supplierContact represents the address of the supplier
+	 * supplierContact represents phone number of the supplier
 	 */
 	private String supplierContact;
 	
