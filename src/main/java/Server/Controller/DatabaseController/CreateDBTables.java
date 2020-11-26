@@ -49,9 +49,10 @@ public class CreateDBTables {
 	public void createDB() {
 
 		String sql_temp = "drop database if exists " + databaseName;
-		String sql_new = "use  " + databaseName;
+		
 
 		String sql = "CREATE DATABASE IF NOT EXISTS " + databaseName;
+		String sql_new = "use  " + databaseName;
 
 		// **********
 		// Add a check to see if the Database is already created
@@ -75,7 +76,7 @@ public class CreateDBTables {
 		 * varchar(7), phone_number varchar(12), customer_type char(10), primary key
 		 * (customer_id) );
 		 */
-		String sql_temp = "DROP TABLE IF EXISTS CUSTOMER";
+//		String sql_temp = "DROP TABLE IF EXISTS CUSTOMER";
 
 		String sql = "create table customer " + "(customer_id integer not null, " + "fname varchar(20) not null, "
 				+ "lname varchar(20) not null, " + "address varchar(50), " + "postal_code varchar(7), "
@@ -85,7 +86,7 @@ public class CreateDBTables {
 		try {
 
 			myStmt = myDriver.getMyConn().createStatement();
-			myStmt.executeUpdate(sql_temp);
+//			myStmt.executeUpdate(sql_temp);
 			myStmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

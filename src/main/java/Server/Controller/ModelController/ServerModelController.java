@@ -51,7 +51,7 @@ public class ServerModelController implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("calling run");
+		System.out.println("Calling run in ServerModelController");
 
 		while(true) {
 			String message = getClientMessage();

@@ -62,17 +62,7 @@ public class ServerInventoryController {
 //		items = dbController.getItemList();
 		this.inventory = new Inventory(dbController.getItemList());
 
-		// load data in order table
-		System.out.println("loading data in order table for values: " + inventory.getTheOrder().getOrderId() + " "
-				+ inventory.getTheOrder().getDate());
-
-		boolean flag = this.dbController.addOrder(inventory.getTheOrder().getOrderId(),
-				inventory.getTheOrder().getDate());
-		if (!flag) {
-			flag = false;
-			System.out.println("Add order failed");
-
-		}
+		
 
 	}
 
@@ -152,6 +142,15 @@ public class ServerInventoryController {
 		return flag;
 	}
 
+	public boolean generateOrder() {
+		// load data in order table
+				System.out.println("loading data in order table for values: " + inventory.getTheOrder().getOrderId() + " "
+						+ inventory.getTheOrder().getDate());
+
+				boolean flag = this.dbController.addOrder(inventory.getTheOrder().getOrderId(),
+						inventory.getTheOrder().getDate());
+				return flag;
+	}
 	public int generateOrderLine(OrderLines orderLine) {
 		
 		System.out.println("new order line generated for: ");
@@ -160,7 +159,7 @@ public class ServerInventoryController {
 				+ " " + orderLine.getItem().getSupplierID() + " " + orderLine.getItem().getItemQuantity());
 
 		// orderline table insert
-		boolean flag = dbController.addOrderLine(inventory.getTheOrder().getOrderId(),
+		 dbController.addOrderLine(inventory.getTheOrder().getOrderId(),
 				orderLine.getItem().getItemID(), orderLine.getItem().getSupplierID(),
 				orderLine.getItem().getItemQuantity());
 		
@@ -308,6 +307,11 @@ public class ServerInventoryController {
 			int new_quantity = 0;
 
 			if (!responseArr[1].isEmpty()) {
+				
+				if( !generateOrder() ) {
+					jsonItemList = "ERROR !! Order generation failed";
+					break;
+				}
 				
 				
 				if( checkOrderLineGeneration(Integer.parseInt(responseArr[1]))) {
