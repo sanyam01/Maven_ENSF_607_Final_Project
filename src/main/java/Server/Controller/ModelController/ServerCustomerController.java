@@ -141,6 +141,14 @@ public class ServerCustomerController {
 				
 			}
 			else {
+				
+				try {
+					System.out.println(Integer.parseInt(responseArr[1].trim()));
+				} catch (NumberFormatException e) {
+					jsonCustomerList = "ERROR!! Invalid input, enter integer value";
+					break;
+				}
+				
 				cust = dbController.getCustomerbyId(Integer.parseInt(responseArr[1].trim()));
 				if (!cust.isEmpty()) {
 					customerList = new CustomerList(cust);
