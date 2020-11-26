@@ -146,20 +146,11 @@ public class ToolView extends JFrame {
 		checkQuantity.addActionListener(toolListener);
 		decrease.addActionListener(toolListener);
 		clear.addActionListener(toolListener);
-		toolID.addActionListener(toolListener);
-		toolName.addActionListener(toolListener);
-		toolType.addActionListener(toolListener);
-		toolQuantity.addActionListener(toolListener);
-		toolPrice.addActionListener(toolListener);
-		supplierID.addActionListener(toolListener);
-		searchToolID.addActionListener(toolListener);
-		searchToolName.addActionListener(toolListener);
 		searchParameter.addActionListener(toolListener);
 		search.addActionListener(toolListener);
 		clearSearch.addActionListener(toolListener);
 		listAllTools.addActionListener(toolListener);
 		printOrder.addActionListener(toolListener);
-		powerType.addActionListener(toolListener);
 
 	}
 
@@ -181,8 +172,6 @@ public class ToolView extends JFrame {
 
 	// clears the list
 	public void clearToolList() {
-//		toolList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//		toolList.setLayoutOrientation(JList.VERTICAL_WRAP);
 		String[] listArray = {};
 		toolList.setListData(listArray);
 
