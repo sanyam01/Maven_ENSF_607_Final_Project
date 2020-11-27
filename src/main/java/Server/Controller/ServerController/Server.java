@@ -20,13 +20,8 @@ import Server.Controller.ModelController.ServerCustomerController;
 public class Server {
 
 	private Socket socket;
-	private PrintWriter socketOut;
-	private BufferedReader socketIn;
-
 	private ServerSocket serverSocket;
 	private ExecutorService pool;
-
-//	private Customer customer;
 
 	public Server() {
 
@@ -34,7 +29,6 @@ public class Server {
 			// Server socket accepts the port as a parameter
 			serverSocket = new ServerSocket(9090);
 
-			// System.out.println("Server is running!");
 			pool = Executors.newFixedThreadPool(20);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -43,41 +37,29 @@ public class Server {
 
 	public void runServer() {
 		System.out.println("Server is running...");
-		String messageToClient = null;
-//		try {
-//			socket = serverSocket.accept();
-//		} catch (IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
 
 		DBController dbController = new DBController();
 		System.out.println("DBController instantiated");
-//		ServerModelController serverModelController = new ServerModelController(socket, dbController);
-
-//		pool.execute(serverModelController);
 
 		while (true) {
-			
+
 			try {
-				socket = serverSocket.accept(); //for multiple clients
+				socket = serverSocket.accept(); // for multiple clients
 			} catch (IOException e1) {
 
 				e1.printStackTrace();
 			}
 
-
 			ServerModelController serverModelController = new ServerModelController(socket, dbController);
-			
-//			serverModelController.run();
-				pool.execute(serverModelController);
-//				
+
+			pool.execute(serverModelController);
+
 		}
 
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+
 		Server myServer = new Server();
 		myServer.runServer();
 
