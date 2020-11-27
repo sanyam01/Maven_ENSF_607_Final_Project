@@ -96,16 +96,22 @@ public class ToolView extends JFrame {
 
 		JPanel leftView = new JPanel(new BorderLayout());
 
-		JPanel leftViewSouth = new JPanel(new GridLayout(3,1,2,2));//added new
+		//JPanel leftViewSouth = new JPanel(new GridLayout(3,1));//added new
+		JPanel leftViewSouth = new JPanel(new BorderLayout());
 		toolList = new JList();
 		
 
 		JScrollPane scroll = new JScrollPane(toolList);
 		
-		leftViewSouth.add(scroll);//added new
-		leftViewSouth.add(new JLabel("Print Order Here"));//added new
-		order = new JTextArea();//added new
-		leftViewSouth.add(order);//added new
+		//leftViewSouth.add(scroll);//added new
+		//leftViewSouth.add(new JLabel("Print Order Here"));//added new
+		order = new JTextArea(10,5);//added new
+		//leftViewSouth.add(order);//added new
+		leftViewSouth.add("North", scroll);
+		leftViewSouth.add("Center", new JLabel("Print Order Here"));
+		leftViewSouth.add("South", order);
+		
+		
 		
 		leftView.add("South", leftViewSouth);
 
