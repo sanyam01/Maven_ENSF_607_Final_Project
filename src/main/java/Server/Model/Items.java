@@ -150,14 +150,15 @@ public  abstract class Items implements Serializable {
 	
 	public int decreaseQuantity(Order order, int itemQty) {
 		
-		
+		int amount_ordered = 0;
 
 		OrderLines ol = null;
 		String s = "\nNo new OrderLine generated. Printing order: \n";
 		s = s + "....................................................................\n\n";
-		if (itemQty > 0)
+		if (itemQty > 0) {
 			this.setItemQuantity(itemQty - 1);
-		
+			
+		}
 
 		
 		if (itemQty < 40) {
@@ -167,6 +168,7 @@ public  abstract class Items implements Serializable {
 			
 			order.addOrderLine(ol);
 			this.setItemQuantity(50);
+			amount_ordered = ol.getAmount();
 			
 			
 			
@@ -196,8 +198,9 @@ public  abstract class Items implements Serializable {
 //
 //		s = s + "\n....................................................................\n\n";
 		
-		System.out.println("New qty ordered for item is: " + this.getItemID() + " " + ol.getAmount());
-		return ol.getAmount();
+//		System.out.println("New qty ordered for item is: " + this.getItemID() + " " + ol.getAmount());
+		
+		return amount_ordered;
 
 	}
 
