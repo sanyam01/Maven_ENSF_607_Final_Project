@@ -60,8 +60,8 @@ public class ServerModelController implements Runnable {
 				message = getClientMessage();
 			} catch (IOException e) {
 
-				System.out.println("Catching exception in run server model controller and breaking");
-				closeSockets();
+//				System.out.println("Catching exception in run server model controller and breaking");
+//				closeSockets();
 				break;
 //				e.printStackTrace();
 			}
@@ -144,6 +144,7 @@ public class ServerModelController implements Runnable {
 
 		
 			socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			socketOut = new PrintWriter(socket.getOutputStream(), true);
 		
 		
 			request = socketIn.readLine();
@@ -156,12 +157,12 @@ public class ServerModelController implements Runnable {
 	public void setClientMessage(String message) {
 
 		// Socket output Stream
-		try {
-			socketOut = new PrintWriter(socket.getOutputStream(), true);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			socketOut = new PrintWriter(socket.getOutputStream(), true);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		System.out.println("Response to client: " + message);
 		socketOut.println(message);
 		socketOut.flush();
@@ -184,9 +185,10 @@ public class ServerModelController implements Runnable {
 	public void closeSockets() {
 		try {
 			// Close all sockets and streams
-			socket.close();
 			socketIn.close();
 			socketOut.close();
+			socket.close();
+			
 
 		} catch (IOException e) {
 			System.out.println("Error closing sockets!");
