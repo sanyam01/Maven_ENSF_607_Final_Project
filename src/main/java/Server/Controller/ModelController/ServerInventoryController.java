@@ -170,6 +170,9 @@ public class ServerInventoryController {
 		// orderline table insert
 		dbController.addOrderLine(inventory.getTheOrder().getOrderId(), orderLine.getItem().getItemID(),
 				orderLine.getItem().getSupplierID(), orderLine.getAmount());
+		
+		System.out.println("new qty after generating orderline: "+orderLine.getItem().getItemQuantity());
+		System.out.println("amount generated in orldeline: "+orderLine.getAmount());
 
 		return orderLine.getItem().getItemQuantity();
 	}
