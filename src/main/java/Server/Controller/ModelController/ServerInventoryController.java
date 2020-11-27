@@ -146,11 +146,18 @@ public class ServerInventoryController {
 
 		System.out.println("\nstringTodayDate: " + stringTodayDate);
 		System.out.println("\nstringOrderDate: " + stringOrderDate);
-
-		this.dbController.addOrder(inventory.getTheOrder().getOrderId(), inventory.getTheOrder().getDate());
-		if (stringTodayDate.equals(stringOrderDate)) {
+		int orderCount = dbController.getOrderCount();
+		System.out.println("orderCount: "+orderCount);
+		
+//		this.dbController.addOrder(inventory.getTheOrder().getOrderId(), inventory.getTheOrder().getDate());
+		if (stringTodayDate.equals(stringOrderDate) ) {
+			
+			if(orderCount == 0) {
+				this.dbController.addOrder(inventory.getTheOrder().getOrderId(), inventory.getTheOrder().getDate());
+			}
 
 			System.out.println("in check order, both dates are same\n");
+			
 			return true;
 
 		} else {
@@ -188,6 +195,7 @@ public class ServerInventoryController {
 		System.out.println(checkOrder() + "\n");
 		if (!checkOrder()) {
 
+			System.out.println("in generateOrder");
 			flag = this.dbController.addOrder(inventory.getTheOrder().getOrderId(), inventory.getTheOrder().getDate());
 
 		} else {

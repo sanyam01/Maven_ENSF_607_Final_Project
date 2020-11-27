@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import Server.Model.Customer;
 import Server.Model.ElectricalItem;
 import Server.Model.InternationalSupplier;
+import Server.Model.Inventory;
 import Server.Model.Items;
 import Server.Model.ItemsList;
 import Server.Model.NonElectricalItem;
@@ -200,6 +201,9 @@ public class DBController {
 		 return updateFlag;
 	}
 
+	public int getOrderCount() {
+		return dbManager.getOrderCountPreparedStatement();
+	}
 
 
 }
