@@ -90,6 +90,7 @@ public class ClientApp extends JFrame implements LoginCredentials {
 		if (this.getPassword().getText().contentEquals(Password) && this.getID().getText().contentEquals(LoginID)) {
 			this.getStatus().setText("Login Successfull");
 			createMainGUI();
+			this.dispose();
 
 		} else {
 			this.getStatus().setText("Please try again");

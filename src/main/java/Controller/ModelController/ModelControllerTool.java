@@ -180,7 +180,7 @@ public class ModelControllerTool {
 		concatOrder = concatOrder + "Order ID: "+ order.getOrderId() + "\n";
 		concatOrder = concatOrder + "Order Date: " + order.getDate() + "\n";
 		for (OrderLines orderLines : this.order.getOrderLines())
-			concatOrder = concatOrder + "Item ID: " + orderLines.getItem().getItemID() + " Amount: " + orderLines.getAmount() + "Supplier ID: " + orderLines.getItem().getSupplierID();
+			concatOrder = concatOrder + "Item ID: " + orderLines.getItem().getItemID() + " Amount: " + orderLines.getAmount() + "Supplier ID: " + orderLines.getItem().getSupplierID() + "\n";
 		return concatOrder;
 	}
 
