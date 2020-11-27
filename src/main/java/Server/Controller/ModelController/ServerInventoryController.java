@@ -1,17 +1,12 @@
 package Server.Controller.ModelController;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
-
-//import Server.Model.ElectricalItem;
-//import Server.Model.InternationalSupplier;
 
 import Server.Controller.DatabaseController.DBController;
 import Server.Model.Items;
@@ -22,65 +17,20 @@ import Server.Model.Inventory;
 public class ServerInventoryController {
 
 	DBController dbController;
-//	private Items items;
-//	private ElectricalItem eItem;
-//	private InternationalSupplier intSupplier;
-//	private ItemsList itemList;
 	private Inventory inventory;
-
 	ObjectMapper objectMapper;
 	private String message;
 
-//	public ServerInventoryController(String response, DBController dbC, ObjectMapper objectMapper) throws IOException {
-//		System.out.println("CustomerController constructor called ");
-//
-//		this.message = response;
-//		this.dbController = dbC;
-//		this.objectMapper = objectMapper;
-////		items = dbController.getItemList();
-//		this.inventory = new Inventory(dbController.getItemList());
-//
-//		// load data in order table
-//		System.out.println("loading data in order table for values: " + inventory.getTheOrder().getOrderId() + " "
-//				+ inventory.getTheOrder().getDate());
-//
-//		boolean flag = this.dbController.addOrder(inventory.getTheOrder().getOrderId(),
-//				inventory.getTheOrder().getDate());
-//		if (!flag) {
-//			flag = false;
-//			System.out.println("Add order failed");
-//
-//		}
-//
-//	}
 
 	public ServerInventoryController(DBController dbC, ObjectMapper objectMapper) throws IOException {
-//		System.out.println("CustomerController constructor called ");
 
 		this.message = null;
 		this.dbController = dbC;
 		this.objectMapper = objectMapper;
-//		items = dbController.getItemList();
 		this.inventory = new Inventory(dbController.getItemList());
 
 	}
 
-//	public String readClientMessage() {
-//		String[] responseArr = null;
-//		String switchBoardResponse = null;
-//
-//		System.out.println("Request from client: " + message);
-//
-//		if (message != null) {
-////			String jsonCustomer = objectMapper.writeValueAsString(response);
-//			responseArr = message.split(" ", 2);
-//			switchBoardResponse = switchBoard(responseArr);
-//
-//		}
-//
-//		return switchBoardResponse;
-//
-//	}
 
 	public String readClientMessage(String clientRequest) {
 		String[] responseArr = null;
@@ -106,7 +56,7 @@ public class ServerInventoryController {
 			if (i.getItemID() == itemId) {
 
 				System.out.println("updating item quantity for item: " + itemId + " " + i.getItemQuantity());
-				// update statement to update qty in item
+
 				flag = dbController.updateItemQty(i.getItemQuantity(), itemId);
 				if (!flag) {
 					flag = false;
@@ -125,7 +75,7 @@ public class ServerInventoryController {
 		boolean flag = false;
 
 		int orderLineSizeOld = inventory.getTheOrder().getOrderLines().size();
-		int qtyOrdered = inventory.decreaseQuantity(itemId);
+		inventory.decreaseQuantity(itemId);
 
 		int orderLineSizeNew = inventory.getTheOrder().getOrderLines().size();
 
@@ -139,7 +89,7 @@ public class ServerInventoryController {
 
 	public boolean checkOrder() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd ");
-		Date orderDate = null;
+//		Date orderDate = null;
 		String stringOrderDate = inventory.getTheOrder().getDate().trim();
 		Date todayDate = new Date();
 		String stringTodayDate = sdf.format(todayDate).trim();
