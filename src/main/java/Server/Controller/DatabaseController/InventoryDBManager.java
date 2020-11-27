@@ -165,60 +165,7 @@ public class InventoryDBManager {
 
 	}
 
-//	public ItemsList getItemByNamePreparedStatement(String itemName) {
-//		String query = "SELECT  item.item_id,  item_name,  item_quantity,  item_price,  item_type,  supplier_id , electrical_item.power_type\r\n"
-//				+ "          FROM item \r\n"
-//				+ "          LEFT  JOIN electrical_item  ON item.item_id=electrical_item.item_id \r\n"
-//				+ "          where item.item_name = ?";
-//
-//		try {
-//			prepStatment = myDriver.getMyConn().prepareStatement(query);
-//			prepStatment.setString(1, itemName);
-//			myres = prepStatment.executeQuery();
-//
-//			ArrayList<ElectricalItem> elecArrList = new ArrayList<>();
-//			ArrayList<NonElectricalItem> nonElecArrList = new ArrayList<>();
-//			
-//
-//			while (myres.next()) {
-//
-//
-//
-//				if (myres.getString("power_type") != null) {
-//					
-//					
-//					
-//					elecArrList.add(new ElectricalItem(myres.getInt("item_id"), myres.getString("item_name"),
-//							myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
-//							myres.getInt("supplier_id"), myres.getString("power_type")));
-//					
-//					
-//				}
-//				if (myres.getString("power_type") == null) {
-//					
-//					
-//							
-//					nonElecArrList.add(new NonElectricalItem(myres.getInt("item_id"), myres.getString("item_name"),
-//							myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
-//							myres.getInt("supplier_id")));
-//					
-////					
-//				}
-//
-//			}
-//			
-//			ItemsList itemsList = new ItemsList(elecArrList, nonElecArrList);
-//			
-//
-//			return itemsList;
-//
-//		} catch (SQLException e) {
-//
-//			e.printStackTrace();
-//		}
-//		return null;
-//
-//	}
+
 
 	public ArrayList<Items> getItemByNamePreparedStatement(String itemName) {
 		String query = "SELECT  item.item_id,  item_name,  item_quantity,  item_price,  item_type,  supplier_id , electrical_item.power_type\r\n" + 
@@ -264,35 +211,35 @@ public class InventoryDBManager {
 
 	}
 
-	public ArrayList<Items> getItemQtyPreparedStatement(String itemName) {
-
-		String query = "Select item_id, item_name,item_quantity from item where item_name=?";
-
-		try {
-			prepStatment = myDriver.getMyConn().prepareStatement(query);
-			prepStatment.setString(1, itemName);
-			myres = prepStatment.executeQuery();
-
-			ArrayList<Items> itemArrayList = new ArrayList<>();
-
-			while (myres.next()) {
-
-//				itemArrayList.add(new Items(myres.getInt("item_id"), myres.getString("item_name"),
-//						myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
-//						myres.getInt("supplier_id")));
-
-			}
-
-			return itemArrayList;
-
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		}
-		return null;
-
-	}
-	
+//	public ArrayList<Items> getItemQtyPreparedStatement(String itemName) {
+//
+//		String query = "Select item_id, item_name,item_quantity from item where item_name like ?";
+//
+//		try {
+//			prepStatment = myDriver.getMyConn().prepareStatement(query);
+//			prepStatment.setString(1, "%" + itemName + "%");
+//			myres = prepStatment.executeQuery();
+//
+//			ArrayList<Items> itemArrayList = new ArrayList<>();
+//
+//			while (myres.next()) {
+//
+////				itemArrayList.add(new Items(myres.getInt("item_id"), myres.getString("item_name"),
+////						myres.getInt("item_quantity"), myres.getFloat("item_price"), myres.getString("item_type"),
+////						myres.getInt("supplier_id")));
+//
+//			}
+//
+//			return itemArrayList;
+//
+//		} catch (SQLException e) {
+//
+//			e.printStackTrace();
+//		}
+//		return null;
+//
+//	}
+//	
 	
 	public int getOrderCountPreparedStatement() {
 
@@ -391,40 +338,40 @@ public class InventoryDBManager {
 
 	}
 
-	public ArrayList<InternationalSupplier> getSuppListPreparedStatemen() {
-
-		String query = "Select * from supplier  s, international_supplier i where s.supplier_id = i.supplier_id";
-
-		try {
-			prepStatment = myDriver.getMyConn().prepareStatement(query);
-//			prepStatment.setInt(1, customerId);
-			myres = prepStatment.executeQuery();
-
-			ArrayList<InternationalSupplier> supplierList = new ArrayList<>();
-
-			while (myres.next()) {
-
-				supplierList.add(new InternationalSupplier(myres.getInt("supplier_id"),
-						myres.getString("supplier_name"), myres.getString("address"), myres.getString("sales_contact"),
-						myres.getString("company_name"), myres.getString("supplier_type"), myres.getInt("import_tax")));
-
-//				System.out.println("search customer result in IDB: " + customerArrayList);
-
-			}
-
-			return supplierList;
-
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		}
-		return null;
-
-	}
+//	public ArrayList<InternationalSupplier> getSuppListPreparedStatemen() {
+//
+//		String query = "Select * from supplier  s, international_supplier i where s.supplier_id = i.supplier_id";
+//
+//		try {
+//			prepStatment = myDriver.getMyConn().prepareStatement(query);
+////			prepStatment.setInt(1, customerId);
+//			myres = prepStatment.executeQuery();
+//
+//			ArrayList<InternationalSupplier> supplierList = new ArrayList<>();
+//
+//			while (myres.next()) {
+//
+//				supplierList.add(new InternationalSupplier(myres.getInt("supplier_id"),
+//						myres.getString("supplier_name"), myres.getString("address"), myres.getString("sales_contact"),
+//						myres.getString("company_name"), myres.getString("supplier_type"), myres.getInt("import_tax")));
+//
+////				System.out.println("search customer result in IDB: " + customerArrayList);
+//
+//			}
+//
+//			return supplierList;
+//
+//		} catch (SQLException e) {
+//
+//			e.printStackTrace();
+//		}
+//		return null;
+//
+//	}
 
 	public ArrayList<Customer> getCustomerPreparedStatementId(int customerId) {
 
-		System.out.println("getting customer based on customer id");
+//		System.out.println("getting customer based on customer id");
 
 		String query = "Select * from customer where customer_id = ?";
 
@@ -468,7 +415,7 @@ public class InventoryDBManager {
 	}
 
 	public ArrayList<Customer> getCustomerPreparedStatementType(String customerType) {
-		System.out.println("getting customer based on customer type");
+//		System.out.println("getting customer based on customer type");
 
 		String query = "Select * from customer where customer_type = ?";
 
@@ -506,13 +453,13 @@ public class InventoryDBManager {
 	}
 
 	public ArrayList<Customer> getCustomerPreparedStatementLname(String lname) {
-		System.out.println("getting customer based on lastname ");
+//		System.out.println("getting customer based on lastname ");
 
-		String query = "Select * from customer where lname = ?";
+		String query = "Select * from customer where lname like ?";
 
 		try {
 			prepStatment = myDriver.getMyConn().prepareStatement(query);
-			prepStatment.setString(1, lname);
+			prepStatment.setString(1, "%" + lname + "%");
 			myres = prepStatment.executeQuery();
 
 			ArrayList<Customer> customerArrayList = new ArrayList<>();

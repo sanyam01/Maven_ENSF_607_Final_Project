@@ -196,8 +196,8 @@ public  abstract class Items implements Serializable {
 //
 //		s = s + "\n....................................................................\n\n";
 		
-		System.out.println("New item qty for item is: " + this.getItemID() + " " + this.getItemQuantity());
-		return this.getItemQuantity();
+		System.out.println("New qty ordered for item is: " + this.getItemID() + " " + ol.getAmount());
+		return ol.getAmount();
 
 	}
 

@@ -125,7 +125,7 @@ public class ServerInventoryController {
 		boolean flag = false;
 
 		int orderLineSizeOld = inventory.getTheOrder().getOrderLines().size();
-		int new_quantity = inventory.decreaseQuantity(itemId);
+		int qtyOrdered = inventory.decreaseQuantity(itemId);
 
 		int orderLineSizeNew = inventory.getTheOrder().getOrderLines().size();
 
@@ -192,7 +192,7 @@ public class ServerInventoryController {
 		// load data in order table
 		System.out.println("loading data in order table for values: " + inventory.getTheOrder().getOrderId() + " "
 				+ inventory.getTheOrder().getDate() + "\n");
-		System.out.println(checkOrder() + "\n");
+//		System.out.println(checkOrder() + "\n");
 		if (!checkOrder()) {
 
 			System.out.println("in generateOrder");
@@ -219,7 +219,7 @@ public class ServerInventoryController {
 
 		// orderline table insert
 		dbController.addOrderLine(inventory.getTheOrder().getOrderId(), orderLine.getItem().getItemID(),
-				orderLine.getItem().getSupplierID(), orderLine.getItem().getItemQuantity());
+				orderLine.getItem().getSupplierID(), orderLine.getAmount());
 
 		return orderLine.getItem().getItemQuantity();
 	}

@@ -143,9 +143,9 @@ public class DBController {
 		return dbManager.getItemByNamePreparedStatement(itemName);
 	}
 	
-	public ArrayList<Items> getItemQty(String itemName) {
-		return dbManager.getItemQtyPreparedStatement(itemName);
-	}
+//	public ArrayList<Items> getItemQty(String itemName) {
+//		return dbManager.getItemQtyPreparedStatement(itemName);
+//	}
 	
 	public ArrayList<Items> getItemQty(int itemId) {
 		return dbManager.getItemQtyPreparedStatement(itemId);

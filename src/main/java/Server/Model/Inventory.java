@@ -74,14 +74,14 @@ public class Inventory {
 	public int decreaseQuantity(int id) {
 		System.out.println("decreaing qty for item id: "+ id);
 //		listItems = dbController.getItemById(id);
-		int new_qty = 0;
+		int orderedQty = 0;
 		
 		
 			for (Items i : listItems) {
 				if (i.getItemID() == id) {
 					
 					System.out.println("calling method decreaseQuantity in item with parameters: "+ this.getTheOrder().getOrderId()+" "+ i.getItemQuantity());
-					new_qty = i.decreaseQuantity(this.getTheOrder(), i.getItemQuantity());
+					orderedQty = i.decreaseQuantity(this.getTheOrder(), i.getItemQuantity());
 				}
 				
 
@@ -89,7 +89,7 @@ public class Inventory {
 			
 		
 
-		return new_qty;
+		return orderedQty;
 		
 
 	}
