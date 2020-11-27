@@ -1,8 +1,5 @@
 package ClientView;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -30,6 +27,7 @@ public class ToolView extends JFrame {
 	private JList toolList;
 	private JButton listAllTools;
 	private JButton printOrder;
+	private JTextArea order;
 
 	private ButtonGroup group;
 
@@ -98,11 +96,18 @@ public class ToolView extends JFrame {
 
 		JPanel leftView = new JPanel(new BorderLayout());
 
+		JPanel leftViewSouth = new JPanel(new GridLayout(3,1,2,2));//added new
 		toolList = new JList();
 		
 
 		JScrollPane scroll = new JScrollPane(toolList);
-		leftView.add("South", scroll);
+		
+		leftViewSouth.add(scroll);//added new
+		leftViewSouth.add(new JLabel("Print Order Here"));//added new
+		order = new JTextArea();//added new
+		leftViewSouth.add(order);//added new
+		
+		leftView.add("South", leftViewSouth);
 
 		JPanel leftNorth = new JPanel(new GridLayout(8, 1, 2, 2));
 		leftNorth.add(new JLabel("Search Tools"));
@@ -343,5 +348,15 @@ public class ToolView extends JFrame {
 	public void setPowerType(JTextField powerType) {
 		this.powerType = powerType;
 	}
+
+	public JTextArea getOrder() {
+		return order;
+	}
+
+	public void setOrder(JTextArea order) {
+		this.order = order;
+	}
+	
+	
 
 }

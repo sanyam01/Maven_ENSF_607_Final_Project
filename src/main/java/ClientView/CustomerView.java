@@ -99,8 +99,17 @@ public class CustomerView extends JFrame {
 
 		JPanel leftView = new JPanel(new BorderLayout());
 
+		//JPanel leftViewSouth = new JPanel(new GridLayout(3,1,2,2));//added new
+		
 		customerList = new JList();
 		JScrollPane scroll = new JScrollPane(customerList);
+		
+//		leftViewSouth.add(scroll);//added new
+//		leftViewSouth.add(new JLabel("Print Order Here"));//added new
+//		order = new JTextArea();//added new
+//		leftViewSouth.add(order);//added new
+		
+		//leftView.add("South", scroll);commented
 		leftView.add("South", scroll);
 
 		JPanel leftNorth = new JPanel(new GridLayout(8, 1, 2, 2));

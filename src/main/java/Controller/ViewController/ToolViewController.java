@@ -117,6 +117,7 @@ public class ToolViewController {
 		toolView.getGroup().clearSelection();
 		toolView.getSearchParameter().setText("");
 		toolView.clearToolList();
+		toolView.getOrder().setText("");
 		toolView.getStatusText().setText("Clear Search has been performed");
 
 	}
@@ -199,6 +200,7 @@ public class ToolViewController {
 	public void addListenerList() {
 		toolView.addListenerList(new ToolListener());
 	}
+	
 
 	private void printToolListGUI(String response) {
 		toolView.addToolList(response);
@@ -208,8 +210,9 @@ public class ToolViewController {
 	public void printOrder() {
 
 		String value = this.getModelControllerTool().printOrder();
-		printToolListGUI(value);
-			toolView.getToolList().setEnabled(false);
+		toolView.getOrder().setText(value);
+//		printToolListGUI(value);
+		toolView.getToolList().setEnabled(true);
 	}
 
 	public ToolView getToolView() {
