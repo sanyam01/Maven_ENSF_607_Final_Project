@@ -3,7 +3,13 @@ package Server.Model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Suppliers implements Serializable{
+/**
+ * Class for suppliers. this class is serializable.
+ * 
+ * @author Neha Singh
+ *
+ */
+public class Suppliers implements Serializable {
 
 	/**
 	 * 
@@ -29,14 +35,12 @@ public class Suppliers implements Serializable{
 	 * supplierContact represents phone number of the supplier
 	 */
 	private String supplierContact;
-	
+
 	/**
-	 * supplierType represents the type of the supplier i.e. Local and
-	 * international
+	 * supplierType represents the type of the supplier i.e. Local and international
 	 */
 	private String supplierType;
-	
-	
+
 	private String companyName;
 
 	/**
@@ -52,7 +56,8 @@ public class Suppliers implements Serializable{
 	 * @param supplierAddress address of the supplier
 	 * @param supplierContact contact of the supplier
 	 */
-	public Suppliers(int supplierID, String supplierName, String supplierAddress, String supplierContact,String companyName, String supplierType) {
+	public Suppliers(int supplierID, String supplierName, String supplierAddress, String supplierContact,
+			String companyName, String supplierType) {
 
 		this.setSupplierAddress(supplierAddress);
 		this.setSupplierContact(supplierContact);

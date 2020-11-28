@@ -6,6 +6,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
+/**
+ * Class for the orders generated for the items, contains list of orderlines
+ * generated for items for a particular day.
+ * 
+ * @author Neha Singh and Sanyam
+ *
+ */
 public class Order {
 
 	/**
@@ -21,7 +28,7 @@ public class Order {
 	/**
 	 * orderLines represents all the orders generated for items on that day.
 	 * 
-	 * Each orderline corresponds to the oreder for a particular item
+	 * Each orderline corresponds to the order for a particular item
 	 */
 	private ArrayList<OrderLines> orderLines;
 

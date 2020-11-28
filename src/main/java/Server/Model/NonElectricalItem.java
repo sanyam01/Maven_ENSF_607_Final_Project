@@ -1,6 +1,13 @@
 package Server.Model;
 
-public class NonElectricalItem extends Items{
+/**
+ * Class extends superclass Items, this is subclass of type non-electrical
+ * items.
+ * 
+ * @author Neha Singh
+ *
+ */
+public class NonElectricalItem extends Items {
 
 	/**
 	 * 
@@ -12,9 +19,9 @@ public class NonElectricalItem extends Items{
 		super(itemID, itemName, itemQuantity, itemPrice, itemType, supplierID);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public NonElectricalItem() {
-		
+
 	}
 
 }

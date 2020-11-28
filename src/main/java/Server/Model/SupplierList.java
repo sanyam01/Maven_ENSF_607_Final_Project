@@ -2,6 +2,12 @@ package Server.Model;
 
 import java.util.ArrayList;
 
+/**
+ * Class for list of suppliers.
+ * 
+ * @author Neha Singh
+ *
+ */
 public class SupplierList {
 	/**
 	 * list represents the list of the suppliers

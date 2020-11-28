@@ -4,36 +4,31 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-
-import Server.Controller.DatabaseController.DBController;
-
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@JsonTypeInfo(
-		  use = JsonTypeInfo.Id.NAME, 
-		  include = JsonTypeInfo.As.PROPERTY, 
-		  property = "type")
-		@JsonSubTypes({ 
-		  @Type(value = ElectricalItem.class, name = "electricalItem"), 
-		  @Type(value = NonElectricalItem.class, name = "nonElectricalItem") 
-		})
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({ @Type(value = ElectricalItem.class, name = "electricalItem"),
+		@Type(value = NonElectricalItem.class, name = "nonElectricalItem") })
 
-public  abstract class Items implements Serializable {
-
-	
+/**
+ * Abstract class of Items which is super class for electrical and
+ * non-electrical type of items. This class is serializable.
+ * 
+ * @author Neha singh
+ *
+ */
+public abstract class Items implements Serializable {
 
 	/**
 	 * itemID represents the ID of the item. Each item has unique ID
 	 */
 	private int itemID;
 
-	
 	/**
-	 * itemType represents the type of the item i.e. Electrical and
-	 * non-electrical
+	 * itemType represents the type of the item i.e. Electrical and non-electrical
 	 */
 	private String itemType;
-	
+
 	/**
 	 * itemName represents the name of the item
 	 */
@@ -53,13 +48,8 @@ public  abstract class Items implements Serializable {
 	 * supplierID represents the ID of the supplier
 	 */
 	private int supplierID;
-	
+
 	private Suppliers sup;
-	
-
-	
-	
-
 
 	/**
 	 * Constructs a constructor of Items and assigns all the values to its member
@@ -83,8 +73,9 @@ public  abstract class Items implements Serializable {
 	}
 
 	public Items() {
-		
+
 	}
+
 	/**
 	 * toString method overrides the method of the super class.
 	 * 
@@ -146,10 +137,9 @@ public  abstract class Items implements Serializable {
 	public void setItemType(String itemType) {
 		this.itemType = itemType;
 	}
-	
-	
+
 	public int decreaseQuantity(Order order, int itemQty) {
-		
+
 		int amount_ordered = 0;
 
 		OrderLines ol = null;
@@ -157,29 +147,22 @@ public  abstract class Items implements Serializable {
 		s = s + "....................................................................\n\n";
 		if (itemQty > 0) {
 			this.setItemQuantity(itemQty - 1);
-			
+
 		}
 
-		
 		if (itemQty < 40) {
 			int initiallyItem = itemQty;
 			ol = new OrderLines(this, 50 - initiallyItem);
-			
-			
+
 			order.addOrderLine(ol);
 			this.setItemQuantity(50);
 			amount_ordered = ol.getAmount();
-			
-			
-			
-			
-			
+
 //			s = "\nNew order line generated. Updated Order for the day is:\n\n";
 //			s = s + "....................................................................\n";
 //			s = s + "Order Id : " + order.getOrderId() + "\n" + "Order date : " + order.getDate() + "\n\n";
 //			
 //			
-			
 
 		}
 
@@ -197,9 +180,9 @@ public  abstract class Items implements Serializable {
 ////		}
 //
 //		s = s + "\n....................................................................\n\n";
-		
+
 //		System.out.println("New qty ordered for item is: " + this.getItemID() + " " + ol.getAmount());
-		
+
 		return amount_ordered;
 
 	}
@@ -211,8 +194,7 @@ public  abstract class Items implements Serializable {
 	public void setSup(Suppliers sup) {
 		this.sup = sup;
 	}
-	
-	
+
 	public void addSupplier(SupplierList list) {
 		for (Suppliers s : list.getList()) {
 			if (s.getSupplierID() == this.getSupplierID())
@@ -220,9 +202,5 @@ public  abstract class Items implements Serializable {
 
 		}
 	}
-
-	
-
-	
 
 }

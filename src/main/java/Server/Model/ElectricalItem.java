@@ -1,19 +1,25 @@
 package Server.Model;
 
-public class ElectricalItem extends Items{
-	
-	private String powerType ;
-	
+/**
+ * Class is subtype of super class Items and contains attributes for electrical
+ * type of items.
+ * 
+ * @author Neha Singh
+ *
+ */
+public class ElectricalItem extends Items {
+
+	private String powerType;
+
 	public ElectricalItem(int itemID, String itemName, int itemQuantity, float itemPrice, String itemType,
 			int supplierID, String powerType) {
 		super(itemID, itemName, itemQuantity, itemPrice, itemType, supplierID);
 		this.powerType = powerType;
-//		super.setPowerType(powerType);
 
 	}
-	
+
 	public ElectricalItem() {
-		
+
 	}
 
 	public String getPowerType() {
@@ -25,10 +31,5 @@ public class ElectricalItem extends Items{
 	}
 
 	private static final long serialVersionUID = 1L;
-	
-	
-	
-
-	
 
 }

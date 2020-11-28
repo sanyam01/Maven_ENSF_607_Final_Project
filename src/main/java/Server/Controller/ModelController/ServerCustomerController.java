@@ -1,30 +1,25 @@
 package Server.Controller.ModelController;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Map;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
 import Server.Controller.DatabaseController.DBController;
 import Server.Model.Customer;
 import Server.Model.CustomerList;
 
+/**
+ * Class controls the communication for customer management GUI and contains
+ * methods to be called based on request from client end. Class return the
+ * response to client in form of JSON strings.
+ * 
+ * @author Neha Singh
+ *
+ */
 public class ServerCustomerController {
 
-	private int taskId;
 	DBController dbController;
 	private Customer customer = null;
 	private CustomerList customerList;
@@ -34,17 +29,14 @@ public class ServerCustomerController {
 
 	private ArrayList<Customer> cust;
 
-//	public ServerCustomerController(String response, DBController dbC, ObjectMapper objectMapper) throws IOException {
-//		System.out.println("CustomerController constructor called ");
-//
-//		this.message = response;
-//		this.dbController = dbC;
-//		this.objectMapper = objectMapper;
-//
-//	}
-
+	/**
+	 * Constructs the dbcontroller and object mapper
+	 * 
+	 * @param dbC
+	 * @param objectMapper
+	 * @throws IOException
+	 */
 	public ServerCustomerController(DBController dbC, ObjectMapper objectMapper) throws IOException {
-//		System.out.println("CustomerController constructor called ");
 
 		this.message = null;
 		this.dbController = dbC;
@@ -52,6 +44,14 @@ public class ServerCustomerController {
 
 	}
 
+	/**
+	 * Method reads the client request, splits it to get task id and calls the
+	 * particular task id in switchcase method, Returns the response message to
+	 * client in form of JSON string
+	 * 
+	 * @param clientRequest
+	 * @return
+	 */
 	public String readClientMessage(String clientRequest) {
 		String[] responseArr = null;
 		String switchBoardResponse = null;
@@ -69,6 +69,11 @@ public class ServerCustomerController {
 
 	}
 
+	/**
+	 * Method checks if the customer exists in the database.
+	 * 
+	 * @return
+	 */
 	public boolean checkCustomerExists() {
 
 		cust = dbController.getCustomerbyId(customer.getCustomerID());
@@ -80,6 +85,11 @@ public class ServerCustomerController {
 		return false;
 	}
 
+	/**
+	 * Method calls the update of customer details if customer exists
+	 * 
+	 * @return
+	 */
 	public boolean callUpdatecustomer() {
 
 		// update
@@ -90,6 +100,12 @@ public class ServerCustomerController {
 		return flag;
 	}
 
+	/**
+	 * Method calls insert method for customer if customer doesn't exist in the
+	 * database
+	 * 
+	 * @return
+	 */
 	public boolean callInsertcustomer() {
 		boolean flag = dbController.insertCustomer(customer.getFirstName(), customer.getLastName(),
 				customer.getAddress(), customer.getPostalCode(), customer.getPhoneNumber(), customer.getCustomerType(),
@@ -98,6 +114,11 @@ public class ServerCustomerController {
 		return flag;
 	}
 
+	/**
+	 * Method calls delete customer operation for delete button from GUI.
+	 * 
+	 * @return
+	 */
 	public String callDeletecustomer() {
 		String temp = "";
 		// delete
@@ -114,6 +135,13 @@ public class ServerCustomerController {
 		return temp;
 	}
 
+	/**
+	 * Method contains tasks defined under switch cases for different requests from
+	 * front end and calls specific operations and returns JSON string response.
+	 * 
+	 * @param responseArr
+	 * @return
+	 */
 	public String switchBoard(String[] responseArr) {
 
 		// 1 search based on client-id
@@ -125,7 +153,7 @@ public class ServerCustomerController {
 		int choice = Integer.parseInt(responseArr[0]);
 		System.out.println("choice is: " + choice);
 		String jsonCustomerList = null;
-//		ArrayList<Customer> cust;
+
 		boolean flag;
 
 		switch (choice) {
@@ -134,21 +162,20 @@ public class ServerCustomerController {
 
 			System.out.println("Operation: Get customer by id");
 			System.out.println(responseArr[1]);
-			
-			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+
+			if (responseArr[1].isEmpty() || responseArr[1].isBlank()) {
 				System.out.println("\nInvalid input\n");
 				jsonCustomerList = "ERROR!! Invalid input!!";
-				
-			}
-			else {
-				
+
+			} else {
+
 				try {
 					System.out.println(Integer.parseInt(responseArr[1].trim()));
 				} catch (NumberFormatException e) {
 					jsonCustomerList = "ERROR!! Invalid input, enter integer value";
 					break;
 				}
-				
+
 				cust = dbController.getCustomerbyId(Integer.parseInt(responseArr[1].trim()));
 				if (!cust.isEmpty()) {
 					customerList = new CustomerList(cust);
@@ -158,17 +185,14 @@ public class ServerCustomerController {
 						System.out.println("Sending to client: " + jsonCustomerList);
 
 					} catch (JsonProcessingException e) {
-						// TODO Auto-generated catch block
+
 						e.printStackTrace();
 					}
 				} else {
 					jsonCustomerList = "ERROR !! Customer not found!!";
-//					System.out.println("Customer not found!!");
 
 				}
 			}
-
-			
 
 			break;
 
@@ -177,12 +201,12 @@ public class ServerCustomerController {
 
 			System.out.println("Operation: Get customer by lastname");
 			System.out.println(responseArr[1]);
-			
-			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+
+			if (responseArr[1].isEmpty() || responseArr[1].isBlank()) {
 				System.out.println("\nInvalid input\n");
 				jsonCustomerList = "ERROR!! Invalid input!!";
-				
-			}else {
+
+			} else {
 				cust = dbController.getCustomerbyLname(responseArr[1].trim());
 
 				if (!cust.isEmpty()) {
@@ -193,18 +217,15 @@ public class ServerCustomerController {
 						System.out.println("Sending to client: " + jsonCustomerList);
 
 					} catch (JsonProcessingException e) {
-						// TODO Auto-generated catch block
+
 						e.printStackTrace();
 					}
 
 				} else {
 					jsonCustomerList = "ERROR !! Customer not found!!";
-//					System.out.println("Customer not found!!");
 
 				}
 			}
-
-			
 
 			break;
 
@@ -214,12 +235,11 @@ public class ServerCustomerController {
 			System.out.println("Operation: Get customer by type");
 			System.out.println(responseArr[1]);
 
-			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+			if (responseArr[1].isEmpty() || responseArr[1].isBlank()) {
 				System.out.println("\nInvalid input\n");
 				jsonCustomerList = "ERROR!! Invalid input!!";
-				
-			}
-			else {
+
+			} else {
 				cust = dbController.getCustomerbyType(responseArr[1].trim());
 				if (!cust.isEmpty()) {
 					customerList = new CustomerList(cust);
@@ -229,17 +249,15 @@ public class ServerCustomerController {
 						System.out.println("Sending to client: " + jsonCustomerList);
 
 					} catch (JsonProcessingException e) {
-						// TODO Auto-generated catch block
+
 						e.printStackTrace();
 					}
 
 				} else {
 					jsonCustomerList = "ERROR !! Customer not found!!";
-//					System.out.println("Customer not found!!");
 
 				}
 			}
-			
 
 			break;
 
@@ -251,22 +269,21 @@ public class ServerCustomerController {
 //			System.out.println("printing responseArr[1]");
 			System.out.println(responseArr[1]);
 
-			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+			if (responseArr[1].isEmpty() || responseArr[1].isBlank()) {
 				System.out.println("\nInvalid input\n");
 				jsonCustomerList = "ERROR!! Invalid input!!";
-				
-			}
-			else {
+
+			} else {
 				try {
 					this.customer = objectMapper.readValue(responseArr[1], Customer.class);
 				} catch (JsonParseException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				} catch (JsonMappingException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				}
 
@@ -299,39 +316,6 @@ public class ServerCustomerController {
 
 				}
 			}
-			
-
-//			cust = dbController.getCustomerbyId(customer.getCustomerID());
-//			customerList = new CustomerList(cust);
-//			if (!cust.isEmpty()) {
-//				System.out.println("customer is present, updating");
-//
-//				// update
-//				flag = dbController.updateCustomer(customer.getFirstName(), customer.getLastName(),
-//						customer.getAddress(), customer.getPostalCode(), customer.getPhoneNumber(),
-//						customer.getCustomerType(), customer.getCustomerID());
-//				if (flag) {
-//
-//					jsonCustomerList = "Customer updated successfully";
-//
-//				} else {
-//					jsonCustomerList = "ERROR !! Customer update failed";
-//				}
-//			} else {
-//				System.out.println("customer not present, inserting");
-//				// insert
-//				flag = dbController.insertCustomer(customer.getFirstName(), customer.getLastName(),
-//						customer.getAddress(), customer.getPostalCode(), customer.getPhoneNumber(),
-//						customer.getCustomerType(), customer.getCustomerID());
-//				if (flag) {
-//
-//					jsonCustomerList = "Customer inserted successfully";
-//
-//				} else {
-//					jsonCustomerList = "ERROR !! Customer insert failed";
-//				}
-//
-//			}
 
 			break;
 
@@ -342,13 +326,11 @@ public class ServerCustomerController {
 
 			System.out.println(responseArr[1]);
 
-
-			if(responseArr[1].isEmpty() || responseArr[1].isBlank()) {
+			if (responseArr[1].isEmpty() || responseArr[1].isBlank()) {
 				System.out.println("\nInvalid input\n");
 				jsonCustomerList = "ERROR!! Invalid input!!";
-				
-			}
-			else {
+
+			} else {
 				try {
 					this.customer = objectMapper.readValue(responseArr[1], Customer.class);
 				} catch (JsonParseException e) {
@@ -374,27 +356,6 @@ public class ServerCustomerController {
 
 				}
 			}
-			
-
-//			cust = dbController.getCustomerbyId(customer.getCustomerID());
-//			customerList = new CustomerList(cust);
-//			if (!cust.isEmpty()) {
-//				System.out.println("customer is present, deleting");
-//				// delete
-//				flag = dbController.deleteCustomer(customer.getCustomerID());
-//				if (flag) {
-//
-//					jsonCustomerList = "Customer deleted successfully";
-//
-//				} else {
-//					jsonCustomerList = "ERROR !! Customer delete failed";
-//				}
-//
-//			} else {
-//				System.out.println("ERROR !! customer is not present to delete");
-//				// customer does not exist
-//				jsonCustomerList = "ERROR !! Delete failed, Customer does not exist.";
-//			}
 
 			break;
 

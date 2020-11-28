@@ -2,13 +2,20 @@ package Server.Controller.DatabaseController;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.sql.Date;
 import java.sql.PreparedStatement;
-//import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
+
+/**
+ * Class handles the database creation and loading of data into the tables from
+ * the mentioned text files. Creates the corresponding tables and fills the
+ * tables with data from text files.
+ * 
+ * @author Neha Singh
+ *
+ */
 public class CreateDBTables {
 
 	private Driver myDriver;
@@ -16,30 +23,12 @@ public class CreateDBTables {
 	private Statement myStmt; // object of type statement from JDBC class that enables the creation "Query
 	// statements"
 
-//	private ResultSet myres;// object of type ResultSet from the JDBC class that stores the result of the
-// query
-
-//	private PreparedStatement prepStatment;
-
 	private String databaseName = "inventory";
 
 	public CreateDBTables(Driver myDriver) {
 
 		this.myDriver = myDriver;
-//		createDB();
-//		createCustomerTable();
-//		createSupplierTable();
-//		createItemTable();
-//		createPurchaseTable();
-//		createOrderTable();
-//		createOrderLineTable();
-//		createElectricalItemTable();
-//		createInternationalSuppTable();
-//		fillCustomerTable();
-//		fillItemTable();
-//		fillSupplierTable();
-//		fillIntSupplierTable();
-//		fillElecItemTable();
+
 	}
 
 	/**
@@ -48,13 +37,10 @@ public class CreateDBTables {
 	public void createDB() {
 
 		String sql_temp = "drop database if exists " + databaseName;
-		
 
 		String sql = "CREATE DATABASE IF NOT EXISTS " + databaseName;
 		String sql_new = "use  " + databaseName;
 
-		// **********
-		// Add a check to see if the Database is already created
 		try {
 			PreparedStatement pStat = myDriver.getMyConn().prepareStatement(sql);
 			// pStat.setString(1,databaseName);
@@ -67,15 +53,10 @@ public class CreateDBTables {
 		}
 	}
 
+	/**
+	 * Create Customer table.
+	 */
 	public void createCustomerTable() {
-
-		/*
-		 * create table customer( customer_id integer not null, fname varchar(20) not
-		 * null, lname varchar(20) not null, address varchar(50), postal_code
-		 * varchar(7), phone_number varchar(12), customer_type char(10), primary key
-		 * (customer_id) );
-		 */
-//		String sql_temp = "DROP TABLE IF EXISTS CUSTOMER";
 
 		String sql = "create table customer " + "(customer_id integer not null, " + "fname varchar(20) not null, "
 				+ "lname varchar(20) not null, " + "address varchar(50), " + "postal_code varchar(7), "
@@ -85,22 +66,24 @@ public class CreateDBTables {
 		try {
 
 			myStmt = myDriver.getMyConn().createStatement();
-//			myStmt.executeUpdate(sql_temp);
 			myStmt.executeUpdate(sql);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		System.out.println("Created Customer table in given database...");
 	}
 
+	/**
+	 * Create supplier table.
+	 */
 	public void createSupplierTable() {
-		String sql_temp = "DROP TABLE IF EXISTS supplier";
 
 		/*
-		 * CREATE TABLE supplier ( supplier_id integer not null, supplier_name
-		 * varchar(25), supplier_type char(10), address varchar(25), company_name
-		 * varchar(25), phone_number varchar(25), primary key (supplier_id) );
+		 * DROP TABLE IF EXISTS supplier; CREATE TABLE supplier ( supplier_id integer
+		 * not null, supplier_name varchar(25), supplier_type char(10), address
+		 * varchar(25), company_name varchar(25), phone_number varchar(25), primary key
+		 * (supplier_id) );
 		 */
 		String sql = "CREATE TABLE supplier ( " + " supplier_id       integer not null, "
 				+ " supplier_name		varchar(25) unique, " + " supplier_type 	varchar(25), "
@@ -109,30 +92,27 @@ public class CreateDBTables {
 
 		try {
 			myStmt = myDriver.getMyConn().createStatement();
-//			myStmt.executeUpdate(sql_temp);
+
 			myStmt.executeUpdate(sql);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		System.out.println("Created Supplier table in given database...");
 
 	}
 
-// Query to create Item table in db.
+	/**
+	 * Create Item table
+	 */
 	public void createItemTable() {
-		String sql_temp = "DROP TABLE IF EXISTS item";
 
 		/*
-		 * CREATE TABLE item ( item_id integer not null, item_name varchar(25),
-		 * item_quantity integer, item_price decimal(10,2), item_type varchar(25),
-		 * supplier_id integer, primary key (item_id), foreign key (supplier_id)
-		 * references supplier(supplier_id) );
+		 * DROP TABLE IF EXISTS item; CREATE TABLE item ( item_id integer not null,
+		 * item_name varchar(25), item_quantity integer, item_price decimal(10,2),
+		 * item_type varchar(25), supplier_id integer, primary key (item_id), foreign
+		 * key (supplier_id) references supplier(supplier_id) );
 		 */
-//		String sql = "create table item " + "(item_id integer not null, " + "item_name varchar(25), "
-//				+ "item_quantity integer, " + "item_price decimal(10,2), " + "item_type varchar(25),, "
-//				+ "supplier_id  integer, " + "primary key (item_id), "
-//				+ "foreign key (supplier_id) references supplier(supplier_id)\r\n" + "			) ";
 
 		String sql = "CREATE TABLE item ( item_id integer not null, item_name varchar(25) unique,\r\n"
 				+ "		item_quantity integer, item_price decimal(10,2), item_type varchar(25),\r\n"
@@ -143,20 +123,22 @@ public class CreateDBTables {
 //			myStmt.executeUpdate(sql_temp);
 			myStmt.executeUpdate(sql);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		System.out.println("Created Item table in given database...");
 	}
 
-// Query to create purchase table in db.
+	/**
+	 * Create purchase table
+	 */
 	public void createPurchaseTable() {
-		String sql_temp = "DROP TABLE IF EXISTS purchase";
 
 		/*
-		 * CREATE TABLE purchase ( item_id integer not null, customer_id integer not
-		 * null, primary key (item_id,customer_id), foreign key (item_id) references
-		 * item(item_id), foreign key (customer_id) references customer(customer_id) );
+		 * DROP TABLE IF EXISTS purchase; CREATE TABLE purchase ( item_id integer not
+		 * null, customer_id integer not null, primary key (item_id,customer_id),
+		 * foreign key (item_id) references item(item_id), foreign key (customer_id)
+		 * references customer(customer_id) );
 		 */
 		String sql = "create table purchase " + "(item_id integer not null, " + "customer_id  integer not null, "
 
@@ -168,19 +150,20 @@ public class CreateDBTables {
 //			myStmt.executeUpdate(sql_temp);
 			myStmt.executeUpdate(sql);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		System.out.println("Created Purchase table in given database...");
 	}
 
-// Query to create order table in db.
+	/**
+	 * Create order table
+	 */
 	public void createOrderTable() {
-		String sql_temp = "DROP TABLE IF EXISTS orders";
 
 		/*
-		 * CREATE TABLE order ( order_id integer not null, order_date date, primary key
-		 * (order_id)
+		 * DROP TABLE IF EXISTS orders; CREATE TABLE order ( order_id integer not null,
+		 * order_date date, primary key (order_id)
 		 * 
 		 * );
 		 */
@@ -199,16 +182,17 @@ public class CreateDBTables {
 		System.out.println("Created Orders table in given database...");
 	}
 
-// Query to create orderline table in db.
+	/**
+	 * Create orderline table
+	 */
 	public void createOrderLineTable() {
-		String sql_temp = "DROP TABLE IF EXISTS orderline";
 
 		/*
-		 * CREATE TABLE orderline ( order_id integer not null, item_id integer not null,
-		 * supplier_id integer , amount_ordered integer, primary key (order_id, item_id)
-		 * foreign key (item_id) references item(item_id), foreign key (order_id)
-		 * references order(order_id) foreign key (supplier_id) references
-		 * supplier(supplier_id)
+		 * DROP TABLE IF EXISTS orderline; CREATE TABLE orderline ( order_id integer not
+		 * null, item_id integer not null, supplier_id integer , amount_ordered integer,
+		 * primary key (order_id, item_id) foreign key (item_id) references
+		 * item(item_id), foreign key (order_id) references order(order_id) foreign key
+		 * (supplier_id) references supplier(supplier_id)
 		 * 
 		 * );
 		 */
@@ -229,13 +213,14 @@ public class CreateDBTables {
 		System.out.println("Created Orderline table in given database...");
 	}
 
-// Query to create electrical_item table in db.
+	/**
+	 * Create electrical_item table
+	 */
 	public void createElectricalItemTable() {
-		String sql_temp = "DROP TABLE IF EXISTS electrical_item";
 
 		/*
-		 * CREATE TABLE electrical_item ( item_id integer not null, power_type
-		 * varchar(10), primary key (item_id)
+		 * DROP TABLE IF EXISTS electrical_item; CREATE TABLE electrical_item ( item_id
+		 * integer not null, power_type varchar(10), primary key (item_id)
 		 * 
 		 * );
 		 */
@@ -254,9 +239,11 @@ public class CreateDBTables {
 		System.out.println("Created Electrical_item table in given database...");
 	}
 
-// Query to create electrical_item table in db.
+	/**
+	 * Create international_supplier table
+	 */
 	public void createInternationalSuppTable() {
-		String sql_temp = "DROP TABLE IF EXISTS international_supplier";
+//		String sql_temp = "DROP TABLE IF EXISTS international_supplier";
 
 		/*
 		 * CREATE TABLE international_supplier ( supplier_id integer not null,
@@ -280,6 +267,18 @@ public class CreateDBTables {
 		System.out.println("Created International_supplier table in given database...");
 	}
 
+	/**
+	 * Inserts values in customer table.
+	 * 
+	 * @param id
+	 * @param fName
+	 * @param lName
+	 * @param address
+	 * @param postal_code
+	 * @param phone_number
+	 * @param customer_type
+	 * @return
+	 */
 	public int insertCustomerPreparedStatment(int id, String fName, String lName, String address, String postal_code,
 			String phone_number, String customer_type) {
 
@@ -296,7 +295,7 @@ public class CreateDBTables {
 			pStat.setString(7, customer_type);
 			rowCount = pStat.executeUpdate();
 //			System.out.println("row Count = " + rowCount);
-			
+
 			pStat.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -306,6 +305,17 @@ public class CreateDBTables {
 
 	}
 
+	/**
+	 * Inserts values in Item table.
+	 * 
+	 * @param id
+	 * @param itemName
+	 * @param itemQty
+	 * @param itemPrice
+	 * @param itemType
+	 * @param suppId
+	 * @return
+	 */
 	public int insertItemPreparedStatment(int id, String itemName, int itemQty, double itemPrice, String itemType,
 			int suppId) {
 
@@ -332,6 +342,17 @@ public class CreateDBTables {
 
 	}
 
+	/**
+	 * Inserts values in Supplier table.
+	 * 
+	 * @param id
+	 * @param suppName
+	 * @param supplierType
+	 * @param address
+	 * @param companyName
+	 * @param salesContact
+	 * @return
+	 */
 	public int insertSupplierPreparedStatment(int id, String suppName, String supplierType, String address,
 			String companyName, String salesContact) {
 
@@ -358,6 +379,13 @@ public class CreateDBTables {
 
 	}
 
+	/**
+	 * Insert values in International_supplier table.
+	 * 
+	 * @param id
+	 * @param importTax
+	 * @return
+	 */
 	public int insertIntSupplierPrepStatment(int id, double importTax) {
 
 		int rowCount = 0;
@@ -368,8 +396,7 @@ public class CreateDBTables {
 			pStat.setDouble(2, importTax);
 
 			rowCount = pStat.executeUpdate();
-//			System.out.println("row Count = " + rowCount);
-//			System.out.println("Added data in international_supplier table");
+
 			pStat.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -379,6 +406,13 @@ public class CreateDBTables {
 
 	}
 
+	/**
+	 * Insert values in Electrical_item table.
+	 * 
+	 * @param id
+	 * @param powerType
+	 * @return
+	 */
 	public int insertElecItemPrepStatment(int id, String powerType) {
 
 		int rowCount = 0;
@@ -400,6 +434,9 @@ public class CreateDBTables {
 
 	}
 
+	/**
+	 * Load data into customer table.
+	 */
 	public void fillCustomerTable() {
 		try {
 			Scanner sc = new Scanner(new FileReader("clients.txt"));
@@ -417,6 +454,9 @@ public class CreateDBTables {
 		}
 	}
 
+	/**
+	 * Load data into Item table.
+	 */
 	public void fillItemTable() {
 		try {
 			Scanner sc = new Scanner(new FileReader("items.txt"));
@@ -427,7 +467,7 @@ public class CreateDBTables {
 			}
 			System.out.println("Added data in Item table");
 			sc.close();
-			
+
 		} catch (FileNotFoundException e) {
 			System.err.println("File " + "items.txt" + " Not Found!");
 		} catch (Exception e) {
@@ -435,6 +475,9 @@ public class CreateDBTables {
 		}
 	}
 
+	/**
+	 * Load data into Supplier table.
+	 */
 	public void fillSupplierTable() {
 
 		try {
@@ -453,6 +496,9 @@ public class CreateDBTables {
 		}
 	}
 
+	/**
+	 * Load data into International supplier table.
+	 */
 	public void fillIntSupplierTable() {
 		try {
 			Scanner sc = new Scanner(new FileReader("International_suppliers.txt"));
@@ -469,6 +515,9 @@ public class CreateDBTables {
 		}
 	}
 
+	/**
+	 * Load data into Electrical_item table.
+	 */
 	public void fillElecItemTable() {
 		try {
 			Scanner sc = new Scanner(new FileReader("electrical_items.txt"));
@@ -485,6 +534,15 @@ public class CreateDBTables {
 		}
 	}
 
+	/**
+	 * Load data into Orderline table.
+	 * 
+	 * @param orderId
+	 * @param toolId
+	 * @param supplierId
+	 * @param quantity
+	 * @return
+	 */
 	public int insertOrderLinePrepStatment(int orderId, int toolId, int supplierId, int quantity) {
 
 		int rowCount = 0;
@@ -510,6 +568,13 @@ public class CreateDBTables {
 
 	}
 
+	/**
+	 * Load data into Orders table.
+	 * 
+	 * @param orderId
+	 * @param date
+	 * @return
+	 */
 	public int insertOrderPrepStatment(int orderId, String date) {
 
 		int rowCount = 0;
@@ -520,7 +585,7 @@ public class CreateDBTables {
 			PreparedStatement pStat = myDriver.getMyConn().prepareStatement(query);
 			pStat.setInt(1, orderId);
 			pStat.setString(2, date);
-		
+
 			rowCount = pStat.executeUpdate();
 //			System.out.println("row Count = " + rowCount);
 			System.out.println("Added data in orders table");

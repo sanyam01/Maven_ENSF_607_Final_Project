@@ -4,23 +4,28 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import Server.Controller.DatabaseController.DBController;
 import Server.Model.Items;
 import Server.Model.ItemsList;
 import Server.Model.OrderLines;
 import Server.Model.Inventory;
 
+/**
+ * Class controls the communication for inventory management GUI and contains
+ * methods to be called based on request from client end. Class return the
+ * response to client in form of JSON strings.
+ * 
+ * @author Neha Singh
+ *
+ */
 public class ServerInventoryController {
 
 	DBController dbController;
 	private Inventory inventory;
 	ObjectMapper objectMapper;
 	private String message;
-
 
 	public ServerInventoryController(DBController dbC, ObjectMapper objectMapper) throws IOException {
 
@@ -31,7 +36,14 @@ public class ServerInventoryController {
 
 	}
 
-
+	/**
+	 * Method reads the client request, splits it to get task id and calls the
+	 * particular task id in switchcase method, Returns the response message to
+	 * client in form of JSON string
+	 * 
+	 * @param clientRequest
+	 * @return
+	 */
 	public String readClientMessage(String clientRequest) {
 		String[] responseArr = null;
 		String switchBoardResponse = null;
@@ -49,6 +61,12 @@ public class ServerInventoryController {
 
 	}
 
+	/**
+	 * Method calls update item quantity operation for given item id
+	 * 
+	 * @param itemId
+	 * @return
+	 */
 	public boolean callUpdateItemQuantity(int itemId) {
 		boolean flag = false;
 		for (Items i : inventory.getListItems()) {
@@ -71,6 +89,12 @@ public class ServerInventoryController {
 
 	}
 
+	/**
+	 * Method checks if orderline is already generated for given item id
+	 * 
+	 * @param itemId
+	 * @return
+	 */
 	public boolean checkOrderLineGeneration(int itemId) {
 		boolean flag = false;
 
@@ -87,9 +111,13 @@ public class ServerInventoryController {
 		return flag;
 	}
 
+	/**
+	 * Method checks if order is already placed for current date
+	 * 
+	 * @return
+	 */
 	public boolean checkOrder() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd ");
-//		Date orderDate = null;
 		String stringOrderDate = inventory.getTheOrder().getDate().trim();
 		Date todayDate = new Date();
 		String stringTodayDate = sdf.format(todayDate).trim();
@@ -97,17 +125,16 @@ public class ServerInventoryController {
 		System.out.println("\nstringTodayDate: " + stringTodayDate);
 		System.out.println("\nstringOrderDate: " + stringOrderDate);
 		int orderCount = dbController.getOrderCount();
-		System.out.println("orderCount: "+orderCount);
-		
-//		this.dbController.addOrder(inventory.getTheOrder().getOrderId(), inventory.getTheOrder().getDate());
-		if (stringTodayDate.equals(stringOrderDate) ) {
-			
-			if(orderCount == 0) {
+		System.out.println("orderCount: " + orderCount);
+
+		if (stringTodayDate.equals(stringOrderDate)) {
+
+			if (orderCount == 0) {
 				this.dbController.addOrder(inventory.getTheOrder().getOrderId(), inventory.getTheOrder().getDate());
 			}
 
 			System.out.println("in check order, both dates are same\n");
-			
+
 			return true;
 
 		} else {
@@ -115,34 +142,20 @@ public class ServerInventoryController {
 		}
 		return false;
 
-//		System.out.println("\ntoday date: "+todayDate);
-//		System.out.println("inventory order date: "+inventory.getTheOrder().getDate());
-
-//		
-//		try {
-//			 orderDate = sdf.parse(stringOrderDate);
-//			System.out.println("inventory order date converetd : "+orderDate);
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-
-//		if(todayDate.equals(orderDate)) {
-//			System.out.println("today is same as orderDate\n");
-//		}
-
-//		if(todayDate.equals(stringOrderDate)) {
-//			System.out.println("today is same as stringOrderDate\n");
-//		}
 	}
 
+	/**
+	 * Method generates order if not already placed
+	 * 
+	 * @return
+	 */
 	public boolean generateOrder() {
 
 		boolean flag = false;
 		// load data in order table
 		System.out.println("loading data in order table for values: " + inventory.getTheOrder().getOrderId() + " "
 				+ inventory.getTheOrder().getDate() + "\n");
-//		System.out.println(checkOrder() + "\n");
+
 		if (!checkOrder()) {
 
 			System.out.println("in generateOrder");
@@ -153,13 +166,16 @@ public class ServerInventoryController {
 			flag = true;
 		}
 
-//				if(inventory.getTheOrder().getDate() ) {
-//					
-//				}
 		return flag;
 
 	}
 
+	/**
+	 * Method generated orderline and adds data to the database
+	 * 
+	 * @param orderLine
+	 * @return
+	 */
 	public int generateOrderLine(OrderLines orderLine) {
 
 		System.out.println("new order line generated for: ");
@@ -170,13 +186,20 @@ public class ServerInventoryController {
 		// orderline table insert
 		dbController.addOrderLine(inventory.getTheOrder().getOrderId(), orderLine.getItem().getItemID(),
 				orderLine.getItem().getSupplierID(), orderLine.getAmount());
-		
-		System.out.println("new qty after generating orderline: "+orderLine.getItem().getItemQuantity());
-		System.out.println("amount generated in orldeline: "+orderLine.getAmount());
+
+		System.out.println("new qty after generating orderline: " + orderLine.getItem().getItemQuantity());
+		System.out.println("amount generated in orldeline: " + orderLine.getAmount());
 
 		return orderLine.getItem().getItemQuantity();
 	}
 
+	/**
+	 * Method contains tasks defined under switch cases for different requests from
+	 * front end and calls specific operations and returns JSON string response.
+	 * 
+	 * @param responseArr
+	 * @return
+	 */
 	private String switchBoard(String[] responseArr) {
 
 		int choice = Integer.parseInt(responseArr[0]);
@@ -184,7 +207,6 @@ public class ServerInventoryController {
 		String jsonItemList = null;
 		ArrayList<Items> items;
 
-		boolean flag;
 
 		switch (choice) {
 
@@ -193,56 +215,22 @@ public class ServerInventoryController {
 			System.out.println("Operation: list all tools");
 			System.out.println(responseArr[1]);
 
-//			if (responseArr[1].isEmpty() || responseArr[1].isBlank()) {
-//				System.out.println("\nInvalid input\n");
-//				jsonItemList = "ERROR!! Invalid input!!";
-//
-//			} else {
+			items = dbController.getItemList();
+			if (!items.isEmpty()) {
 
-				items = dbController.getItemList();
-				if (!items.isEmpty()) {
+				ItemsList serializedFleet = new ItemsList();
+				serializedFleet.setItemsList(items);
 
-					ItemsList serializedFleet = new ItemsList();
-					serializedFleet.setItemsList(items);
+				try {
+					jsonItemList = objectMapper.writeValueAsString(serializedFleet);
+				} catch (JsonProcessingException e1) {
 
-					try {
-						jsonItemList = objectMapper.writeValueAsString(serializedFleet);
-					} catch (JsonProcessingException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-
-				} else {
-					jsonItemList = "ERROR!! Items list is empty!!";
+					e1.printStackTrace();
 				}
 
-			
-
-//			elecItems = dbController.getElectricalItems();
-//			nonElecItems = dbController.getNonElectricalItems();
-//			
-//			itemList = new ItemsList(elecItems, nonElecItems);
-//			if ((!itemList.getElecItemList().isEmpty()) && (!itemList.getNonElecItemList().isEmpty())) {
-//				
-//				try {
-//					jsonItemList = objectMapper.writeValueAsString(itemList);
-//			
-//					
-//					System.out.println("Sending to client: " + jsonItemList);
-//
-//				} catch (JsonProcessingException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				
-//				
-//				
-//			}
-//			else {
-//				
-//				jsonItemList = "Items list is empty!!";
-//				
-//			}
+			} else {
+				jsonItemList = "ERROR!! Items list is empty!!";
+			}
 
 			break;
 
@@ -250,30 +238,6 @@ public class ServerInventoryController {
 			// Search for tool by toolId
 			System.out.println("Operation: Search for tool by toolId");
 			System.out.println(responseArr[1]);
-
-//			itemList = dbController.getItemById(Integer.parseInt(responseArr[1]));
-//			
-//			if (itemList.getElecItemList().isEmpty() && itemList.getNonElecItemList().isEmpty()) {
-//				
-//				jsonItemList = "Item Id not found!!";
-//				System.out.println("Item Id not found!!");
-//				
-//				
-//
-//			} else {
-//				
-//
-//				try {
-//					jsonItemList = objectMapper.writeValueAsString(itemList);
-//					System.out.println("Sending to client: " + jsonItemList);
-//
-//				} catch (JsonProcessingException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				
-//
-//			}
 
 			if (responseArr[1].isEmpty() || responseArr[1].isBlank()) {
 				System.out.println("\nInvalid input\n");
@@ -287,7 +251,7 @@ public class ServerInventoryController {
 					jsonItemList = "ERROR!! Invalid input, enter integer value";
 					break;
 				}
-				
+
 				items = dbController.getItemById(Integer.parseInt(responseArr[1].trim()));
 
 				if (!items.isEmpty()) {
@@ -298,7 +262,7 @@ public class ServerInventoryController {
 					try {
 						jsonItemList = objectMapper.writeValueAsString(serializedFleet);
 					} catch (JsonProcessingException e1) {
-						// TODO Auto-generated catch block
+
 						e1.printStackTrace();
 					}
 
@@ -330,7 +294,7 @@ public class ServerInventoryController {
 					try {
 						jsonItemList = objectMapper.writeValueAsString(serializedFleet);
 					} catch (JsonProcessingException e1) {
-						// TODO Auto-generated catch block
+
 						e1.printStackTrace();
 					}
 
@@ -397,7 +361,7 @@ public class ServerInventoryController {
 			try {
 				jsonItemList = objectMapper.writeValueAsString(inventory.getTheOrder());
 			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
+
 				e.printStackTrace();
 			}
 

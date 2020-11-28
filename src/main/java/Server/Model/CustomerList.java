@@ -3,7 +3,11 @@ package Server.Model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
+/**
+ * Class for list of customers present in the database.
+ * @author Neha Singh
+ *
+ */
 public class CustomerList implements Serializable{
 	
 	
@@ -15,11 +19,6 @@ public class CustomerList implements Serializable{
 	 * list of customers
 	 */
 	private ArrayList<Customer> customerList;
-	
-//	public CustomerList() {
-//		super();
-//	}
-	
 	
 	public CustomerList(ArrayList<Customer> cust) {
 		this.customerList = cust;

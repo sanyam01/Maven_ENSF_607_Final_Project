@@ -1,5 +1,12 @@
 package Server.Model;
 
+/**
+ * Class for the orderlines generated for the items if the quantity goes below
+ * 40.
+ * 
+ * @author Neha and Sanyan
+ *
+ */
 public class OrderLines {
 
 	/**

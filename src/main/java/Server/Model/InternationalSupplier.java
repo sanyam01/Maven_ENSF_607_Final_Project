@@ -1,5 +1,9 @@
 package Server.Model;
-
+/**
+ * Class is subclass that extends super class Suppliers. Contains attributes for International suppliers.
+ * @author Neha Singh
+ *
+ */
 public class InternationalSupplier extends Suppliers{
 	
 	private double importTax;

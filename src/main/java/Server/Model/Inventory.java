@@ -2,8 +2,13 @@ package Server.Model;
 
 import java.util.ArrayList;
 
-import Server.Controller.DatabaseController.DBController;
-
+/**
+ * Class manages the operations to decrease item quantity and manage the
+ * inventory.
+ * 
+ * @author Neha Singh
+ *
+ */
 public class Inventory {
 
 	/**
@@ -16,37 +21,20 @@ public class Inventory {
 	 */
 	private Order theOrder;
 
-	private boolean orderLineFlag ;
+	private boolean orderLineFlag;
+
 	/**
-	 * Constructs an object of the class Inventory.
-	 * 
-	 * It also generates an order for the day
+	 * Constructs an object of the class Inventory. It also generates an order for
+	 * the day
 	 * 
 	 * @param listItems an array list of items/tools
 	 */
 	public Inventory(ArrayList<Items> listItems) {
-		
+
 		this.setListItems(listItems);
 		theOrder = new Order();
 		this.orderLineFlag = false;
-		
-		
 
-	}
-
-	/**
-	 * toString method overrides the toString method of super class.
-	 * 
-	 * It returns the string representation of all the tools in the inventory.
-	 */
-	@Override
-	public String toString() {
-		String p = "";
-		for (Items s : listItems) {
-			p = p + s.toString();
-			p = p + "\n";
-		}
-		return p;
 	}
 
 	/**
@@ -58,55 +46,43 @@ public class Inventory {
 	 * @return the order for the day
 	 */
 	public String decreaseQuantity(String name) {
-		
+
 		String s = "Item not found";
 		for (Items i : listItems) {
 			if (i.getItemName().equalsIgnoreCase(name))
 				System.out.println();
 //				s = i.decreaseQuantity(this.getTheOrder());
 		}
-		
-		
+
 		return s;
 
 	}
-	
+
+	/**
+	 * decreaseQuantity calls the method of class Items to decrease the quantity by
+	 * one
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public int decreaseQuantity(int id) {
-		System.out.println("decreaing qty for item id: "+ id);
+		System.out.println("decreaing qty for item id: " + id);
 //		listItems = dbController.getItemById(id);
 		int orderedQty = 0;
-		
-		
-			for (Items i : listItems) {
-				if (i.getItemID() == id) {
-					
-					System.out.println("calling method decreaseQuantity in item with parameters: "+ this.getTheOrder().getOrderId()+" "+ i.getItemQuantity());
-					orderedQty = i.decreaseQuantity(this.getTheOrder(), i.getItemQuantity());
-				}
-				
 
+		for (Items i : listItems) {
+			if (i.getItemID() == id) {
+
+				System.out.println("calling method decreaseQuantity in item with parameters: "
+						+ this.getTheOrder().getOrderId() + " " + i.getItemQuantity());
+				orderedQty = i.decreaseQuantity(this.getTheOrder(), i.getItemQuantity());
 			}
-			
-		
+
+		}
 
 		return orderedQty;
-		
 
 	}
-	
-
-//	/**
-//	 * Iterates through all the items and passes the supplier list to the items for
-//	 * mapping the supplier id of the items with the supplier list and allocates the
-//	 * corresponding suppliers to the items
-//	 * 
-//	 * @param list represents the list of suppliers
-//	 */
-//	public void addSuppliers(SupplierList list) {
-//		for (Items i : listItems) {
-//			i.addSupplier(list);
-//		}
-//	}
 
 	public Order getTheOrder() {
 		return theOrder;
